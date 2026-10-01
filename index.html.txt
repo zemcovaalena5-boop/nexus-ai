@@ -1,0 +1,2298 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexus</title>
+
+<style>
+:root {
+  --bg: #f7f6f2;
+  --panel: #fffefa;
+  --soft: #eeece6;
+  --line: #dfddd5;
+  --text: #2f2d29;
+  --muted: #817e76;
+  --accent: #c66d4d;
+  --accent-hover: #ae5b3e;
+  --danger: #b54e47;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  color: var(--text);
+  background: var(--bg);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button,
+input,
+textarea,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.app {
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+}
+
+/* Sidebar */
+
+.sidebar {
+  display: flex;
+  width: 238px;
+  flex: 0 0 238px;
+  flex-direction: column;
+  padding: 25px 12px 14px;
+  border-right: 1px solid var(--line);
+  background: var(--bg);
+  transition: width .2s ease, flex-basis .2s ease, padding .2s ease;
+}
+
+.sidebar.closed {
+  width: 0;
+  flex-basis: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 10px 28px;
+  font-size: 24px;
+  letter-spacing: -1px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.new-chat {
+  width: 100%;
+  padding: 11px 13px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--accent);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.new-chat:hover {
+  background: var(--accent-hover);
+}
+
+.history {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 24px;
+}
+
+.history-label {
+  margin: 20px 8px 8px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.chat-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+  border-radius: 7px;
+}
+
+.chat-row.active {
+  background: var(--soft);
+}
+
+.chat-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  padding: 9px 9px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.chat-delete {
+  padding: 7px 9px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+}
+
+.profile-button {
+  width: 100%;
+  padding: 13px 8px 4px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  text-align: left;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+/* Main */
+
+.main {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 59px;
+  padding: 11px 28px;
+}
+
+.icon-button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+}
+
+.icon-button:hover {
+  background: var(--soft);
+}
+
+.page-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.connection {
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+}
+
+.connection.connected {
+  color: #5d8655;
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 35px 22px 25px;
+}
+
+.welcome {
+  width: min(650px, 100%);
+  margin: 13vh auto 0;
+  text-align: center;
+}
+
+.welcome-mark {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto;
+  place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 31px;
+}
+
+.welcome h1 {
+  margin: 22px 0 14px;
+  font-size: clamp(40px, 6vw, 66px);
+  font-weight: normal;
+  letter-spacing: -3px;
+  line-height: .98;
+}
+
+.welcome p {
+  max-width: 440px;
+  margin: auto;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.messages {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.message {
+  margin-bottom: 34px;
+}
+
+.message.user {
+  text-align: right;
+}
+
+.message-label {
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+}
+
+.message.user .message-label {
+  text-align: right;
+}
+
+.message-content {
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.user .message-content {
+  display: inline-block;
+  max-width: 90%;
+  padding: 11px 15px;
+  border-radius: 15px;
+  background: var(--soft);
+  text-align: left;
+}
+
+.message.assistant .message-content {
+  max-width: 100%;
+}
+
+.message.error .message-content {
+  color: var(--danger);
+}
+
+.message img {
+  display: block;
+  max-width: 100%;
+  max-height: 520px;
+  margin: 12px 0;
+  border-radius: 10px;
+}
+
+pre {
+  overflow: auto;
+  margin: 12px 0;
+  padding: 13px;
+  border-radius: 8px;
+  background: var(--soft);
+  font: 12px/1.6 monospace;
+  white-space: pre;
+}
+
+.message-tools {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.message-tools button {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+}
+
+.waiting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(760px, 100%);
+  margin: 0 auto 18px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.waiting-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .25;
+  }
+}
+
+/* Composer */
+
+.composer-wrap {
+  padding: 8px 22px 20px;
+}
+
+.composer {
+  width: min(760px, 100%);
+  margin: auto;
+}
+
+.notice {
+  min-height: 20px;
+  margin: 0 3px 5px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  white-space: pre-wrap;
+}
+
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 7px;
+}
+
+.attachment {
+  max-width: 220px;
+  overflow: hidden;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+}
+
+.composer-box {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.composer-box:focus-within {
+  border-color: var(--accent);
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 76px;
+  max-height: 210px;
+  padding: 15px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 8px;
+}
+
+.toolbar button,
+.toolbar select {
+  height: 32px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.toolbar button:hover,
+.toolbar select:hover {
+  background: var(--soft);
+}
+
+.mode {
+  max-width: 160px;
+  padding: 0 6px;
+}
+
+.model-button {
+  max-width: 170px;
+  overflow: hidden;
+  padding: 0 8px;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.send-button {
+  width: 34px;
+  margin-left: auto;
+  color: #fff !important;
+  background: var(--accent) !important;
+  font-size: 16px !important;
+}
+
+.send-button:hover {
+  background: var(--accent-hover) !important;
+}
+
+/* Model menu */
+
+.model-menu {
+  position: fixed;
+  z-index: 30;
+  width: min(310px, calc(100vw - 24px));
+  padding: 7px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 15px 45px #2e281d22;
+}
+
+.model-menu-title {
+  padding: 8px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.model-option {
+  display: block;
+  width: 100%;
+  padding: 9px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+}
+
+.model-option:hover,
+.model-option.active {
+  background: var(--soft);
+}
+
+.model-option strong,
+.model-option small {
+  display: block;
+}
+
+.model-option strong {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.model-option small {
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dialogs */
+
+dialog {
+  width: min(450px, calc(100% - 24px));
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--text);
+  background: var(--panel);
+}
+
+dialog::backdrop {
+  background: #28231c88;
+  backdrop-filter: blur(3px);
+}
+
+.dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialog-head h2 {
+  margin: 0;
+  font-weight: normal;
+}
+
+.close-button {
+  border: 0;
+  background: transparent;
+  font-size: 21px;
+}
+
+label {
+  display: block;
+  margin: 18px 0 6px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: 0;
+  background: var(--panel);
+}
+
+.dialog-status {
+  min-height: 20px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  white-space: pre-wrap;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.primary {
+  padding: 10px 13px;
+  border: 0;
+  border-radius: 7px;
+  color: #fff;
+  background: var(--accent);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.primary:hover {
+  background: var(--accent-hover);
+}
+
+.profile-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.profile-list button {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+/* Mobile */
+
+@media (max-width: 720px) {
+  .sidebar {
+    position: fixed;
+    z-index: 10;
+    inset: 0 auto 0 0;
+    box-shadow: 20px 0 50px #0003;
+  }
+
+  .topbar {
+    padding: 11px 13px;
+  }
+
+  .connection {
+    display: none;
+  }
+
+  .scroll {
+    padding: 28px 13px 20px;
+  }
+
+  .composer-wrap {
+    padding: 7px 12px 13px;
+  }
+
+  .toolbar {
+    flex-wrap: wrap;
+  }
+
+  .mode {
+    max-width: 135px;
+  }
+
+  .model-button {
+    max-width: 145px;
+  }
+
+  .message.user .message-content {
+    max-width: 95%;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">?</span>
+      <span>nexus</span>
+    </div>
+
+    <button id="new-chat" class="new-chat">
+      + Новый диалог
+    </button>
+
+    <div id="history" class="history"></div>
+
+    <button id="profile-button" class="profile-button">
+      0 Мой профиль
+    </button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button id="menu-button" class="icon-button">?</button>
+
+      <div id="page-title" class="page-title">
+        Новый диалог
+      </div>
+
+      <div id="connection" class="connection">
+        Не подключено
+      </div>
+
+      <button id="settings-button" class="icon-button">
+        ?
+      </button>
+    </header>
+
+    <section id="scroll" class="scroll">
+      <div id="welcome" class="welcome">
+        <div class="welcome-mark">?</div>
+
+        <h1>
+          О чём<br>
+          поговорим?
+        </h1>
+
+        <p>
+          Текст, анализ изображений и генерация картинок
+          в одном спокойном пространстве.
+        </p>
+      </div>
+
+      <div id="messages" class="messages"></div>
+
+      <div id="waiting" class="waiting hidden">
+        <span class="waiting-dot"></span>
+        <span id="waiting-text">
+          Модель готовит ответ…
+        </span>
+      </div>
+    </section>
+
+    <footer class="composer-wrap">
+      <div class="composer">
+        <div id="notice" class="notice"></div>
+        <div id="attachments" class="attachments"></div>
+
+        <div class="composer-box">
+          <textarea
+            id="input"
+            placeholder="Напиши сообщение…"
+          ></textarea>
+
+          <div class="toolbar">
+            <button
+              id="attach-button"
+              title="Прикрепить файл"
+            >
+              +
+            </button>
+
+            <button
+              id="dictate-button"
+              title="Голосовой ввод"
+            >
+              ??
+            </button>
+
+            <select id="mode" class="mode">
+              <option value="chat">Чат</option>
+              <option value="vision">
+                Анализ изображения
+              </option>
+              <option value="image">
+                Создать изображение
+              </option>
+              <option value="video" disabled>
+                Видео пока недоступно
+              </option>
+            </select>
+
+            <button
+              id="model-button"
+              class="model-button"
+            >
+              Выбрать модель
+            </button>
+
+            <button
+              id="send-button"
+              class="send-button"
+            >
+              ^
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<input
+  id="file-input"
+  type="file"
+  hidden
+  multiple
+  accept="image/png,image/jpeg,image/webp,image/gif,.txt,.md,.js,.ts,.py,.json,.html,.css,.csv"
+>
+
+<div id="model-menu" class="model-menu hidden"></div>
+
+<dialog id="settings-dialog">
+  <div class="dialog-head">
+    <h2>Подключение</h2>
+
+    <button
+      class="close-button"
+      data-close="settings-dialog"
+    >
+      ?
+    </button>
+  </div>
+
+  <label for="worker-url">
+    Адрес Cloudflare Worker
+  </label>
+
+  <input
+    id="worker-url"
+    class="field"
+    value="https://small-recipe-c9fd.zemcovaalena5.workers.dev"
+  >
+
+  <label for="app-password">
+    Пароль APP_PASSWORD
+  </label>
+
+  <input
+    id="app-password"
+    class="field"
+    type="password"
+    autocomplete="off"
+  >
+
+  <label for="system-prompt">
+    Инструкция модели
+  </label>
+
+  <textarea
+    id="system-prompt"
+    class="field"
+    rows="3"
+  >Отвечай по-русски, ясно и по существу.</textarea>
+
+  <div id="settings-status" class="dialog-status"></div>
+
+  <div class="dialog-actions">
+    <button id="connect-button" class="primary">
+      Подключить
+    </button>
+  </div>
+</dialog>
+
+<dialog id="profiles-dialog">
+  <div class="dialog-head">
+    <h2>Профили</h2>
+
+    <button
+      class="close-button"
+      data-close="profiles-dialog"
+    >
+      ?
+    </button>
+  </div>
+
+  <div id="profile-list" class="profile-list"></div>
+
+  <form id="profile-form">
+    <label for="profile-name">
+      Имя профиля
+    </label>
+
+    <input
+      id="profile-name"
+      class="field"
+      maxlength="40"
+      required
+    >
+
+    <div class="dialog-actions">
+      <button class="primary">
+        Создать профиль
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+"use strict";
+
+const DEFAULT_WORKER =
+  "https://small-recipe-c9fd.zemcovaalena5.workers.dev";
+
+const STORE = "nexus_minimal_v3";
+
+const state = {
+  worker: DEFAULT_WORKER,
+  password: "",
+  system: "Отвечай по-русски, ясно и по существу.",
+  profiles: [],
+  activeProfile: "",
+  models: {
+    chat: [],
+    vision: [],
+    image: [],
+    video: []
+  },
+  mode: "chat",
+  selectedModel: "",
+  files: [],
+  request: null
+};
+
+const $ = id => document.getElementById(id);
+
+function uid(prefix = "id") {
+  return prefix + "_" +
+    Date.now() + "_" +
+    Math.random().toString(36).slice(2, 8);
+}
+
+function note(text) {
+  $("notice").textContent = text || "";
+}
+
+function currentProfile() {
+  return state.profiles.find(
+    profile => profile.id === state.activeProfile
+  );
+}
+
+function currentChat() {
+  const profile = currentProfile();
+
+  if (!profile.chats.length) {
+    profile.chats.push({
+      id: uid("chat"),
+      title: "Новый диалог",
+      messages: []
+    });
+  }
+
+  if (!profile.chats.some(
+    chat => chat.id === profile.currentChat
+  )) {
+    profile.currentChat = profile.chats[0].id;
+  }
+
+  return profile.chats.find(
+    chat => chat.id === profile.currentChat
+  );
+}
+
+function save() {
+  localStorage.setItem(STORE, JSON.stringify({
+    worker: state.worker,
+    system: state.system,
+    profiles: state.profiles,
+    activeProfile: state.activeProfile,
+    selectedModel: state.selectedModel
+  }));
+}
+
+function load() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(STORE) || "{}"
+    );
+
+    state.worker =
+      saved.worker || DEFAULT_WORKER;
+
+    state.system =
+      saved.system || state.system;
+
+    state.profiles =
+      Array.isArray(saved.profiles)
+        ? saved.profiles
+        : [];
+
+    state.activeProfile =
+      saved.activeProfile || "";
+
+    state.selectedModel =
+      saved.selectedModel || "";
+  } catch {
+    state.profiles = [];
+  }
+
+  if (!state.profiles.length) {
+    const profile = {
+      id: uid("profile"),
+      name: "Мой профиль",
+      chats: [{
+        id: uid("chat"),
+        title: "Новый диалог",
+        messages: []
+      }],
+      currentChat: null
+    };
+
+    profile.currentChat =
+      profile.chats[0].id;
+
+    state.profiles.push(profile);
+  }
+
+  if (!state.profiles.some(
+    profile => profile.id === state.activeProfile
+  )) {
+    state.activeProfile =
+      state.profiles[0].id;
+  }
+
+  currentChat();
+}
+
+function normalizeWorker(value) {
+  const url = new URL(value.trim());
+
+  if (
+    url.protocol !== "https:" ||
+    url.pathname !== "/" ||
+    url.search ||
+    url.hash
+  ) {
+    throw new Error(
+      "Укажи только HTTPS-адрес Worker."
+    );
+  }
+
+  return url.origin;
+}
+
+async function request(path, options = {}) {
+  const response = await fetch(
+    state.worker + path,
+    {
+      ...options,
+      cache: "no-store",
+      credentials: "omit",
+      headers: {
+        ...(options.headers || {}),
+        "X-App-Password": state.password
+      }
+    }
+  );
+
+  const raw = await response.text();
+  let data;
+
+  try {
+    data = JSON.parse(raw);
+  } catch {
+    throw new Error(
+      "Worker вернул не JSON."
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      data?.error?.message ||
+      data?.message ||
+      "Ошибка HTTP " + response.status
+    );
+  }
+
+  return data;
+}
+
+async function connect() {
+  const button = $("connect-button");
+  const status = $("settings-status");
+
+  button.disabled = true;
+  status.textContent =
+    "Загружаю модели…";
+
+  try {
+    state.worker = normalizeWorker(
+      $("worker-url").value
+    );
+
+    state.password =
+      $("app-password").value.trim();
+
+    state.system =
+      $("system-prompt").value.trim() ||
+      "Отвечай по-русски, ясно и по существу.";
+
+    if (!state.password) {
+      throw new Error(
+        "Введи пароль APP_PASSWORD."
+      );
+    }
+
+    const catalog = await request("/catalog");
+
+    state.models.chat =
+      Array.isArray(catalog.chat)
+        ? catalog.chat
+        : [];
+
+    state.models.vision =
+      Array.isArray(catalog.vision)
+        ? catalog.vision
+        : [];
+
+    state.models.image =
+      Array.isArray(catalog.image)
+        ? catalog.image
+        : [];
+
+    state.models.video =
+      Array.isArray(catalog.video)
+        ? catalog.video
+        : [];
+
+    save();
+    updateConnection();
+    selectFirstModel();
+
+    const warnings =
+      Array.isArray(catalog.warnings)
+        ? catalog.warnings
+        : [];
+
+    status.textContent =
+      "Чат: " + state.models.chat.length +
+      "\nИзображения: " +
+      state.models.image.length +
+      (warnings.length
+        ? "\n\n" + warnings.join("\n")
+        : "");
+
+    note("Worker подключён.");
+    $("settings-dialog").close();
+
+    render();
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+}
+
+function updateConnection() {
+  const connected =
+    Boolean(state.password) &&
+    Object.values(state.models).some(
+      list => list.length > 0
+    );
+
+  $("connection").textContent =
+    connected
+      ? "Подключено"
+      : "Не подключено";
+
+  $("connection").classList.toggle(
+    "connected",
+    connected
+  );
+}
+
+function modelsForMode() {
+  return state.models[state.mode] || [];
+}
+
+function selectedModelObject() {
+  return modelsForMode().find(
+    model => model.id === state.selectedModel
+  );
+}
+
+function selectFirstModel() {
+  const list = modelsForMode();
+
+  if (!list.some(
+    model => model.id === state.selectedModel
+  )) {
+    state.selectedModel =
+      list[0]?.id || "";
+  }
+
+  updateModelButton();
+}
+
+function updateModelButton() {
+  const model = selectedModelObject();
+
+  $("model-button").textContent =
+    model
+      ? model.name ||
+        model.display_name ||
+        model.id
+      : "Модель не выбрана";
+}
+
+function openModelMenu() {
+  const menu = $("model-menu");
+  const button = $("model-button");
+  const list = modelsForMode();
+
+  menu.innerHTML = "";
+
+  const title = document.createElement("div");
+  title.className = "model-menu-title";
+  title.textContent =
+    state.mode === "chat"
+      ? "Текст"
+      : state.mode === "vision"
+        ? "Анализ изображений"
+        : state.mode === "image"
+          ? "Генерация изображений"
+          : "Видео";
+
+  menu.append(title);
+
+  if (!list.length) {
+    const empty = document.createElement("div");
+    empty.className = "model-menu-title";
+    empty.textContent =
+      "Подходящих моделей нет.";
+    menu.append(empty);
+  }
+
+  list.forEach(model => {
+    const option = document.createElement("button");
+    option.className =
+      "model-option" +
+      (model.id === state.selectedModel
+        ? " active"
+        : "");
+
+    const name = document.createElement("strong");
+    name.textContent =
+      model.name ||
+      model.display_name ||
+      model.id;
+
+    const id = document.createElement("small");
+    id.textContent =
+      model.display_name &&
+      model.display_name !== model.name
+        ? model.display_name
+        : model.id;
+
+    option.append(name, id);
+
+    option.onclick = () => {
+      state.selectedModel = model.id;
+      save();
+      updateModelButton();
+      closeModelMenu();
+    };
+
+    menu.append(option);
+  });
+
+  menu.classList.remove("hidden");
+
+  const rect = button.getBoundingClientRect();
+  const width = Math.min(310, window.innerWidth - 24);
+
+  menu.style.width = width + "px";
+  menu.style.left = Math.max(
+    12,
+    Math.min(
+      rect.left,
+      window.innerWidth - width - 12
+    )
+  ) + "px";
+  menu.style.bottom =
+    (window.innerHeight - rect.top + 8) + "px";
+}
+
+function closeModelMenu() {
+  $("model-menu").classList.add("hidden");
+}
+
+function createChat() {
+  const profile = currentProfile();
+
+  const chat = {
+    id: uid("chat"),
+    title: "Новый диалог",
+    messages: []
+  };
+
+  profile.chats.unshift(chat);
+  profile.currentChat = chat.id;
+  state.files = [];
+
+  save();
+  renderAttachments();
+  render();
+}
+
+function renderHistory() {
+  const box = $("history");
+  const profile = currentProfile();
+
+  box.innerHTML = "";
+
+  const label = document.createElement("div");
+  label.className = "history-label";
+  label.textContent = "История";
+  box.append(label);
+
+  profile.chats.forEach(chat => {
+    const row = document.createElement("div");
+    row.className =
+      "chat-row" +
+      (chat.id === profile.currentChat
+        ? " active"
+        : "");
+
+    const title = document.createElement("button");
+    title.className = "chat-title";
+    title.textContent = chat.title;
+
+    title.onclick = () => {
+      profile.currentChat = chat.id;
+      state.files = [];
+      save();
+      renderAttachments();
+      render();
+    };
+
+    const remove = document.createElement("button");
+    remove.className = "chat-delete";
+    remove.textContent = "?";
+
+    remove.onclick = event => {
+      event.stopPropagation();
+
+      profile.chats = profile.chats.filter(
+        item => item.id !== chat.id
+      );
+
+      if (!profile.chats.length) {
+        createChat();
+        return;
+      }
+
+      profile.currentChat =
+        profile.chats[0].id;
+
+      save();
+      render();
+    };
+
+    row.append(title, remove);
+    box.append(row);
+  });
+}
+
+function render() {
+  const profile = currentProfile();
+  const chat = currentChat();
+
+  $("page-title").textContent =
+    chat.title;
+
+  $("profile-button").textContent =
+    "0 " + profile.name;
+
+  $("welcome").classList.toggle(
+    "hidden",
+    chat.messages.length > 0
+  );
+
+  renderHistory();
+  renderMessages(chat);
+  updateConnection();
+  updateModelButton();
+  scrollBottom();
+}
+
+function renderMessages(chat) {
+  const box = $("messages");
+  box.innerHTML = "";
+
+  chat.messages.forEach(message => {
+    const article = document.createElement("article");
+
+    article.className =
+      "message " +
+      message.role +
+      (message.error ? " error" : "");
+
+    const label = document.createElement("div");
+    label.className = "message-label";
+    label.textContent =
+      message.role === "user"
+        ? "Ты"
+        : message.model || "Ассистент";
+
+    const content = document.createElement("div");
+    content.className = "message-content";
+
+    (message.files || []).forEach(file => {
+      if (file.kind === "image") {
+        const image = document.createElement("img");
+        image.src = file.data;
+        image.alt = file.name;
+        content.append(image);
+      }
+
+      if (file.kind === "text") {
+        content.append(
+          document.createTextNode(
+            "Файл: " + file.name + "\n"
+          )
+        );
+      }
+    });
+
+    (message.images || []).forEach(source => {
+      const image = document.createElement("img");
+      image.src = source;
+      image.alt = "Созданное изображение";
+      content.append(image);
+    });
+
+    renderText(content, message.text || "");
+
+    article.append(label, content);
+
+    if (message.role === "assistant") {
+      const tools = document.createElement("div");
+      tools.className = "message-tools";
+
+      const copy = document.createElement("button");
+      copy.textContent = "Скопировать";
+
+      copy.onclick = async () => {
+        await navigator.clipboard.writeText(
+          message.text || ""
+        );
+
+        note("Ответ скопирован.");
+      };
+
+      tools.append(copy);
+      article.append(tools);
+    }
+
+    box.append(article);
+  });
+}
+
+function renderText(element, text) {
+  String(text).split("```").forEach(
+    (part, index) => {
+      if (index % 2 === 0) {
+        element.append(
+          document.createTextNode(part)
+        );
+        return;
+      }
+
+      const lines = part.split("\n");
+
+      if (
+        lines.length > 1 &&
+        /^[a-zA-Z0-9#+._-]+$/.test(
+          lines[0].trim()
+        )
+      ) {
+        lines.shift();
+      }
+
+      const pre = document.createElement("pre");
+      pre.textContent =
+        lines.join("\n");
+
+      element.append(pre);
+    }
+  );
+}
+
+function scrollBottom() {
+  requestAnimationFrame(() => {
+    $("scroll").scrollTop =
+      $("scroll").scrollHeight;
+  });
+}
+
+function renderAttachments() {
+  const box = $("attachments");
+  box.innerHTML = "";
+
+  state.files.forEach((file, index) => {
+    const button = document.createElement("button");
+    button.className = "attachment";
+    button.textContent =
+      file.name + " ?";
+
+    button.onclick = () => {
+      state.files.splice(index, 1);
+      renderAttachments();
+    };
+
+    box.append(button);
+  });
+}
+
+function setWaiting(active, text) {
+  $("waiting").classList.toggle(
+    "hidden",
+    !active
+  );
+
+  $("waiting-text").textContent =
+    text || "Модель готовит ответ…";
+
+  $("send-button").textContent =
+    active ? "¦" : "^";
+}
+
+function buildMessages(chat) {
+  const result = [{
+    role: "system",
+    content: state.system
+  }];
+
+  chat.messages.forEach(message => {
+    if (message.error) return;
+
+    if (message.role === "assistant") {
+      result.push({
+        role: "assistant",
+        content: message.text || ""
+      });
+
+      return;
+    }
+
+    const parts = [];
+
+    if (message.text) {
+      parts.push({
+        type: "text",
+        text: message.text
+      });
+    }
+
+    (message.files || []).forEach(file => {
+      if (file.kind === "image") {
+        parts.push({
+          type: "image_url",
+          image_url: {
+            url: file.data
+          }
+        });
+      }
+
+      if (file.kind === "text") {
+        parts.push({
+          type: "text",
+          text:
+            "Файл " + file.name + ":\n" +
+            file.text
+        });
+      }
+    });
+
+    if (parts.length) {
+      result.push({
+        role: "user",
+        content: parts.length === 1
+          ? parts[0].text
+          : parts
+      });
+    }
+  });
+
+  return result;
+}
+
+async function sendChat(model, signal) {
+  const data = await request(
+    "/chat/completions",
+    {
+      method: "POST",
+      signal,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model,
+        messages: buildMessages(
+          currentChat()
+        ),
+        stream: false
+      })
+    }
+  );
+
+  const content =
+    data?.choices?.[0]?.message?.content;
+
+  const answer =
+    typeof content === "string"
+      ? content
+      : Array.isArray(content)
+        ? content
+          .filter(part => part.type === "text")
+          .map(part => part.text || "")
+          .join("\n")
+        : "";
+
+  if (!answer.trim()) {
+    throw new Error(
+      "Модель вернула пустой ответ."
+    );
+  }
+
+  return answer;
+}
+
+function delay(milliseconds, signal) {
+  return new Promise((resolve, reject) => {
+    let finished = false;
+
+    const timer = setTimeout(() => {
+      if (finished) return;
+      finished = true;
+      resolve();
+    }, milliseconds);
+
+    const abort = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+
+      reject(new DOMException(
+        "Запрос остановлен.",
+        "AbortError"
+      ));
+    };
+
+    if (signal) {
+      if (signal.aborted) {
+        abort();
+        return;
+      }
+
+      signal.addEventListener(
+        "abort",
+        abort,
+        { once: true }
+      );
+    }
+  });
+}
+
+function extractImageUrls(value) {
+  const urls = [];
+
+  function scan(item, depth = 0) {
+    if (!item || depth > 6) {
+      return;
+    }
+
+    if (typeof item === "string") {
+      if (
+        item.startsWith("data:image/") ||
+        item.startsWith("https://")
+      ) {
+        urls.push(item);
+      }
+
+      return;
+    }
+
+    if (Array.isArray(item)) {
+      item.forEach(child => {
+        scan(child, depth + 1);
+      });
+
+      return;
+    }
+
+    if (typeof item === "object") {
+      Object.values(item).forEach(child => {
+        scan(child, depth + 1);
+      });
+    }
+  }
+
+  scan(value);
+
+  return [
+    ...new Set(urls)
+  ].slice(0, 8);
+}
+
+async function downloadImage(url, signal) {
+  if (url.startsWith("data:image/")) {
+    return url;
+  }
+
+  const data = await request(
+    "/asset?url=" +
+    encodeURIComponent(url),
+    { signal }
+  );
+
+  if (
+    !data ||
+    typeof data.data !== "string" ||
+    !data.data.startsWith("data:image/")
+  ) {
+    throw new Error(
+      "Worker не вернул готовые данные изображения."
+    );
+  }
+
+  return data.data;
+}
+
+async function downloadImages(urls, signal) {
+  const result = [];
+
+  for (const url of urls) {
+    result.push(
+      await downloadImage(url, signal)
+    );
+  }
+
+  return result;
+}
+
+function generationJob(data) {
+  return (
+    data?.job_id ||
+    data?.generation_id ||
+    data?.data?.job_id ||
+    null
+  );
+}
+
+function generationStatus(data) {
+  return String(
+    data?.status ||
+    data?.state ||
+    data?.data?.status ||
+    ""
+  ).toLowerCase();
+}
+
+async function generateImage(
+  model,
+  prompt,
+  signal
+) {
+  const data = await request(
+    "/images/generations",
+    {
+      method: "POST",
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": uid("image")
+      },
+      body: JSON.stringify({
+        source: "credits",
+        model,
+        prompt
+      })
+    }
+  );
+
+  const directUrls =
+    extractImageUrls(data);
+
+  if (directUrls.length) {
+    return downloadImages(
+      directUrls,
+      signal
+    );
+  }
+
+  const job = generationJob(data);
+
+  if (!job) {
+    throw new Error(
+      "Сервис не вернул изображение или job_id."
+    );
+  }
+
+  for (let attempt = 0; attempt < 60; attempt++) {
+    await delay(2000, signal);
+
+    const status = await request(
+      "/images/generations/" +
+      encodeURIComponent(job),
+      { signal }
+    );
+
+    const urls =
+      extractImageUrls(status);
+
+    if (urls.length) {
+      return downloadImages(
+        urls,
+        signal
+      );
+    }
+
+    const current =
+      generationStatus(status);
+
+    if (
+      [
+        "failed",
+        "error",
+        "cancelled",
+        "canceled"
+      ].includes(current)
+    ) {
+      throw new Error(
+        status?.error?.message ||
+        status?.message ||
+        "Генерация изображения завершилась ошибкой."
+      );
+    }
+  }
+
+  throw new Error(
+    "Изображение не готово за две минуты."
+  );
+}
+
+async function send() {
+  if (state.request) {
+    state.request.abort();
+    state.request = null;
+    setWaiting(false);
+    return;
+  }
+
+  const text =
+    $("input").value.trim();
+
+  const chat = currentChat();
+
+  if (!text && !state.files.length) {
+    return;
+  }
+
+  selectFirstModel();
+
+  if (!state.password) {
+    $("settings-dialog").showModal();
+    $("settings-status").textContent =
+      "Сначала подключи Worker.";
+    return;
+  }
+
+  if (!state.selectedModel) {
+    note(
+      "Для выбранного режима нет доступной модели."
+    );
+
+    openModelMenu();
+    return;
+  }
+
+  const files =
+    structuredClone(state.files);
+
+  if (!chat.messages.length) {
+    chat.title =
+      (
+        text ||
+        files[0]?.name ||
+        "Новый диалог"
+      ).slice(0, 42);
+  }
+
+  chat.messages.push({
+    role: "user",
+    text,
+    files
+  });
+
+  $("input").value = "";
+  $("input").style.height = "auto";
+  state.files = [];
+
+  renderAttachments();
+  save();
+  render();
+
+  const controller =
+    new AbortController();
+
+  state.request = controller;
+
+  try {
+    if (state.mode === "image") {
+      setWaiting(
+        true,
+        "Создаю изображение…"
+      );
+
+      const placeholder = {
+        role: "assistant",
+        text: "Создаю изображение…",
+        images: [],
+        model: "Nano Banana"
+      };
+
+      chat.messages.push(placeholder);
+      render();
+
+      placeholder.images =
+        await generateImage(
+          state.selectedModel,
+          text,
+          controller.signal
+        );
+
+      placeholder.text =
+        "Изображение создано.";
+    } else if (state.mode === "video") {
+      throw new Error(
+        "Генерация видео пока отключена."
+      );
+    } else {
+      setWaiting(
+        true,
+        state.mode === "vision"
+          ? "Анализирую изображение…"
+          : "Модель готовит ответ…"
+      );
+
+      const answer =
+        await sendChat(
+          state.selectedModel,
+          controller.signal
+        );
+
+      const model =
+        selectedModelObject();
+
+      chat.messages.push({
+        role: "assistant",
+        text: answer,
+        model:
+          model?.name ||
+          model?.display_name ||
+          state.selectedModel
+      });
+    }
+
+    save();
+    render();
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      chat.messages.push({
+        role: "assistant",
+        text: error.message,
+        error: true
+      });
+
+      save();
+      render();
+    }
+  } finally {
+    if (state.request === controller) {
+      state.request = null;
+      setWaiting(false);
+    }
+  }
+}
+
+function addFiles(fileList) {
+  Array.from(fileList).forEach(async file => {
+    const isImage =
+      /^image\/(png|jpeg|webp|gif)$/
+        .test(file.type);
+
+    const isText =
+      /\.(txt|md|js|ts|py|json|html|css|csv)$/i
+        .test(file.name);
+
+    if (!isImage && !isText) {
+      note(
+        "Этот тип файла не поддерживается."
+      );
+      return;
+    }
+
+    if (
+      isImage &&
+      file.size > 3 * 1024 * 1024
+    ) {
+      note(
+        "Изображение не должно быть больше 3 МБ."
+      );
+      return;
+    }
+
+    if (
+      isText &&
+      file.size > 300 * 1024
+    ) {
+      note(
+        "Текстовый файл не должен быть больше 300 КБ."
+      );
+      return;
+    }
+
+    if (isImage) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        state.files.push({
+          kind: "image",
+          name: file.name,
+          type: file.type,
+          data: reader.result
+        });
+
+        if (state.mode === "chat") {
+          state.mode = "vision";
+          $("mode").value = "vision";
+          selectFirstModel();
+        }
+
+        renderAttachments();
+      };
+
+      reader.onerror = () => {
+        note(
+          "Не удалось прочитать изображение."
+        );
+      };
+
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    try {
+      state.files.push({
+        kind: "text",
+        name: file.name,
+        text: await file.text()
+      });
+
+      renderAttachments();
+    } catch {
+      note(
+        "Не удалось прочитать текстовый файл."
+      );
+    }
+  });
+}
+
+function openProfiles() {
+  const box = $("profile-list");
+  box.innerHTML = "";
+
+  state.profiles.forEach(profile => {
+    const button = document.createElement("button");
+
+    button.textContent =
+      (
+        profile.id === state.activeProfile
+          ? "? "
+          : ""
+      ) + profile.name;
+
+    button.onclick = () => {
+      state.activeProfile = profile.id;
+      state.files = [];
+
+      save();
+      renderAttachments();
+      render();
+
+      $("profiles-dialog").close();
+    };
+
+    box.append(button);
+  });
+
+  $("profiles-dialog").showModal();
+}
+
+/* Events */
+
+$("new-chat").onclick = createChat;
+
+$("send-button").onclick = send;
+
+$("input").onkeydown = event => {
+  if (
+    event.key === "Enter" &&
+    !event.shiftKey &&
+    !event.isComposing
+  ) {
+    event.preventDefault();
+    send();
+  }
+};
+
+$("input").oninput = () => {
+  $("input").style.height = "auto";
+  $("input").style.height =
+    Math.min(
+      $("input").scrollHeight,
+      210
+    ) + "px";
+};
+
+$("attach-button").onclick = () => {
+  $("file-input").click();
+};
+
+$("file-input").onchange = event => {
+  addFiles(event.target.files);
+  event.target.value = "";
+};
+
+$("mode").onchange = () => {
+  state.mode = $("mode").value;
+  selectFirstModel();
+  closeModelMenu();
+};
+
+$("model-button").onclick = event => {
+  event.stopPropagation();
+
+  if (
+    $("model-menu").classList.contains("hidden")
+  ) {
+    openModelMenu();
+  } else {
+    closeModelMenu();
+  }
+};
+
+document.addEventListener("click", event => {
+  if (
+    !event.target.closest("#model-menu") &&
+    !event.target.closest("#model-button")
+  ) {
+    closeModelMenu();
+  }
+});
+
+$("menu-button").onclick = () => {
+  $("sidebar").classList.toggle("closed");
+};
+
+$("settings-button").onclick = () => {
+  $("worker-url").value = state.worker;
+  $("app-password").value = state.password;
+  $("system-prompt").value = state.system;
+  $("settings-dialog").showModal();
+};
+
+$("connect-button").onclick = connect;
+
+$("profile-button").onclick = openProfiles;
+
+$("dictate-button").onclick = () => {
+  const Speech =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!Speech) {
+    note(
+      "Голосовой ввод не поддерживается этим браузером."
+    );
+    return;
+  }
+
+  const recognition = new Speech();
+
+  recognition.lang = "ru-RU";
+  recognition.continuous = false;
+  recognition.interimResults = true;
+
+  recognition.onresult = event => {
+    let text = "";
+
+    for (const result of event.results) {
+      text += result[0].transcript;
+    }
+
+    $("input").value = text;
+    $("input").dispatchEvent(
+      new Event("input")
+    );
+  };
+
+  recognition.onerror = event => {
+    note(
+      "Ошибка голосового ввода: " +
+      event.error
+    );
+  };
+
+  try {
+    recognition.start();
+    note("Говори…");
+  } catch {
+    note(
+      "Не удалось включить микрофон."
+    );
+  }
+};
+
+$("profile-form").onsubmit = event => {
+  event.preventDefault();
+
+  const name =
+    $("profile-name").value.trim();
+
+  if (!name) return;
+
+  const profile = {
+    id: uid("profile"),
+    name,
+    chats: [{
+      id: uid("chat"),
+      title: "Новый диалог",
+      messages: []
+    }],
+    currentChat: null
+  };
+
+  profile.currentChat =
+    profile.chats[0].id;
+
+  state.profiles.push(profile);
+  state.activeProfile = profile.id;
+
+  $("profile-name").value = "";
+
+  save();
+  render();
+
+  $("profiles-dialog").close();
+};
+
+document.querySelectorAll("[data-close]").forEach(
+  button => {
+    button.onclick = () => {
+      $(button.dataset.close).close();
+    };
+  }
+);
+
+/* Start */
+
+load();
+
+$("worker-url").value = state.worker;
+$("system-prompt").value = state.system;
+
+render();
+
+setTimeout(() => {
+  if (!state.password) {
+    $("settings-dialog").showModal();
+  }
+}, 300);
+</script>
+</body>
+</html>
