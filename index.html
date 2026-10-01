@@ -2,807 +2,172 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Nexus</title>
-
 <style>
 :root {
-  --bg: #f8f7f3;
-  --panel: #fffefa;
-  --soft: #eeece5;
-  --line: #dfddd5;
-  --text: #302e2a;
-  --muted: #85817a;
-  --accent: #c96e4b;
-  --danger: #b64d47;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-body {
-  overflow: hidden;
-  color: var(--text);
-  background: var(--bg);
-  font-family: Georgia, serif;
-}
-
-button,
-input,
-textarea,
-select {
-  color: inherit;
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: .5;
-  cursor: wait;
-}
-
-button:focus-visible,
-textarea:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.app {
-  display: flex;
-  width: 100%;
-  height: 100dvh;
-}
-
-.sidebar {
-  display: flex;
-  width: 236px;
-  flex: 0 0 236px;
-  flex-direction: column;
-  padding: 22px 12px 13px;
-  border-right: 1px solid var(--line);
-  background: #f2f1ed;
-  transition: .2s ease;
-}
-
-.sidebar.closed {
-  width: 0;
-  flex-basis: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 0;
-}
-
-.brand {
-  margin: 4px 10px 28px;
-  font-size: 24px;
-  letter-spacing: -1px;
-}
-
-.new-chat {
-  align-self: flex-start;
-  padding: 8px 9px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-}
-
-.new-chat:hover {
-  background: var(--soft);
-}
-
-.history {
-  flex: 1;
-  overflow-y: auto;
-  margin-top: 22px;
-}
-
-.history-label {
-  margin: 19px 8px 8px;
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 10px;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
-}
-
-.chat-row {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-bottom: 2px;
-  border-radius: 8px;
-}
-
-.chat-row.active {
-  background: var(--soft);
-}
-
-.chat-title {
-  min-width: 0;
-  flex: 1;
-  overflow: hidden;
-  padding: 9px;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-}
-
-.chat-pin,
-.chat-delete {
-  width: 27px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-}
-
-.chat-pin.active {
-  color: var(--accent);
-}
-
-.profile-button {
-  width: 100%;
-  padding: 13px 8px 3px;
-  border: 0;
-  border-top: 1px solid var(--line);
-  background: transparent;
-  text-align: left;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-}
-
-.main {
-  display: flex;
-  min-width: 0;
-  flex: 1;
-  flex-direction: column;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 62px;
-  padding: 11px 27px;
-}
-
-.icon-button,
-.model-trigger {
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-}
-
-.icon-button {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  padding: 0;
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 17px;
-}
-
-.icon-button:hover,
-.model-trigger:hover {
-  background: var(--soft);
-}
-
-.page-title {
-  min-width: 0;
-  flex: 1;
-  overflow: hidden;
-  color: var(--muted);
-  text-align: right;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 12px;
-}
-
-.model-trigger {
-  display: flex;
-  max-width: min(310px, 48vw);
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  text-align: left;
-  white-space: nowrap;
-  font-size: 15px;
-}
-
-.model-trigger::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  transform: rotate(45deg) translateY(-2px);
-}
-
-.connection {
-  color: var(--muted);
-  font: 10px Arial, sans-serif;
-}
-
-.connection.connected {
-  color: #5c8554;
-}
-
-.scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 22px 25px;
-}
-
-.welcome {
-  width: min(650px, 100%);
-  margin: 15vh auto 0;
-  text-align: center;
-}
-
-.welcome h1 {
-  margin: 0 0 15px;
-  font-size: clamp(38px, 5vw, 58px);
-  font-weight: normal;
-  letter-spacing: -2px;
-  line-height: 1.05;
-}
-
-.welcome p {
-  max-width: 410px;
-  margin: auto;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.messages {
-  width: min(760px, 100%);
-  margin: auto;
-}
-
-.message {
-  margin-bottom: 34px;
-}
-
-.message.user {
-  text-align: right;
-}
-
-.message-label {
-  margin-bottom: 7px;
-  color: var(--muted);
-  font: 10px Arial, sans-serif;
-}
-
-.message.user .message-label {
-  text-align: right;
-}
-
-.message-body {
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.message.user .message-body {
-  display: inline-block;
-  max-width: 90%;
-  padding: 11px 15px;
-  border-radius: 15px;
-  background: var(--soft);
-  text-align: left;
-}
-
-.message.error .message-body {
-  color: var(--danger);
-}
-
-.message img {
-  display: block;
-  max-width: 100%;
-  max-height: 520px;
-  margin: 12px 0;
-  border-radius: 10px;
-}
-
-pre {
-  overflow: auto;
-  margin: 12px 0;
-  padding: 13px;
-  border-radius: 8px;
-  background: var(--soft);
-  font: 12px/1.6 monospace;
-  white-space: pre;
-}
-
-.tools {
-  display: flex;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.tools button {
-  padding: 5px 8px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--muted);
-  font: 10px Arial, sans-serif;
-}
-
-.waiting {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: min(760px, 100%);
-  margin: 0 auto 17px;
-  color: var(--muted);
-  font: 11px Arial, sans-serif;
-}
-
-.waiting-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: pulse 1.2s infinite;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .25;
-  }
-}
-
-.composer-area {
-  padding: 7px 22px 20px;
-}
-
-.composer {
-  width: min(760px, 100%);
-  margin: auto;
-}
-
-.notice {
-  min-height: 20px;
-  margin: 0 3px 5px;
-  color: var(--muted);
-  white-space: pre-wrap;
-  font: 11px Arial, sans-serif;
-}
-
-.attachments {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 6px;
-}
-
-.attachment {
-  max-width: 220px;
-  overflow: hidden;
-  padding: 6px 8px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: var(--panel);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font: 10px Arial, sans-serif;
-}
-
-.composer-box {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--panel);
-}
-
-.composer-box:focus-within {
-  border-color: #b9b6ae;
-}
-
-#input {
-  display: block;
-  width: 100%;
-  min-height: 78px;
-  max-height: 210px;
-  padding: 16px;
-  border: 0;
-  outline: 0;
-  resize: none;
-  background: transparent;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 9px 9px;
-}
-
-.toolbar-button,
-.send-button {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  font-size: 17px;
-}
-
-.toolbar-button:hover,
-.send-button:hover {
-  background: var(--soft);
-}
-
-.voice-input {
-  color: var(--accent);
-}
-
-.send-button {
-  margin-left: auto;
-  font-size: 16px;
-}
-
-#mode {
-  display: none;
-}
-
-.model-picker {
-  position: fixed;
-  z-index: 30;
-  width: min(350px, calc(100vw - 24px));
-  max-height: calc(100vh - 24px);
-  overflow-y: auto;
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: var(--panel);
-  box-shadow: 0 16px 45px #0002;
-}
-
-.picker-title {
-  padding: 8px;
-  color: var(--muted);
-  font: 10px Arial, sans-serif;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.model-section {
-  border-top: 1px solid var(--line);
-}
-
-.model-section:first-of-type {
-  border-top: 0;
-}
-
-.section-title {
-  padding: 9px 8px 5px;
-  color: var(--muted);
-  font: 11px Arial, sans-serif;
-}
-
-.model-option {
-  display: block;
-  width: 100%;
-  padding: 9px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  text-align: left;
-}
-
-.model-option:hover,
-.model-option.active {
-  background: var(--soft);
-}
-
-.model-option strong,
-.model-option small {
-  display: block;
-}
-
-.model-option strong {
-  font-size: 12px;
-  font-weight: normal;
-}
-
-.model-option small {
-  margin-top: 3px;
-  overflow: hidden;
-  color: var(--muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font: 9px Arial, sans-serif;
-}
-
-dialog {
-  width: min(440px, calc(100% - 24px));
-  max-height: calc(100dvh - 24px);
-  overflow: auto;
-  padding: 22px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  color: var(--text);
-  background: var(--panel);
-}
-
-dialog::backdrop {
-  background: #24211c88;
-  backdrop-filter: blur(3px);
-}
-
-.dialog-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.dialog-head h2 {
-  margin: 0;
-  font-weight: normal;
-}
-
-.close {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  font-size: 22px;
-}
-
-.close:hover {
-  background: var(--soft);
-}
-
-label {
-  display: block;
-  margin: 18px 0 6px;
-  font: 11px Arial, sans-serif;
-}
-
-.field {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  outline: 0;
-  background: var(--panel);
-}
-
-.status {
-  min-height: 20px;
-  margin-top: 12px;
-  color: var(--muted);
-  white-space: pre-wrap;
-  font: 11px Arial, sans-serif;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 7px;
-  margin-top: 18px;
-}
-
-.primary {
-  padding: 10px 13px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--soft);
-  color: var(--text);
-  font: 12px Arial, sans-serif;
-}
-
-.voice-orb {
-  width: 72px;
-  height: 72px;
-  margin: 32px auto 18px;
-  border-radius: 50%;
-  background: #77756f;
-}
-
-.voice-orb.active {
-  animation: voice-pulse 1.2s infinite;
-}
-
-.voice-status {
-  min-height: 42px;
-  color: var(--muted);
-  text-align: center;
-  font: 13px/1.5 Arial, sans-serif;
-}
-
-@keyframes voice-pulse {
-  50% {
-    transform: scale(.82);
-    box-shadow: 0 0 0 18px #77756f18;
-  }
-}
-
-.profile-list {
-  display: grid;
-  gap: 6px;
-  margin-top: 16px;
-}
-
-.profile-list button {
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: transparent;
-  text-align: left;
-  font: 12px Arial, sans-serif;
-}
-
-@media (max-width: 720px) {
-  .sidebar {
-    position: fixed;
-    z-index: 20;
-    inset: 0 auto 0 0;
-    box-shadow: 20px 0 55px #0003;
-  }
-
-  .topbar {
-    padding: 10px 12px;
-  }
-
-  .connection,
-  .page-title {
-    display: none;
-  }
-
-  .model-trigger {
-    max-width: none;
-    flex: 1;
-  }
-
-  .scroll {
-    padding: 24px 13px 19px;
-  }
-
-  .composer-area {
-    padding: 7px 12px 14px;
-  }
+  --bg:#f8f7f4;
+  --side:#efeee9;
+  --paper:#fffefa;
+  --ink:#30302c;
+  --muted:#828279;
+  --line:#deddd6;
+  --soft:#eae9e2;
+  --danger:#a54141;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 Georgia,serif;overflow:hidden}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid #77776c;outline-offset:3px
+}
+button{border:0;background:transparent}
+[hidden]{display:none!important}
+svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.app{display:flex;height:100dvh}
+#sidebar{width:248px;flex:0 0 248px;background:var(--side);display:flex;flex-direction:column;padding:16px 12px}
+#sidebar.closed{display:none}
+.side-head{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 22px}
+.brand{font-size:25px;letter-spacing:-1px}
+.icon{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;flex-shrink:0}
+.icon:hover{background:var(--soft)}
+.new{display:flex;align-items:center;gap:8px;width:fit-content;padding:9px 10px;border-radius:9px;font:13px sans-serif}
+.new:hover{background:var(--soft)}
+#history{flex:1;overflow:auto;margin-top:20px}
+.section-label{padding:15px 9px 7px;color:var(--muted);font:11px sans-serif}
+.history-row{display:flex;align-items:center;border-radius:9px;margin:2px 0}
+.history-row.active{background:#e3e2da}
+.history-title{min-width:0;flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:10px 8px;font:12px sans-serif}
+.history-row .icon{width:28px;height:32px}
+.history-row svg{width:15px;height:15px}
+.history-row .pinned{background:#d9d8cf}
+#profile-button{padding:14px 8px 3px;text-align:left;border-top:1px solid var(--line);font:12px sans-serif}
+main{min-width:0;flex:1;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:8px;padding:12px 22px}
+#model-button{display:flex;align-items:center;gap:8px;min-width:0;max-width:450px;padding:8px;border-radius:9px}
+#model-button:hover{background:var(--soft)}
+#model-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#model-button svg{width:14px;height:14px}
+#chat-title{flex:1;min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:11px sans-serif;color:var(--muted)}
+#scroll{flex:1;overflow:auto;padding:24px;scroll-behavior:smooth}
+#welcome{max-width:660px;margin:15vh auto 0;text-align:center}
+h1{font-weight:normal;font-size:clamp(36px,5vw,57px);letter-spacing:-2px;margin:0 0 16px;line-height:1.1}
+#welcome p{color:var(--muted);font-size:14px}
+#messages{max-width:760px;margin:auto}
+.message{margin-bottom:30px}
+.message.user{text-align:right}
+.label{font:10px sans-serif;color:var(--muted);margin-bottom:7px}
+.content{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75}
+.user .content{display:inline-block;max-width:92%;text-align:left;padding:12px 16px;background:var(--soft);border-radius:17px}
+.content img{display:block;max-width:100%;max-height:520px;border-radius:12px;margin:9px 0}
+.content pre{overflow:auto;white-space:pre;background:var(--side);padding:14px;border-radius:10px;font:12px/1.6 monospace}
+.error .content{color:var(--danger)}
+.message-tools{display:flex;gap:6px;margin-top:8px}
+.small-button{border:1px solid var(--line);border-radius:7px;padding:5px 8px;font:11px sans-serif}
+footer{padding:6px 24px max(18px,env(safe-area-inset-bottom))}
+.composer{max-width:760px;margin:auto}
+#notice{min-height:22px;margin:0 4px 5px;color:var(--muted);font:11px/1.5 sans-serif;white-space:pre-wrap}
+#attachments{display:flex;flex-wrap:wrap;gap:5px}
+.file-chip{margin-bottom:7px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font:11px sans-serif}
+.box{border:1px solid var(--line);border-radius:20px;background:var(--paper)}
+.box:focus-within{border-color:#b6b5ab}
+#input{display:block;width:100%;min-height:82px;max-height:200px;resize:none;border:0;outline:0;background:transparent;padding:18px 18px 10px}
+.toolbar{display:flex;align-items:center;gap:5px;padding:4px 10px 10px}
+#mode-label{font:10px sans-serif;color:var(--muted);padding-left:5px}
+#dictate{margin-left:auto}
+#send{background:var(--soft)}
+#dictate.active{background:#d8d7ce}
+dialog{width:min(480px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto;border:1px solid var(--line);border-radius:18px;padding:22px;background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:#26262066;backdrop-filter:blur(5px)}
+.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dialog-head h2{font-size:23px;font-weight:normal;margin:0}
+label{display:block;margin:16px 0 6px;font:12px sans-serif}
+.field{display:block;width:100%;border:1px solid var(--line);border-radius:9px;padding:11px;background:transparent}
+textarea.field{resize:vertical}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.action{padding:10px 14px;background:var(--soft);border-radius:9px;font:12px sans-serif}
+.status{white-space:pre-wrap;font:12px/1.6 sans-serif;color:var(--muted);margin-top:14px}
+#models-dialog{width:min(490px,calc(100% - 24px))}
+.model-item{display:block;width:100%;text-align:left;padding:11px;border-radius:9px}
+.model-item:hover,.model-item.selected{background:var(--soft)}
+.model-item strong{display:block;font:14px Georgia,serif}
+.model-item small{display:block;color:var(--muted);font:10px/1.5 sans-serif;overflow-wrap:anywhere}
+details{border-top:1px solid var(--line);margin-top:15px;padding-top:12px}
+summary{cursor:pointer;font:12px sans-serif}
+#advanced-results{max-height:260px;overflow:auto;margin-top:12px}
+#veil{display:none}
+.call-stage{min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:30px}
+.waves{display:flex;align-items:center;gap:7px;height:80px}
+.waves i{display:block;width:7px;height:20px;border-radius:8px;background:#616159}
+#voice-dialog[data-phase="listening"] i,#voice-dialog[data-phase="speaking"] i{animation:wave 1s ease-in-out infinite}
+.waves i:nth-child(2){animation-delay:-.2s!important}
+.waves i:nth-child(3){animation-delay:-.4s!important}
+.waves i:nth-child(4){animation-delay:-.6s!important}
+.waves i:nth-child(5){animation-delay:-.8s!important}
+#voice-status{text-align:center;font:14px/1.6 sans-serif;color:var(--muted)}
+@keyframes wave{50%{height:60px}}
+@media(max-width:720px){
+  #sidebar{position:fixed;inset:0 auto 0 0;z-index:30;width:min(285px,85vw);box-shadow:12px 0 35px #0002}
+  #veil.open{display:block;position:fixed;inset:0;background:#0003;z-index:29}
+  header{padding:10px}
+  #chat-title{display:none}
+  #model-button{flex:1;max-width:none}
+  #scroll{padding:23px 14px}
+  footer{padding-left:12px;padding-right:12px}
+  #input{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important}
 }
 </style>
 </head>
-
 <body>
 <div class="app">
-  <aside id="sidebar" class="sidebar">
-    <div class="brand">nexus</div>
-
-    <button id="new-chat" class="new-chat">
-      ＋ Новый
-    </button>
-
-    <div id="history" class="history"></div>
-
-    <button id="profile-button" class="profile-button">
-      ○ Мой профиль
-    </button>
+  <div id="veil"></div>
+  <aside id="sidebar">
+    <div class="side-head">
+      <span class="brand">nexus</span>
+      <button id="close-sidebar" class="icon" aria-label="Закрыть историю" data-icon="close"></button>
+    </div>
+    <button id="new-chat" class="new"><span data-icon="plus"></span>Новый</button>
+    <div id="history"></div>
+    <button id="profile-button">Мой профиль</button>
   </aside>
 
-  <main class="main">
-    <header class="topbar">
-      <button id="menu-button" class="icon-button">☰</button>
-
-      <button id="model-trigger" class="model-trigger">
-        Выбрать модель
+  <main>
+    <header>
+      <button id="menu" class="icon" aria-label="Открыть историю" data-icon="menu"></button>
+      <button id="model-button">
+        <span id="model-label">Выбрать модель</span>
+        <span data-icon="chevron"></span>
       </button>
-
-      <div id="page-title" class="page-title">
-        Новый диалог
-      </div>
-
-      <div id="connection" class="connection">
-        Не подключено
-      </div>
-
-      <button id="settings-button" class="icon-button">
-        ⚙
-      </button>
+      <div id="chat-title"></div>
+      <button id="settings" class="icon" aria-label="Настройки" data-icon="settings"></button>
     </header>
 
-    <section id="scroll" class="scroll">
-      <div id="welcome" class="welcome">
+    <section id="scroll">
+      <div id="welcome">
         <h1>С чего начнём?</h1>
-        <p>
-          Задай вопрос, прикрепи изображение
-          или начни разговор.
-        </p>
+        <p>Задай вопрос, прикрепи фотографию или начни разговор.</p>
       </div>
-
-      <div id="messages" class="messages"></div>
-
-      <div id="waiting" class="waiting hidden">
-        <span class="waiting-dot"></span>
-        <span id="waiting-text">
-          Модель готовит ответ…
-        </span>
-      </div>
+      <div id="messages"></div>
     </section>
 
-    <footer class="composer-area">
+    <footer>
       <div class="composer">
-        <div id="notice" class="notice"></div>
-        <div id="attachments" class="attachments"></div>
-
-        <div class="composer-box">
-          <textarea
-            id="input"
-            placeholder="Напиши сообщение…"
-          ></textarea>
-
+        <div id="notice" role="status"></div>
+        <div id="attachments"></div>
+        <div class="box">
+          <textarea id="input" placeholder="Напиши сообщение…" aria-label="Сообщение"></textarea>
           <div class="toolbar">
-            <button
-              id="attach-button"
-              class="toolbar-button"
-              title="Прикрепить файл"
-            >＋</button>
-
-            <button
-              id="talk-button"
-              class="toolbar-button"
-              title="Разговор с ИИ"
-            >◌</button>
-
-            <select id="mode">
-              <option value="chat">Чат</option>
-              <option value="vision">
-                Анализ изображения
-              </option>
-              <option value="image">
-                Создать изображение
-              </option>
-            </select>
-
-            <button
-              id="voice-input-button"
-              class="toolbar-button voice-input"
-              title="Голосовой ввод"
-            >♩</button>
-
-            <button
-              id="send-button"
-              class="send-button"
-              title="Отправить"
-            >↑</button>
+            <button id="attach" class="icon" aria-label="Прикрепить файл" data-icon="plus"></button>
+            <button id="talk" class="icon" aria-label="Разговор с ИИ" data-icon="waves"></button>
+            <span id="mode-label">Чат</span>
+            <button id="dictate" class="icon" aria-label="Голосовой ввод" data-icon="mic"></button>
+            <button id="send" class="icon" aria-label="Отправить сообщение" data-icon="arrow"></button>
           </div>
         </div>
       </div>
@@ -810,1593 +175,1316 @@ label {
   </main>
 </div>
 
-<input
-  id="file-input"
-  type="file"
-  hidden
-  multiple
-  accept="image/png,image/jpeg,image/webp,image/gif,.txt,.md,.js,.ts,.py,.json,.html,.css,.csv"
->
-
-<div id="model-picker" class="model-picker hidden"></div>
+<input id="file-input" type="file" hidden multiple
+  accept="image/jpeg,image/png,image/webp,image/gif,.txt,.md,.js,.ts,.py,.json,.html,.css,.csv">
 
 <dialog id="settings-dialog">
   <div class="dialog-head">
     <h2>Подключение</h2>
-    <button class="close" data-close="settings-dialog">×</button>
+    <button class="icon" data-close="settings-dialog" data-icon="close" aria-label="Закрыть"></button>
   </div>
-
-  <label for="worker-url">Адрес Worker</label>
-  <input
-    id="worker-url"
-    class="field"
-    value="https://small-recipe-c9fd.zemcovaalena5.workers.dev"
-  >
-
-  <label for="app-password">APP_PASSWORD</label>
-  <input
-    id="app-password"
-    class="field"
-    type="password"
-    autocomplete="off"
-  >
-
-  <label for="system-prompt">Инструкция модели</label>
-  <textarea
-    id="system-prompt"
-    class="field"
-    rows="3"
-  >Отвечай по-русски, ясно и по существу.</textarea>
-
-  <div id="settings-status" class="status"></div>
-
+  <label for="worker">Адрес Worker</label>
+  <input id="worker" class="field" type="url">
+  <label for="password">APP_PASSWORD</label>
+  <input id="password" class="field" type="password" autocomplete="off">
+  <label for="system">Инструкция модели</label>
+  <textarea id="system" class="field" rows="3"></textarea>
+  <div id="connection-status" class="status"></div>
   <div class="actions">
-    <button id="connect-button" class="primary">
-      Подключить
-    </button>
+    <button id="connect" class="action">Подключить</button>
   </div>
+  <details>
+    <summary>Диагностика подключения</summary>
+    <pre id="diagnostics" class="status"></pre>
+  </details>
 </dialog>
 
-<dialog id="voice-dialog">
+<dialog id="models-dialog">
   <div class="dialog-head">
-    <h2>Разговор с ИИ</h2>
-    <button class="close" data-close="voice-dialog">×</button>
+    <h2>Выбрать модель</h2>
+    <button class="icon" data-close="models-dialog" data-icon="close" aria-label="Закрыть"></button>
   </div>
+  <div id="model-list"></div>
 
-  <div class="voice-orb" id="voice-orb"></div>
-
-  <div id="voice-status" class="voice-status">
-    Нажми «Слушать».
-  </div>
-
-  <div class="actions">
-    <button id="voice-listen" class="primary">
-      Слушать
-    </button>
-
-    <button id="voice-stop">
-      Остановить
-    </button>
-  </div>
+  <details>
+    <summary>Найти другую модель в каталоге</summary>
+    <p class="status">
+      Здесь реальные ID, полученные от провайдера.
+      «Не подтверждено» не означает поддержку фотографий.
+      Проверка отправкой сообщения может быть платной.
+    </p>
+    <label for="advanced-mode">Для какой задачи</label>
+    <select id="advanced-mode" class="field">
+      <option value="chat">Чат</option>
+      <option value="vision">Анализ фотографий</option>
+      <option value="image">Создание изображений</option>
+    </select>
+    <label for="model-search">Название или ID</label>
+    <input id="model-search" class="field" placeholder="Например: Claude, GPT, Gemini">
+    <div id="advanced-results"></div>
+  </details>
+  <p class="status">Видео не подключено.</p>
 </dialog>
 
 <dialog id="profiles-dialog">
   <div class="dialog-head">
     <h2>Профили</h2>
-    <button class="close" data-close="profiles-dialog">×</button>
+    <button class="icon" data-close="profiles-dialog" data-icon="close" aria-label="Закрыть"></button>
   </div>
-
-  <div id="profile-list" class="profile-list"></div>
-
+  <div id="profiles"></div>
   <form id="profile-form">
-    <label for="profile-name">Имя профиля</label>
-    <input id="profile-name" class="field" required maxlength="40">
-
-    <div class="actions">
-      <button class="primary">
-        Создать профиль
-      </button>
-    </div>
+    <label for="profile-name">Новый профиль</label>
+    <input id="profile-name" class="field" maxlength="40" required>
+    <div class="actions"><button class="action">Создать</button></div>
   </form>
+</dialog>
+
+<dialog id="voice-dialog" data-phase="idle">
+  <div class="dialog-head">
+    <h2>Разговор</h2>
+    <button class="icon" data-close="voice-dialog" data-icon="close" aria-label="Закрыть разговор"></button>
+  </div>
+  <div class="call-stage">
+    <div class="waves" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div id="voice-status" role="status">Нажми «Начать».</div>
+  </div>
+  <div class="actions">
+    <button id="voice-start" class="action">Начать</button>
+    <button id="voice-stop" class="action">Остановить</button>
+  </div>
+  <p class="status">
+    Голосовой разговор не записывается в историю чатов.
+    Для ответа распознанный текст отправляется модели.
+  </p>
 </dialog>
 
 <script>
 "use strict";
 
-const DEFAULT_WORKER =
-  "https://small-recipe-c9fd.zemcovaalena5.workers.dev";
+const $ = id => document.getElementById(id);
+const DEFAULT_WORKER = "https://small-recipe-c9fd.zemcovaalena5.workers.dev";
+const MODES = { chat:"Чат", vision:"Анализ фотографий", image:"Создание изображений" };
 
-const STORE = "nexus_clean_v1";
-
-const state = {
-  worker: DEFAULT_WORKER,
-  password: "",
-  system: "Отвечай по-русски, ясно и по существу.",
-  profiles: [],
-  activeProfile: "",
-  models: {
-    chat: [],
-    vision: [],
-    image: []
-  },
-  mode: "chat",
-  selectedModel: "",
-  files: [],
-  request: null,
-  recognition: null
+const ICONS = {
+  close:'<path d="m6 6 12 12M18 6 6 18"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  arrow:'<path d="M12 19V5M6 11l6-6 6 6"/>',
+  stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
+  menu:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/>',
+  chevron:'<path d="m7 10 5 5 5-5"/>',
+  settings:'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--bg)"/><circle cx="15" cy="17" r="3" fill="var(--bg)"/>',
+  mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3M8 22h8"/>',
+  waves:'<path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/>',
+  pin:'<path d="m9 3 6 0-1 6 4 4v2h-5v6l-2-3v-3H6v-2l4-4z"/>',
+  trash:'<path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/>'
 };
 
-const $ = id => document.getElementById(id);
+function svg(name) {
+  return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + '</svg>';
+}
+document.querySelectorAll("[data-icon]").forEach(el => {
+  el.innerHTML = svg(el.dataset.icon);
+});
 
-function uid(prefix = "id") {
-  return prefix + "_" +
-    Date.now() + "_" +
-    Math.random().toString(36).slice(2, 8);
+const state = {
+  worker:DEFAULT_WORKER,
+  password:"",
+  system:"Отвечай по-русски, ясно и по существу.",
+  mode:"chat",
+  selections:{chat:"",vision:"",image:""},
+  catalog:{chat:[],vision:[],image:[],all:[],imageAll:[],warnings:[]},
+  profiles:[],
+  activeProfile:"",
+  files:[],
+  busy:null,
+  loadingFiles:false
+};
+
+const uid = () => crypto.randomUUID();
+const note = text => { $("notice").textContent = text || ""; };
+const profile = () => state.profiles.find(p => p.id === state.activeProfile);
+const chat = () => profile().chats.find(c => c.id === profile().currentChat);
+
+function newChatObject() {
+  return {id:uid(),title:"Новый диалог",pinned:false,messages:[]};
+}
+function newProfile(name) {
+  const c = newChatObject();
+  return {id:uid(),name,chats:[c],currentChat:c.id};
 }
 
-function note(text) {
-  $("notice").textContent = text || "";
+let db = null;
+let persistQueue = Promise.resolve();
+
+function openDB() {
+  return new Promise((resolve,reject) => {
+    const req = indexedDB.open("nexus-complete-12",1);
+    req.onupgradeneeded = () => req.result.createObjectStore("app");
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
 }
-
-function currentProfile() {
-  return state.profiles.find(
-    profile => profile.id === state.activeProfile
-  );
+function dbRead() {
+  return new Promise((resolve,reject) => {
+    const req = db.transaction("app").objectStore("app").get("state");
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
 }
-
-function currentChat() {
-  const profile = currentProfile();
-
-  if (!profile.chats.length) {
-    profile.chats.push({
-      id: uid("chat"),
-      title: "Новый диалог",
-      pinned: false,
-      messages: []
-    });
-  }
-
-  if (!profile.chats.some(
-    chat => chat.id === profile.currentChat
-  )) {
-    profile.currentChat = profile.chats[0].id;
-  }
-
-  return profile.chats.find(
-    chat => chat.id === profile.currentChat
-  );
+function snapshot() {
+  return {
+    worker:state.worker,system:state.system,mode:state.mode,
+    selections:state.selections,profiles:state.profiles,
+    activeProfile:state.activeProfile
+  };
 }
-
 function save() {
-  localStorage.setItem(STORE, JSON.stringify({
-    worker: state.worker,
-    system: state.system,
-    profiles: state.profiles,
-    activeProfile: state.activeProfile,
-    selectedModel: state.selectedModel
-  }));
+  if (!db) {
+    note("История доступна только до закрытия страницы: хранилище недоступно.");
+    return;
+  }
+  const data = structuredClone(snapshot());
+
+  persistQueue = persistQueue.then(() => new Promise((resolve,reject) => {
+    const tx = db.transaction("app","readwrite");
+    tx.objectStore("app").put(data,"state");
+    tx.oncomplete = resolve;
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
+  })).catch(() => {
+    note("Не удалось сохранить историю. Возможно, заполнено хранилище устройства.");
+  });
 }
 
-function load() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem(STORE) || "{}"
-    );
-
-    state.worker = saved.worker || DEFAULT_WORKER;
-    state.system = saved.system || state.system;
-    state.profiles = Array.isArray(saved.profiles)
-      ? saved.profiles
-      : [];
-    state.activeProfile = saved.activeProfile || "";
-    state.selectedModel = saved.selectedModel || "";
-  } catch {
-    state.profiles = [];
+function guarded() {
+  if (state.busy || state.loadingFiles || voice.active) {
+    note("Сначала останови текущий запрос или дождись его завершения.");
+    return true;
   }
-
-  if (!state.profiles.length) {
-    const profile = {
-      id: uid("profile"),
-      name: "Мой профиль",
-      chats: [{
-        id: uid("chat"),
-        title: "Новый диалог",
-        pinned: false,
-        messages: []
-      }],
-      currentChat: null
-    };
-
-    profile.currentChat =
-      profile.chats[0].id;
-
-    state.profiles.push(profile);
-  }
-
-  if (!state.profiles.some(
-    profile => profile.id === state.activeProfile
-  )) {
-    state.activeProfile =
-      state.profiles[0].id;
-  }
-
-  currentChat();
+  return false;
 }
 
-function normalizeWorker(value) {
-  const url = new URL(value.trim());
-
-  if (
-    url.protocol !== "https:" ||
-    url.pathname !== "/" ||
-    url.search ||
-    url.hash
-  ) {
-    throw new Error(
-      "Укажи только HTTPS-адрес Worker."
-    );
-  }
-
-  return url.origin;
+function sidebar(open) {
+  $("sidebar").classList.toggle("closed",!open);
+  $("veil").classList.toggle("open",open);
 }
-
-async function request(path, options = {}) {
-  const response = await fetch(
-    state.worker + path,
-    {
-      ...options,
-      cache: "no-store",
-      credentials: "omit",
-      headers: {
-        ...(options.headers || {}),
-        "X-App-Password": state.password
-      }
+function mobileClose() {
+  if (matchMedia("(max-width:720px)").matches) sidebar(false);
+}
+function fitInput() {
+  $("input").style.height = "auto";
+  $("input").style.height = Math.min($("input").scrollHeight,200) + "px";
+}
+function currentModel() {
+  const id = state.selections[state.mode];
+  const list = state.mode === "image" ? state.catalog.imageAll : state.catalog.all;
+  return list.find(m => m.id === id);
+}
+function pickFirst() {
+  for (const mode of Object.keys(MODES)) {
+    const all = mode === "image" ? state.catalog.imageAll : state.catalog.all;
+    if (!all.some(m => m.id === state.selections[mode])) {
+      state.selections[mode] = state.catalog[mode][0]?.id || "";
     }
-  );
+  }
+}
+function updateModel() {
+  const m = currentModel();
+  $("model-label").textContent = m ? (m.family || m.name) : "Выбрать модель";
+  $("model-button").title = m ? m.id : "Подключи Worker";
+  $("mode-label").textContent = MODES[state.mode];
+}
+function showSettings() {
+  if (guarded()) return;
+  $("worker").value = state.worker;
+  $("password").value = state.password;
+  $("system").value = state.system;
+  $("settings-dialog").showModal();
+}
+
+async function api(path, options = {}, connection = state) {
+  const headers = new Headers(options.headers);
+  headers.set("X-App-Password",connection.password);
+
+  const response = await fetch(connection.worker + path,{
+    ...options,headers,credentials:"omit",cache:"no-store"
+  });
 
   const raw = await response.text();
   let data;
+  try { data = JSON.parse(raw); }
+  catch { throw new Error("Ответ Worker не является JSON. HTTP " + response.status); }
 
-  try {
-    data = JSON.parse(raw);
-  } catch {
-    throw new Error("Worker вернул не JSON.");
-  }
-
-  if (!response.ok) {
+  if (!response.ok || data?.error) {
     throw new Error(
       data?.error?.message ||
+      (typeof data?.error === "string" ? data.error : "") ||
       data?.message ||
-      "Ошибка HTTP " + response.status
+      "HTTP " + response.status
     );
   }
-
   return data;
 }
 
-function modelsForMode() {
-  if (state.mode === "vision") {
-    return state.models.vision.length
-      ? state.models.vision
-      : state.models.chat.filter(
-        model => model.capabilities?.vision
-      );
-  }
-
-  return state.models[state.mode] || [];
-}
-
-function selectFirstModel() {
-  const list = modelsForMode();
-
-  if (!list.some(
-    model => model.id === state.selectedModel
-  )) {
-    state.selectedModel =
-      list[0]?.id || "";
-  }
-
-  updateModelButton();
-}
-
-function selectedModel() {
-  return modelsForMode().find(
-    model => model.id === state.selectedModel
-  );
-}
-
-function updateModelButton() {
-  const model = selectedModel();
-
-  $("model-trigger").textContent =
-    model
-      ? model.name ||
-        model.display_name ||
-        model.id
-      : "Выбрать модель";
-}
-
-function updateConnection() {
-  const connected =
-    Boolean(state.password) &&
-    Object.values(state.models).some(
-      list => list.length
-    );
-
-  $("connection").textContent =
-    connected
-      ? "Подключено"
-      : "Не подключено";
-
-  $("connection").classList.toggle(
-    "connected",
-    connected
-  );
-}
-
-function openModelPicker() {
-  const picker = $("model-picker");
-  const trigger = $("model-trigger");
-
-  picker.innerHTML = "";
-
-  const title = document.createElement("div");
-  title.className = "picker-title";
-  title.textContent = "Модели";
-  picker.append(title);
-
-  const sections = [
-    ["chat", "Чат"],
-    ["vision", "Анализ изображений"],
-    ["image", "Создание изображений"]
-  ];
-
-  sections.forEach(([mode, label]) => {
-    const section = document.createElement("section");
-    section.className = "model-section";
-
-    const heading = document.createElement("div");
-    heading.className = "section-title";
-    heading.textContent = label;
-    section.append(heading);
-
-    let models;
-
-    if (mode === "vision") {
-      models = state.models.vision.length
-        ? state.models.vision
-        : state.models.chat.filter(
-          model => model.capabilities?.vision
-        );
-    } else {
-      models = state.models[mode] || [];
-    }
-
-    if (!models.length) {
-      const empty = document.createElement("div");
-      empty.className = "section-title";
-      empty.textContent =
-        "Модели не найдены.";
-      section.append(empty);
-    }
-
-    models.forEach(model => {
-      const option = document.createElement("button");
-      option.className =
-        "model-option" +
-        (
-          state.mode === mode &&
-          state.selectedModel === model.id
-            ? " active"
-            : ""
-        );
-
-      const name = document.createElement("strong");
-      name.textContent =
-        model.name ||
-        model.display_name ||
-        model.id;
-
-      const id = document.createElement("small");
-      id.textContent =
-        model.display_name || model.id;
-
-      option.append(name, id);
-
-      option.onclick = () => {
-        state.mode = mode;
-        $("mode").value = mode;
-        state.selectedModel = model.id;
-        save();
-        updateModelButton();
-        closeModelPicker();
-      };
-
-      section.append(option);
-    });
-
-    picker.append(section);
-  });
-
-  picker.classList.remove("hidden");
-
-  const rect = trigger.getBoundingClientRect();
-  const width = Math.min(
-    350,
-    window.innerWidth - 24
-  );
-
-  picker.style.width = width + "px";
-  picker.style.left = Math.max(
-    12,
-    Math.min(
-      rect.left,
-      window.innerWidth - width - 12
-    )
-  ) + "px";
-  picker.style.top = rect.bottom + 8 + "px";
-}
-
-function closeModelPicker() {
-  $("model-picker").classList.add("hidden");
-}
-
 async function connect() {
-  const button = $("connect-button");
-  const status = $("settings-status");
-
+  const button = $("connect");
   button.disabled = true;
-  status.textContent = "Подключаюсь…";
+  $("connection-status").textContent = "Загружаю каталог…";
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(),120000);
 
   try {
-    state.worker = normalizeWorker(
-      $("worker-url").value
-    );
-
-    state.password =
-      $("app-password").value.trim();
-
-    state.system =
-      $("system-prompt").value.trim() ||
-      "Отвечай по-русски, ясно и по существу.";
-
-    if (!state.password) {
-      throw new Error("Введи APP_PASSWORD.");
+    const u = new URL($("worker").value.trim());
+    if (u.protocol !== "https:" || u.pathname !== "/" ||
+        u.search || u.hash || u.username || u.password) {
+      throw new Error("Нужен HTTPS-адрес Worker без дополнительных путей.");
     }
 
-    const catalog = await request("/catalog");
+    const candidate = {
+      worker:u.origin,
+      password:$("password").value,
+      system:$("system").value.trim() || state.system
+    };
+    if (!candidate.password) throw new Error("Введи APP_PASSWORD.");
 
-    state.models.chat =
-      Array.isArray(catalog.chat)
-        ? catalog.chat
-        : [];
+    const result = await api("/catalog",{signal:controller.signal},candidate);
+    for (const key of ["chat","vision","image","all","imageAll"]) {
+      if (!Array.isArray(result[key])) {
+        throw new Error("Версии не совпадают. Сначала опубликуй Worker nexus-12.");
+      }
+    }
 
-    state.models.vision =
-      Array.isArray(catalog.vision)
-        ? catalog.vision
-        : [];
-
-    state.models.image =
-      Array.isArray(catalog.image)
-        ? catalog.image
-        : [];
-
+    Object.assign(state,candidate);
+    state.catalog = result;
+    pickFirst();
     save();
-    selectFirstModel();
-    updateConnection();
-
-    status.textContent =
-      "Чат: " + state.models.chat.length +
-      "\nАнализ фото: " +
-      state.models.vision.length +
-      "\nИзображения: " +
-      state.models.image.length +
-      (
-        catalog.warnings?.length
-          ? "\n\n" + catalog.warnings.join("\n")
-          : ""
-      );
-
-    $("settings-dialog").close();
-    note("Подключено.");
     render();
+
+    $("diagnostics").textContent = JSON.stringify({
+      version:result.version,
+      counts:result.counts,
+      selected:state.selections,
+      warnings:result.warnings
+    },null,2);
+
+    const summary = "Подключено. Чат: " + result.chat.length +
+      ", анализ: " + result.vision.length +
+      ", изображения: " + result.image.length + ".";
+
+    $("connection-status").textContent = summary + "\n" +
+      (result.warnings || []).join("\n");
+
+    note(result.warnings?.length ? result.warnings.join("\n") : summary);
+    if (!result.warnings?.length) $("settings-dialog").close();
   } catch (error) {
-    status.textContent = error.message;
+    $("connection-status").textContent = error.name === "AbortError"
+      ? "Каталог не загрузился за две минуты."
+      : error.message;
   } finally {
+    clearTimeout(timer);
     button.disabled = false;
   }
 }
 
-function createChat() {
-  const profile = currentProfile();
+function modelStatus(model) {
+  return {
+    metadata:"Фото: указано в метаданных",
+    candidate:"Фото: кандидат по названию, доступ не проверен",
+    no:"Фото: нет подтверждённой поддержки",
+    unknown:"Фото: характеристики не переданы"
+  }[model.vision];
+}
+function modelButton(model,mode) {
+  const button = document.createElement("button");
+  button.className = "model-item" +
+    (state.mode === mode && state.selections[mode] === model.id ? " selected" : "");
 
-  const chat = {
-    id: uid("chat"),
-    title: "Новый диалог",
-    pinned: false,
-    messages: []
+  const name = document.createElement("strong");
+  name.textContent = model.family ? model.family + " — " + model.name : model.name;
+
+  const detail = document.createElement("small");
+  detail.textContent = model.id + (mode === "vision" ? "\n" + modelStatus(model) : "");
+
+  button.append(name,detail);
+  button.onclick = () => {
+    if (mode === "vision" && !["metadata","candidate"].includes(model.vision)) {
+      if (!confirm("Поддержка фото не подтверждена. Выбрать для проверки? Запрос может быть платным.")) return;
+    }
+    state.mode = mode;
+    state.selections[mode] = model.id;
+    updateModel();
+    save();
+    $("models-dialog").close();
   };
+  return button;
+}
+function advancedModels() {
+  const mode = $("advanced-mode").value;
+  const query = $("model-search").value.trim().toLowerCase();
+  const all = mode === "image" ? state.catalog.imageAll : state.catalog.all;
+  const result = all.filter(m => (m.id + " " + m.name).toLowerCase().includes(query));
+  $("advanced-results").replaceChildren();
 
-  profile.chats.unshift(chat);
-  profile.currentChat = chat.id;
-  state.files = [];
+  for (const model of result.slice(0,40)) {
+    $("advanced-results").append(modelButton(model,mode));
+  }
+  if (!result.length) {
+    $("advanced-results").textContent = "Ничего не найдено в каталоге этого ключа.";
+  }
+}
+function showModels() {
+  if (guarded()) return;
+  const list = $("model-list");
+  list.replaceChildren();
 
-  save();
-  renderAttachments();
-  render();
+  for (const [mode,label] of Object.entries(MODES)) {
+    const heading = document.createElement("div");
+    heading.className = "section-label";
+    heading.textContent = label;
+    list.append(heading);
+
+    const models = [...state.catalog[mode]];
+    const selected = (mode === "image" ? state.catalog.imageAll : state.catalog.all)
+      .find(m => m.id === state.selections[mode]);
+
+    if (selected && !models.some(m => m.id === selected.id)) models.push(selected);
+
+    for (const model of models) list.append(modelButton(model,mode));
+
+    if (!models.length) {
+      const empty = document.createElement("p");
+      empty.className = "status";
+      empty.textContent = "Нет автоматического подбора. Используй поиск ниже.";
+      list.append(empty);
+    }
+  }
+
+  $("advanced-mode").value = state.mode;
+  advancedModels();
+  $("models-dialog").showModal();
 }
 
+function iconButton(name,label,callback) {
+  const b = document.createElement("button");
+  b.className = "icon";
+  b.title = label;
+  b.setAttribute("aria-label",label);
+  b.innerHTML = svg(name);
+  b.onclick = callback;
+  return b;
+}
 function renderHistory() {
-  const box = $("history");
-  const profile = currentProfile();
+  $("history").replaceChildren();
+  const chats = [...profile().chats].sort((a,b) => Number(b.pinned)-Number(a.pinned));
 
-  box.innerHTML = "";
+  for (const [pinned,label] of [[true,"Закреплённые"],[false,"Диалоги"]]) {
+    const group = chats.filter(c => Boolean(c.pinned) === pinned);
+    if (!group.length) continue;
+    const heading = document.createElement("div");
+    heading.className = "section-label";
+    heading.textContent = label;
+    $("history").append(heading);
 
-  const label = document.createElement("div");
-  label.className = "history-label";
-  label.textContent = "Диалоги";
-  box.append(label);
+    for (const c of group) {
+      const row = document.createElement("div");
+      row.className = "history-row" + (c.id === profile().currentChat ? " active" : "");
 
-  const chats = [...profile.chats].sort(
-    (a, b) => Number(b.pinned) - Number(a.pinned)
-  );
+      const title = document.createElement("button");
+      title.className = "history-title";
+      title.textContent = c.title;
+      title.onclick = () => {
+        if (guarded()) return;
+        stopDictation();
+        profile().currentChat = c.id;
+        state.files = [];
+        $("input").value = "";
+        save(); render(); mobileClose();
+      };
 
-  chats.forEach(chat => {
-    const row = document.createElement("div");
-    row.className =
-      "chat-row" +
-      (chat.id === profile.currentChat
-        ? " active"
-        : "");
+      const pin = iconButton("pin",c.pinned ? "Открепить" : "Закрепить",() => {
+        c.pinned = !c.pinned; save(); renderHistory();
+      });
+      pin.classList.toggle("pinned",Boolean(c.pinned));
 
-    const title = document.createElement("button");
-    title.className = "chat-title";
-    title.textContent = chat.title;
-
-    title.onclick = () => {
-      profile.currentChat = chat.id;
-      state.files = [];
-      save();
-      renderAttachments();
-      render();
-    };
-
-    const pin = document.createElement("button");
-    pin.className =
-      "chat-pin" +
-      (chat.pinned ? " active" : "");
-    pin.textContent = chat.pinned ? "●" : "○";
-    pin.title = chat.pinned
-      ? "Открепить диалог"
-      : "Закрепить диалог";
-
-    pin.onclick = event => {
-      event.stopPropagation();
-      chat.pinned = !chat.pinned;
-      save();
-      renderHistory();
-    };
-
-    const remove = document.createElement("button");
-    remove.className = "chat-delete";
-    remove.textContent = "×";
-    remove.title = "Удалить диалог";
-
-    remove.onclick = event => {
-      event.stopPropagation();
-
-      profile.chats = profile.chats.filter(
-        item => item.id !== chat.id
-      );
-
-      if (!profile.chats.length) {
-        createChat();
-        return;
-      }
-
-      if (profile.currentChat === chat.id) {
-        profile.currentChat =
-          profile.chats[0].id;
-      }
-
-      save();
-      render();
-    };
-
-    row.append(title, pin, remove);
-    box.append(row);
+      const remove = iconButton("trash","Удалить диалог",() => {
+        if (guarded() || !confirm("Удалить этот диалог?")) return;
+        const p = profile();
+        p.chats = p.chats.filter(item => item.id !== c.id);
+        if (!p.chats.length) p.chats.push(newChatObject());
+        if (p.currentChat === c.id) p.currentChat = p.chats[0].id;
+        save(); render();
+      });
+      row.append(title,pin,remove);
+      $("history").append(row);
+    }
+  }
+}
+function addImage(parent,src) {
+  if (typeof src !== "string" || !/^(data:image\/|https:\/\/)/.test(src)) return;
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "Изображение";
+  img.loading = "lazy";
+  img.referrerPolicy = "no-referrer";
+  img.onerror = () => {
+    img.alt = "Изображение недоступно. Возможно, ссылка результата истекла.";
+  };
+  parent.append(img);
+}
+function textContent(parent,text) {
+  String(text).split("```").forEach((part,index) => {
+    if (index % 2 === 0) parent.append(document.createTextNode(part));
+    else {
+      const pre = document.createElement("pre");
+      pre.textContent = part.replace(/^[\w#+.-]+\n/,"");
+      parent.append(pre);
+    }
   });
 }
+function renderMessages() {
+  const c = chat();
+  $("welcome").hidden = c.messages.length > 0;
+  $("messages").replaceChildren();
 
-function render() {
-  const profile = currentProfile();
-  const chat = currentChat();
-
-  $("page-title").textContent = chat.title;
-  $("profile-button").textContent =
-    "○ " + profile.name;
-
-  $("welcome").classList.toggle(
-    "hidden",
-    chat.messages.length > 0
-  );
-
-  renderHistory();
-  renderMessages(chat);
-  updateConnection();
-  updateModelButton();
-  scrollBottom();
-}
-
-function renderMessages(chat) {
-  const box = $("messages");
-  box.innerHTML = "";
-
-  chat.messages.forEach(message => {
+  for (const message of c.messages) {
     const article = document.createElement("article");
-    article.className =
-      "message " +
-      message.role +
-      (message.error ? " error" : "");
+    article.className = "message " + message.role + (message.error ? " error" : "");
 
     const label = document.createElement("div");
-    label.className = "message-label";
-    label.textContent =
-      message.role === "user"
-        ? "Ты"
-        : message.model || "Ассистент";
+    label.className = "label";
+    label.textContent = message.role === "user" ? "Ты" : message.model || "Nexus";
 
-    const body = document.createElement("div");
-    body.className = "message-body";
+    const content = document.createElement("div");
+    content.className = "content";
 
-    (message.files || []).forEach(file => {
-      if (file.kind === "image") {
-        const image = document.createElement("img");
-        image.src = file.data;
-        image.alt = file.name;
-        body.append(image);
-      }
-    });
-
-    (message.images || []).forEach(src => {
-      const image = document.createElement("img");
-      image.src = src;
-      image.alt = "Созданное изображение";
-      body.append(image);
-    });
-
-    renderText(body, message.text || "");
-    article.append(label, body);
+    for (const f of message.files || []) {
+      if (f.kind === "image") addImage(content,f.data);
+      else content.append(document.createTextNode("Файл: " + f.name + "\n"));
+    }
+    for (const image of message.images || []) addImage(content,image);
+    textContent(content,message.text || "");
+    article.append(label,content);
 
     if (message.role === "assistant") {
       const tools = document.createElement("div");
-      tools.className = "tools";
+      tools.className = "message-tools";
 
-      const copy = document.createElement("button");
-      copy.textContent = "Скопировать";
+      if (message.text) {
+        const copy = document.createElement("button");
+        copy.className = "small-button";
+        copy.textContent = "Копировать";
+        copy.onclick = async () => {
+          try { await navigator.clipboard.writeText(message.text); note("Скопировано."); }
+          catch { note("Браузер не разрешил копирование."); }
+        };
+        tools.append(copy);
+      }
 
-      copy.onclick = async () => {
-        await navigator.clipboard.writeText(
-          message.text || ""
-        );
-        note("Скопировано.");
-      };
-
-      tools.append(copy);
+      if (message.job && !message.done) {
+        const check = document.createElement("button");
+        check.className = "small-button";
+        check.textContent = "Проверить готовность";
+        check.onclick = () => resumeImage(message,c);
+        tools.append(check);
+      }
       article.append(tools);
     }
 
-    box.append(article);
-  });
+    $("messages").append(article);
+  }
 }
-
-function renderText(element, text) {
-  String(text).split("```").forEach(
-    (part, index) => {
-      if (index % 2 === 0) {
-        element.append(
-          document.createTextNode(part)
-        );
-        return;
-      }
-
-      const pre = document.createElement("pre");
-      pre.textContent = part;
-      element.append(pre);
-    }
-  );
-}
-
-function renderAttachments() {
-  const box = $("attachments");
-  box.innerHTML = "";
-
-  state.files.forEach((file, index) => {
-    const item = document.createElement("button");
-    item.className = "attachment";
-    item.textContent = file.name + " ×";
-
-    item.onclick = () => {
-      state.files.splice(index, 1);
-      renderAttachments();
+function renderFiles() {
+  $("attachments").replaceChildren();
+  state.files.forEach((f,index) => {
+    const button = document.createElement("button");
+    button.className = "file-chip";
+    button.textContent = f.name + " ×";
+    button.onclick = () => {
+      if (state.busy || state.loadingFiles) return;
+      state.files.splice(index,1);
+      renderFiles();
     };
-
-    box.append(item);
+    $("attachments").append(button);
   });
 }
-
+function render() {
+  $("profile-button").textContent = profile().name;
+  $("chat-title").textContent = chat().title;
+  renderHistory(); renderMessages(); renderFiles(); updateModel();
+}
 function scrollBottom() {
-  requestAnimationFrame(() => {
-    $("scroll").scrollTop =
-      $("scroll").scrollHeight;
+  requestAnimationFrame(() => { $("scroll").scrollTop = $("scroll").scrollHeight; });
+}
+
+function readDataURL(blob) {
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Не удалось прочитать файл."));
+    reader.readAsDataURL(blob);
   });
 }
+async function preparePhoto(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const image = new Image();
+    await new Promise((resolve,reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error(
+        "Не удалось открыть фото. Используй JPEG, PNG или WebP; HEIC может не поддерживаться."
+      ));
+      image.src = url;
+    });
 
-function setWaiting(active, text) {
-  $("waiting").classList.toggle(
-    "hidden",
-    !active
-  );
+    const scale = Math.min(1,1600 / Math.max(image.naturalWidth,image.naturalHeight));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1,Math.round(image.naturalWidth * scale));
+    canvas.height = Math.max(1,Math.round(image.naturalHeight * scale));
 
-  $("waiting-text").textContent =
-    text || "Модель готовит ответ…";
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(image,0,0,canvas.width,canvas.height);
 
-  $("send-button").textContent =
-    active ? "■" : "↑";
+    return {
+      kind:"image",name:file.name,type:"image/jpeg",
+      data:canvas.toDataURL("image/jpeg",.85)
+    };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+async function addFiles(files) {
+  if (guarded()) return;
+  state.loadingFiles = true;
+  note("Подготавливаю вложения…");
+
+  try {
+    for (const file of files) {
+      if (state.files.length >= 8) throw new Error("Можно прикрепить до восьми файлов.");
+      if (file.size > 15 * 1024 * 1024) throw new Error("Файл больше 15 МБ: " + file.name);
+
+      if (file.type.startsWith("image/")) {
+        state.files.push(await preparePhoto(file));
+        if (state.mode !== "image") state.mode = "vision";
+      } else if (/\.(txt|md|js|ts|py|json|html|css|csv)$/i.test(file.name)) {
+        if (file.size > 300 * 1024) throw new Error("Текстовый файл больше 300 КБ.");
+        state.files.push({kind:"text",name:file.name,text:await file.text()});
+      } else {
+        throw new Error("Неподдерживаемый формат: " + file.name);
+      }
+    }
+    pickFirst();
+    note(state.mode === "vision" && !currentModel()
+      ? "Фото добавлено. Выбери модель сверху: «Анализ фотографий» или поиск в каталоге."
+      : "Вложения готовы.");
+  } catch (error) {
+    note(error.message);
+  } finally {
+    state.loadingFiles = false;
+    renderFiles(); updateModel();
+  }
 }
 
-function buildMessages(chat) {
-  const result = [{
-    role: "system",
-    content: state.system
-  }];
+function buildMessages(c) {
+  const result = [{role:"system",content:state.system}];
 
-  chat.messages.forEach(message => {
-    if (message.error) return;
+  for (const m of c.messages) {
+    if (m.error || m.pending || m.kind === "image") continue;
 
-    if (message.role === "assistant") {
-      result.push({
-        role: "assistant",
-        content: message.text || ""
-      });
-      return;
+    if (m.role === "assistant") {
+      if (m.text) result.push({role:"assistant",content:m.text});
+      continue;
     }
 
     const parts = [];
-
-    if (message.text) {
-      parts.push({
-        type: "text",
-        text: message.text
-      });
+    if (m.text) parts.push({type:"text",text:m.text});
+    for (const f of m.files || []) {
+      if (f.kind === "image") {
+        parts.push({type:"image_url",image_url:{url:f.data}});
+      } else {
+        parts.push({type:"text",text:"Файл " + f.name + ":\n" + f.text});
+      }
     }
 
-    (message.files || []).forEach(file => {
-      if (file.kind === "image") {
-        parts.push({
-          type: "image_url",
-          image_url: {
-            url: file.data
-          }
-        });
-      }
+    if (!parts.length) continue;
 
-      if (file.kind === "text") {
-        parts.push({
-          type: "text",
-          text:
-            "Файл " + file.name + ":\n" +
-            file.text
-        });
-      }
+    result.push({
+      role:"user",
+      content:parts.length === 1 && parts[0].type === "text"
+        ? parts[0].text
+        : parts
     });
-
-    if (parts.length) {
-      result.push({
-        role: "user",
-        content: parts.length === 1
-          ? parts[0].text
-          : parts
-      });
-    }
-  });
+  }
 
   return result;
 }
-
-async function sendChat(model, signal) {
-  const data = await request(
-    "/chat/completions",
-    {
-      method: "POST",
-      signal,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model,
-        messages: buildMessages(
-          currentChat()
-        ),
-        stream: false
-      })
-    }
-  );
-
-  const content =
-    data?.choices?.[0]?.message?.content;
-
-  const answer =
-    typeof content === "string"
-      ? content
-      : Array.isArray(content)
-        ? content
-          .filter(part => part.type === "text")
-          .map(part => part.text || "")
-          .join("\n")
-        : "";
-
-  if (!answer.trim()) {
-    throw new Error(
-      "Модель вернула пустой ответ."
-    );
-  }
-
-  return answer;
+function answerText(data) {
+  const value = data?.choices?.[0]?.message?.content;
+  const text = typeof value === "string" ? value :
+    Array.isArray(value) ? value.filter(p => p.type === "text").map(p => p.text || "").join("\n") : "";
+  if (!text.trim()) throw new Error("Модель вернула пустой текстовый ответ.");
+  return text;
 }
-
-function delay(ms, signal) {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(resolve, ms);
-
-    if (signal) {
-      signal.addEventListener(
-        "abort",
-        () => {
-          clearTimeout(timer);
-          reject(new DOMException(
-            "Остановлено.",
-            "AbortError"
-          ));
-        },
-        { once: true }
-      );
-    }
+function beginBusy() {
+  const controller = new AbortController();
+  state.busy = controller;
+  $("send").innerHTML = svg("stop");
+  $("send").setAttribute("aria-label","Остановить");
+  return controller;
+}
+function endBusy(controller) {
+  if (state.busy !== controller) return;
+  state.busy = null;
+  $("send").innerHTML = svg("arrow");
+  $("send").setAttribute("aria-label","Отправить");
+}
+function wait(ms,signal) {
+  return new Promise((resolve,reject) => {
+    if (signal.aborted) return reject(new DOMException("Остановлено","AbortError"));
+    const abort = () => {
+      clearTimeout(timer);
+      reject(new DOMException("Остановлено","AbortError"));
+    };
+    const timer = setTimeout(() => {
+      signal.removeEventListener("abort",abort);
+      resolve();
+    },ms);
+    signal.addEventListener("abort",abort,{once:true});
   });
 }
 
-function imageUrls(value) {
-  const result = [];
+function imageResult(data) {
+  const urls = new Set();
+  const containers = new Set(["data","result","output","outputs","images","artifacts","generation"]);
+  const urlKeys = new Set(["url","image_url","download_url","asset_url","file_url"]);
+  const accepted = value => typeof value === "string" &&
+    /^(https:\/\/|\/v1\/images\/|data:image\/)/.test(value);
 
-  function scan(item, depth = 0) {
-    if (!item || depth > 7) return;
+  function visit(value,depth = 0,allowString = false) {
+    if (!value || depth > 7) return;
+    if (typeof value === "string") {
+      if (allowString && accepted(value)) urls.add(value);
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.slice(0,20).forEach(item => visit(item,depth+1,true));
+      return;
+    }
+    if (typeof value !== "object") return;
 
-    if (typeof item === "string") {
-      if (
-        item.startsWith("https://") ||
-        item.startsWith("data:image/")
-      ) {
-        result.push(item);
+    if (typeof value.b64_json === "string") {
+      const b = value.b64_json;
+      const type = b.startsWith("/9j/") ? "image/jpeg" :
+        b.startsWith("iVBOR") ? "image/png" :
+        b.startsWith("UklGR") ? "image/webp" : null;
+      if (type) urls.add("data:" + type + ";base64," + b);
+    }
+
+    for (const [key,item] of Object.entries(value)) {
+      if (urlKeys.has(key)) visit(item,depth+1,true);
+      else if (containers.has(key)) visit(item,depth+1,true);
+    }
+  }
+
+  visit(data);
+  const nested = data?.data && !Array.isArray(data.data) ? data.data : {};
+  const job = data?.job_id || data?.generation_id || nested.job_id ||
+    nested.generation_id || data?.job?.id || data?.generation?.id ||
+    nested.id || data?.id;
+
+  return {
+    urls:[...urls].slice(0,8),
+    job: typeof job === "string" && /^[A-Za-z0-9_-]+$/.test(job) ? job : null,
+    status:String(data?.status || data?.state || nested.status || "").toLowerCase()
+  };
+}
+async function downloadImage(value,signal,connection) {
+  if (value.startsWith("data:image/")) return value;
+
+  const url = new URL(value,"https://api.omnirouter.ru");
+  if (url.protocol !== "https:") throw new Error("Небезопасный URL изображения.");
+
+  const protectedAsset = url.origin === "https://api.omnirouter.ru";
+  const target = protectedAsset
+    ? connection.worker + "/asset?url=" + encodeURIComponent(url.href)
+    : url.href;
+
+  try {
+    const response = await fetch(target,{
+      signal,credentials:"omit",referrerPolicy:"no-referrer",
+      headers:protectedAsset ? {"X-App-Password":connection.password} : {}
+    });
+
+    if (!response.ok) {
+      if (protectedAsset) {
+        const data = await response.json();
+        throw new Error(data?.error?.message || "Не удалось скачать изображение.");
       }
+      throw new Error("Публичное изображение недоступно.");
+    }
 
+    const type = response.headers.get("content-type") || "";
+    if (!type.startsWith("image/")) throw new Error("URL результата вернул не изображение.");
+
+    const blob = await response.blob();
+    if (blob.size > 16 * 1024 * 1024) throw new Error("Изображение превышает 16 МБ.");
+    return await readDataURL(blob);
+  } catch (error) {
+    if (signal.aborted || protectedAsset) throw error;
+    // Публичную CDN-ссылку можно показать напрямую без передачи пароля.
+    return url.href;
+  }
+}
+async function pollImage(message,initial,controller,connection) {
+  let data = initial;
+  const deadline = Date.now() + 180000;
+
+  while (true) {
+    if (controller.signal.aborted) throw new DOMException("Остановлено","AbortError");
+
+    const result = imageResult(data);
+    if (result.job && !message.job) {
+      message.job = result.job;
+      save();
+    }
+
+    if (["failed","error","cancelled","canceled"].includes(result.status)) {
+      message.done = true;
+      throw new Error(data?.error?.message || data?.message || "Генерация завершилась ошибкой.");
+    }
+
+    if (result.urls.length) {
+      message.images = [];
+      for (const url of result.urls) {
+        message.images.push(await downloadImage(url,controller.signal,connection));
+      }
+      message.text = "Изображение готово.";
+      message.done = true;
+      message.pending = false;
       return;
     }
 
-    if (Array.isArray(item)) {
-      item.forEach(
-        child => scan(child, depth + 1)
-      );
-      return;
-    }
-
-    if (typeof item === "object") {
-      Object.values(item).forEach(
-        child => scan(child, depth + 1)
-      );
-    }
-  }
-
-  scan(value);
-
-  return [...new Set(result)].slice(0, 8);
-}
-
-async function getImage(url, signal) {
-  if (url.startsWith("data:image/")) {
-    return url;
-  }
-
-  const data = await request(
-    "/asset?url=" +
-    encodeURIComponent(url),
-    { signal }
-  );
-
-  if (
-    typeof data?.data !== "string" ||
-    !data.data.startsWith("data:image/")
-  ) {
-    throw new Error(
-      "Worker не вернул изображение."
-    );
-  }
-
-  return data.data;
-}
-
-async function generateImage(model, prompt, signal) {
-  const data = await request(
-    "/images/generations",
-    {
-      method: "POST",
-      signal,
-      headers: {
-        "Content-Type": "application/json",
-        "Idempotency-Key": uid("image")
-      },
-      body: JSON.stringify({
-        source: "credits",
-        model,
-        prompt
-      })
-    }
-  );
-
-  let urls = imageUrls(data);
-
-  if (urls.length) {
-    return Promise.all(
-      urls.map(url => getImage(url, signal))
-    );
-  }
-
-  const job =
-    data?.job_id ||
-    data?.generation_id ||
-    data?.data?.job_id ||
-    data?.data?.generation_id;
-
-  if (!job) {
-    throw new Error(
-      "Сервис не вернул изображение или job_id."
-    );
-  }
-
-  for (let attempt = 0; attempt < 60; attempt++) {
-    await delay(2000, signal);
-
-    const status = await request(
-      "/images/generations/" +
-      encodeURIComponent(job),
-      { signal }
-    );
-
-    urls = imageUrls(status);
-
-    if (urls.length) {
-      return Promise.all(
-        urls.map(url => getImage(url, signal))
-      );
-    }
-
-    const value = String(
-      status?.status ||
-      status?.state ||
-      status?.data?.status ||
-      ""
-    ).toLowerCase();
-
-    if (
-      [
-        "failed",
-        "error",
-        "cancelled",
-        "canceled"
-      ].includes(value)
-    ) {
+    if (!message.job) {
       throw new Error(
-        status?.error?.message ||
-        status?.message ||
-        "Генерация изображения завершилась ошибкой."
+        "Не удалось определить результат генерации. Поля ответа: " +
+        Object.keys(data || {}).join(", ") +
+        ". Повторная генерация автоматически не запускалась."
       );
     }
+
+    if (Date.now() >= deadline) {
+      message.text = "Задание ещё не завершено. Нажми «Проверить готовность» позже.";
+      message.pending = false;
+      return;
+    }
+
+    await wait(2500,controller.signal);
+    data = await api(
+      "/images/generations/" + encodeURIComponent(message.job),
+      {signal:controller.signal},
+      connection
+    );
+  }
+}
+
+async function resumeImage(message,c) {
+  if (guarded()) return;
+  if (!state.password) return showSettings();
+  if (message.worker && message.worker !== state.worker) {
+    note("Для этого задания нужно подключиться к Worker, который его создал.");
+    return;
   }
 
-  throw new Error(
-    "Изображение не готово за две минуты."
-  );
+  const controller = beginBusy();
+  const connection = {worker:state.worker,password:state.password};
+
+  try {
+    message.error = false;
+    note("Проверяю готовность изображения…");
+    const data = await api("/images/generations/" + encodeURIComponent(message.job),
+      {signal:controller.signal},connection);
+    await pollImage(message,data,controller,connection);
+  } catch (error) {
+    message.text = error.name === "AbortError"
+      ? "Проверка остановлена. Задание можно проверить позже."
+      : error.message;
+    message.error = error.name !== "AbortError";
+  } finally {
+    message.pending = false;
+    endBusy(controller); save(); render(); note("");
+  }
 }
 
 async function send() {
-  if (state.request) {
-    state.request.abort();
-    state.request = null;
-    setWaiting(false);
-    return;
-  }
+  if (state.busy) { state.busy.abort(); return; }
+  if (state.loadingFiles || voice.active) return;
+  stopDictation();
 
   const text = $("input").value.trim();
-  const chat = currentChat();
-
   if (!text && !state.files.length) return;
+  if (!state.password) return showSettings();
 
-  selectFirstModel();
+  const model = currentModel();
+  if (!model) return showModels();
 
-  if (!state.password) {
-    $("settings-dialog").showModal();
-    $("settings-status").textContent =
-      "Сначала подключи Worker.";
+  if (state.mode === "image" && !text) {
+    note("Напиши описание того, что нужно создать.");
+    return;
+  }
+  if (state.mode === "image" && state.files.length) {
+    note("В этой версии генерация — по тексту. Убери вложения или выбери анализ фото.");
     return;
   }
 
-  if (!state.selectedModel) {
-    note(
-      "Для этого режима нет подходящей модели."
-    );
-    openModelPicker();
-    return;
+  const c = chat();
+  const hasPhotos = state.files.some(f => f.kind === "image") ||
+    c.messages.some(m => (m.files || []).some(f => f.kind === "image"));
+
+  if (hasPhotos && state.mode === "chat" && !["metadata","candidate"].includes(model.vision)) {
+    state.mode = "vision"; updateModel();
+    note("В диалоге есть фотографии. Выбери модель анализа сверху.");
+    return showModels();
   }
 
-  const files = structuredClone(state.files);
+  const mode = state.mode;
+  const connection = {worker:state.worker,password:state.password};
+  const user = {role:"user",text,files:structuredClone(state.files)};
+  if (mode === "image") user.kind = "image";
 
-  if (!chat.messages.length) {
-    chat.title =
-      (
-        text ||
-        files[0]?.name ||
-        "Новый диалог"
-      ).slice(0, 42);
-  }
+  if (!c.messages.length) c.title = (text || state.files[0]?.name || "Фото").slice(0,42);
+  c.messages.push(user);
 
-  chat.messages.push({
-    role: "user",
-    text,
-    files
-  });
+  const response = {
+    role:"assistant",text:mode === "image" ? "Создаю изображение…" : "Думаю…",
+    model:model.name,pending:true
+  };
+  if (mode === "image") response.kind = "image";
+  c.messages.push(response);
 
-  $("input").value = "";
-  $("input").style.height = "auto";
+  $("input").value = ""; fitInput();
   state.files = [];
-
-  renderAttachments();
-  save();
-  render();
-
-  const controller = new AbortController();
-  state.request = controller;
+  const controller = beginBusy();
+  const timeout = setTimeout(() => controller.abort(),mode === "image" ? 600000 : 190000);
+  render(); scrollBottom(); save();
 
   try {
-    if (state.mode === "image") {
-      setWaiting(true, "Создаю изображение…");
+    if (mode === "image") {
+      response.worker = state.worker;
+      response.key = uid();
 
-      const placeholder = {
-        role: "assistant",
-        text: "Создаю изображение…",
-        images: [],
-        model: "Изображение"
-      };
+      const data = await api("/images/generations",{
+        method:"POST",signal:controller.signal,
+        headers:{"Content-Type":"application/json","Idempotency-Key":response.key},
+        body:JSON.stringify({source:"credits",model:model.id,prompt:text})
+      },connection);
 
-      chat.messages.push(placeholder);
-      render();
-
-      placeholder.images =
-        await generateImage(
-          state.selectedModel,
-          text,
-          controller.signal
-        );
-
-      placeholder.text = "Изображение создано.";
+      await pollImage(response,data,controller,connection);
     } else {
-      setWaiting(
-        true,
-        state.mode === "vision"
-          ? "Анализирую изображение…"
-          : "Модель готовит ответ…"
-      );
+      const messages = buildMessages(c);
+      const body = JSON.stringify({model:model.id,messages,stream:false});
 
-      const answer = await sendChat(
-        state.selectedModel,
-        controller.signal
-      );
-
-      const model =
-        modelsForMode().find(
-          item => item.id === state.selectedModel
-        );
-
-      chat.messages.push({
-        role: "assistant",
-        text: answer,
-        model:
-          model?.name ||
-          model?.display_name ||
-          state.selectedModel
-      });
-    }
-
-    save();
-    render();
-  } catch (error) {
-    if (error.name !== "AbortError") {
-      chat.messages.push({
-        role: "assistant",
-        text: error.message,
-        error: true
-      });
-
-      save();
-      render();
-    }
-  } finally {
-    if (state.request === controller) {
-      state.request = null;
-      setWaiting(false);
-    }
-  }
-}
-
-function addFiles(files) {
-  Array.from(files).forEach(async file => {
-    const image =
-      /^image\/(png|jpeg|webp|gif)$/.test(
-        file.type
-      );
-
-    const text =
-      /\.(txt|md|js|ts|py|json|html|css|csv)$/i
-        .test(file.name);
-
-    if (!image && !text) {
-      note("Этот тип файла не поддерживается.");
-      return;
-    }
-
-    if (image && file.size > 3 * 1024 * 1024) {
-      note("Изображение больше 3 МБ.");
-      return;
-    }
-
-    if (text && file.size > 300 * 1024) {
-      note("Текстовый файл больше 300 КБ.");
-      return;
-    }
-
-    if (image) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        state.files.push({
-          kind: "image",
-          name: file.name,
-          type: file.type,
-          data: reader.result
-        });
-
-        state.mode = "vision";
-        $("mode").value = "vision";
-        selectFirstModel();
-        renderAttachments();
-      };
-
-      reader.readAsDataURL(file);
-      return;
-    }
-
-    state.files.push({
-      kind: "text",
-      name: file.name,
-      text: await file.text()
-    });
-
-    renderAttachments();
-  });
-}
-
-/* Голосовой ввод в поле */
-
-function startDictation() {
-  const Speech =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!Speech) {
-    note(
-      "В этом браузере голосовой ввод недоступен."
-    );
-    return;
-  }
-
-  if (state.recognition) {
-    try {
-      state.recognition.stop();
-    } catch {}
-    return;
-  }
-
-  const recognition = new Speech();
-  state.recognition = recognition;
-
-  recognition.lang = "ru-RU";
-  recognition.continuous = false;
-  recognition.interimResults = true;
-
-  let text = "";
-
-  recognition.onresult = event => {
-    text = Array.from(event.results)
-      .map(result => result[0].transcript)
-      .join(" ");
-
-    $("input").value = text;
-    $("input").dispatchEvent(new Event("input"));
-  };
-
-  recognition.onerror = event => {
-    note(
-      event.error === "not-allowed"
-        ? "Браузер запретил голосовой ввод."
-        : "Ошибка: " + event.error
-    );
-
-    state.recognition = null;
-  };
-
-  recognition.onend = () => {
-    state.recognition = null;
-  };
-
-  try {
-    recognition.start();
-    note("Слушаю…");
-  } catch {
-    state.recognition = null;
-    note("Не удалось запустить микрофон.");
-  }
-}
-
-/* Голосовой разговор без сообщений в обычном чате */
-
-let talkRecognition = null;
-let talkActive = false;
-
-function openTalk() {
-  $("voice-dialog").showModal();
-  $("voice-status").textContent =
-    "Нажми «Слушать».";
-}
-
-function stopTalk() {
-  talkActive = false;
-
-  if (talkRecognition) {
-    try {
-      talkRecognition.stop();
-    } catch {}
-
-    talkRecognition = null;
-  }
-
-  speechSynthesis?.cancel();
-  $("voice-orb").classList.remove("active");
-}
-
-function startTalk() {
-  const Speech =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!Speech) {
-    $("voice-status").textContent =
-      "Голосовой разговор недоступен.";
-    return;
-  }
-
-  const model =
-    state.models.chat.find(
-      item => item.id === state.selectedModel
-    );
-
-  if (!state.password || !model) {
-    $("voice-status").textContent =
-      "Выбери модель в разделе «Чат».";
-    return;
-  }
-
-  stopTalk();
-  talkActive = true;
-
-  const recognition = new Speech();
-  talkRecognition = recognition;
-
-  recognition.lang = "ru-RU";
-  recognition.continuous = false;
-  recognition.interimResults = false;
-
-  let text = "";
-
-  recognition.onstart = () => {
-    $("voice-orb").classList.add("active");
-    $("voice-status").textContent =
-      "Слушаю…";
-  };
-
-  recognition.onresult = event => {
-    text = Array.from(event.results)
-      .map(result => result[0].transcript)
-      .join(" ")
-      .trim();
-  };
-
-  recognition.onerror = event => {
-    $("voice-orb").classList.remove("active");
-    talkActive = false;
-    $("voice-status").textContent =
-      event.error === "not-allowed"
-        ? "Браузер запретил распознавание речи."
-        : "Ошибка: " + event.error;
-  };
-
-  recognition.onend = async () => {
-    $("voice-orb").classList.remove("active");
-
-    if (!talkActive || !text) {
-      $("voice-status").textContent =
-        "Речь не распознана.";
-      return;
-    }
-
-    $("voice-status").textContent =
-      "Думаю…";
-
-    try {
-      const response = await request(
-        "/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            model: model.id,
-            messages: [
-              {
-                role: "system",
-                content:
-                  state.system +
-                  "\nОтвечай кратко, естественно и без Markdown. " +
-                  "Ответ будет озвучен голосом."
-              },
-              {
-                role: "user",
-                content: text
-              }
-            ],
-            stream: false
-          })
-        }
-      );
-
-      const content =
-        response?.choices?.[0]?.message?.content;
-
-      const answer =
-        typeof content === "string"
-          ? content
-          : Array.isArray(content)
-            ? content
-              .filter(part => part.type === "text")
-              .map(part => part.text || "")
-              .join("\n")
-            : "";
-
-      if (!answer.trim()) {
-        throw new Error("Пустой ответ модели.");
+      if (new Blob([body]).size > 19 * 1024 * 1024) {
+        throw new Error("История с фотографиями слишком большая. Начни новый диалог.");
       }
 
-      $("voice-status").textContent =
-        "Говорю…";
+      const data = await api("/chat/completions",{
+        method:"POST",signal:controller.signal,
+        headers:{"Content-Type":"application/json"},body
+      },connection);
 
-      const utterance =
-        new SpeechSynthesisUtterance(answer);
-
-      utterance.lang = "ru-RU";
-      utterance.rate = .98;
-
-      utterance.onend = () => {
-        if (talkActive) {
-          $("voice-status").textContent =
-            "Нажми «Слушать» для следующей реплики.";
-        }
-      };
-
-      speechSynthesis.cancel();
-      speechSynthesis.speak(utterance);
-    } catch (error) {
-      $("voice-status").textContent =
-        error.message;
+      response.text = answerText(data);
     }
+  } catch (error) {
+    response.error = true;
+    response.text = error.name === "AbortError"
+      ? response.job
+        ? "Ожидание остановлено. Задание сохранено: проверь готовность позже."
+        : "Запрос остановлен или истекло время ожидания."
+      : error.message;
+  } finally {
+    clearTimeout(timeout);
+    response.pending = false;
+    endBusy(controller); save(); render(); scrollBottom();
+  }
+}
+
+/* Отдельный голосовой ввод в поле. */
+let dictation = null;
+
+function speechClass() {
+  return window.SpeechRecognition || window.webkitSpeechRecognition;
+}
+function speechError(code) {
+  return {
+    "not-allowed":"Браузер запретил распознавание речи.",
+    "service-not-allowed":"Браузер не разрешает сервис распознавания.",
+    "audio-capture":"Не удалось получить звук с микрофона.",
+    "network":"Нет связи с сервисом распознавания.",
+    "no-speech":"Речь не распознана."
+  }[code] || "Ошибка распознавания: " + code;
+}
+function stopDictation() {
+  if (dictation) {
+    dictation.onend = null;
+    dictation.onerror = null;
+    dictation.onresult = null;
+    try { dictation.abort(); } catch {}
+    dictation = null;
+  }
+  $("dictate").classList.remove("active");
+}
+function startDictation() {
+  if (dictation) { dictation.stop(); return; }
+  if (guarded()) return;
+  const Speech = speechClass();
+  if (!Speech) return note("В этом браузере нет распознавания речи.");
+
+  const r = new Speech();
+  dictation = r;
+  const original = $("input").value;
+  r.lang = "ru-RU";
+  r.interimResults = true;
+  r.continuous = false;
+
+  r.onstart = () => { $("dictate").classList.add("active"); note("Слушаю…"); };
+  r.onresult = event => {
+    const text = Array.from(event.results).map(item => item[0].transcript).join(" ");
+    $("input").value = original + (original && text ? " " : "") + text;
+    fitInput();
+  };
+  r.onerror = event => note(speechError(event.error));
+  r.onend = () => {
+    if (dictation === r) dictation = null;
+    $("dictate").classList.remove("active");
   };
 
-  try {
-    recognition.start();
-  } catch {
-    talkActive = false;
-    $("voice-status").textContent =
-      "Не удалось начать слушание.";
+  try { r.start(); }
+  catch (error) { stopDictation(); note(error.message); }
+}
+
+/* Разговор: отдельная память, без сообщений в обычном чате. */
+const voice = {
+  active:false,token:0,recognition:null,controller:null,
+  utterance:null,timer:null,watchdog:null,history:[],
+  model:null,connection:null
+};
+
+function voicePhase(phase,text) {
+  $("voice-dialog").dataset.phase = phase;
+  $("voice-status").textContent = text;
+}
+function stopVoice(text = "Разговор остановлен.") {
+  voice.active = false;
+  voice.token++;
+  clearTimeout(voice.timer);
+  clearTimeout(voice.watchdog);
+
+  if (voice.recognition) {
+    const r = voice.recognition;
+    voice.recognition = null;
+    r.onend = null; r.onresult = null; r.onerror = null;
+    try { r.abort(); } catch {}
   }
+  if (voice.controller) { voice.controller.abort(); voice.controller = null; }
+  if (voice.utterance) {
+    voice.utterance.onend = null;
+    voice.utterance.onerror = null;
+    voice.utterance.onstart = null;
+    voice.utterance = null;
+  }
+  window.speechSynthesis?.cancel();
+  $("voice-start").disabled = false;
+  voicePhase("idle",text);
+}
+const alive = token => voice.active && token === voice.token && $("voice-dialog").open;
+
+function speak(text,token) {
+  if (!alive(token)) return;
+  voicePhase("speaking","Говорю…");
+
+  const u = new SpeechSynthesisUtterance(text);
+  voice.utterance = u;
+  u.lang = "ru-RU";
+  const ru = speechSynthesis.getVoices().find(v => /^ru(?:-|_|$)/i.test(v.lang));
+  if (ru) u.voice = ru;
+
+  clearTimeout(voice.watchdog);
+  voice.watchdog = setTimeout(() => {
+    if (alive(token)) stopVoice("Озвучивание не началось. Проверь громкость и начни ещё раз.");
+  },12000);
+
+  u.onstart = () => {
+    clearTimeout(voice.watchdog);
+    voice.watchdog = setTimeout(() => {
+      if (alive(token)) stopVoice("Озвучивание зависло. Начни разговор ещё раз.");
+    },180000);
+  };
+  u.onerror = event => {
+    if (alive(token)) stopVoice("Ошибка озвучивания: " + event.error);
+  };
+  u.onend = () => {
+    clearTimeout(voice.watchdog);
+    if (!alive(token)) return;
+    voice.utterance = null;
+    voice.timer = setTimeout(() => listenVoice(token),450);
+  };
+
+  speechSynthesis.speak(u);
+}
+
+async function askVoice(text,token) {
+  if (!alive(token)) return;
+  voicePhase("thinking","Думаю…");
+  const controller = new AbortController();
+  voice.controller = controller;
+  const timer = setTimeout(() => controller.abort(),190000);
+
+  try {
+    const messages = [
+      {role:"system",content:voice.connection.system +
+        "\nЭто голосовой разговор. Отвечай естественно, кратко, " +
+        "обычно 1–4 предложениями. Без Markdown и блоков кода."},
+      ...voice.history.slice(-16),
+      {role:"user",content:text}
+    ];
+
+    const data = await api("/chat/completions",{
+      method:"POST",signal:controller.signal,
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:voice.model.id,messages,stream:false})
+    },voice.connection);
+
+    if (!alive(token)) return;
+    const answer = answerText(data);
+    voice.history.push(
+      {role:"user",content:text},
+      {role:"assistant",content:answer}
+    );
+    voice.history = voice.history.slice(-16);
+    speak(answer,token);
+  } catch (error) {
+    if (alive(token)) stopVoice(
+      error.name === "AbortError" ? "Истекло время ожидания ответа." : error.message
+    );
+  } finally {
+    clearTimeout(timer);
+    if (voice.controller === controller) voice.controller = null;
+  }
+}
+
+function listenVoice(token) {
+  if (!alive(token)) return;
+  const Speech = speechClass();
+  const r = new Speech();
+  voice.recognition = r;
+  let text = "";
+  let failed = false;
+
+  r.lang = "ru-RU";
+  r.continuous = false;
+  r.interimResults = false;
+  voicePhase("listening","Слушаю…");
+
+  r.onresult = event => {
+    text = Array.from(event.results).filter(x => x.isFinal)
+      .map(x => x[0].transcript).join(" ").trim();
+  };
+  r.onerror = event => {
+    failed = true;
+    if (alive(token)) stopVoice(speechError(event.error));
+  };
+  r.onend = () => {
+    if (voice.recognition === r) voice.recognition = null;
+    if (!alive(token) || failed) return;
+    if (!text) return stopVoice("Не услышала речь. Нажми «Начать», чтобы повторить.");
+    askVoice(text,token);
+  };
+
+  try { r.start(); }
+  catch (error) { stopVoice(error.message); }
+}
+
+function startVoice() {
+  stopVoice();
+  if (!speechClass() || !window.speechSynthesis || !window.SpeechSynthesisUtterance) {
+    voicePhase("idle","Этот браузер не предоставляет распознавание или озвучивание.");
+    return;
+  }
+  if (!state.password) {
+    voicePhase("idle","Сначала подключи Worker в настройках.");
+    return;
+  }
+  if (state.busy) {
+    voicePhase("idle","Дождись завершения текущего запроса.");
+    return;
+  }
+  const model = currentModel();
+  if (!model || state.mode === "image") {
+    voicePhase("idle","Сначала выбери текстовую модель сверху.");
+    return;
+  }
+
+  stopDictation();
+  voice.model = model;
+  voice.connection = {
+    worker:state.worker,password:state.password,system:state.system
+  };
+  voice.active = true;
+  $("voice-start").disabled = true;
+  speak("Я слушаю.",voice.token);
 }
 
 function openProfiles() {
-  const list = $("profile-list");
-  list.innerHTML = "";
-
-  state.profiles.forEach(profile => {
-    const button = document.createElement("button");
-
-    button.textContent =
-      (
-        profile.id === state.activeProfile
-          ? "✓ "
-          : ""
-      ) + profile.name;
-
-    button.onclick = () => {
-      state.activeProfile = profile.id;
+  if (guarded()) return;
+  $("profiles").replaceChildren();
+  for (const p of state.profiles) {
+    const b = document.createElement("button");
+    b.className = "model-item";
+    b.textContent = p.name + (p.id === state.activeProfile ? " — текущий" : "");
+    b.onclick = () => {
+      stopDictation();
+      state.activeProfile = p.id;
       state.files = [];
-      save();
-      render();
-      $("profiles-dialog").close();
+      $("input").value = "";
+      save(); render(); $("profiles-dialog").close();
     };
-
-    list.append(button);
-  });
-
+    $("profiles").append(b);
+  }
   $("profiles-dialog").showModal();
 }
 
-/* Events */
-
-$("new-chat").onclick = createChat;
-$("send-button").onclick = send;
-
-$("input").onkeydown = event => {
-  if (
-    event.key === "Enter" &&
-    !event.shiftKey &&
-    !event.isComposing
-  ) {
-    event.preventDefault();
-    send();
-  }
+/* События. */
+$("menu").onclick = () => sidebar($("sidebar").classList.contains("closed"));
+$("close-sidebar").onclick = () => sidebar(false);
+$("veil").onclick = () => sidebar(false);
+$("new-chat").onclick = () => {
+  if (guarded()) return;
+  stopDictation();
+  const c = newChatObject();
+  profile().chats.unshift(c);
+  profile().currentChat = c.id;
+  state.files = []; $("input").value = "";
+  save(); render(); mobileClose();
 };
-
-$("input").oninput = () => {
-  $("input").style.height = "auto";
-  $("input").style.height =
-    Math.min(
-      $("input").scrollHeight,
-      210
-    ) + "px";
-};
-
-$("attach-button").onclick = () =>
-  $("file-input").click();
-
+$("settings").onclick = showSettings;
+$("connect").onclick = connect;
+$("model-button").onclick = showModels;
+$("model-search").oninput = advancedModels;
+$("advanced-mode").onchange = advancedModels;
+$("attach").onclick = () => { if (!guarded()) $("file-input").click(); };
 $("file-input").onchange = event => {
-  addFiles(event.target.files);
+  const files = Array.from(event.target.files);
   event.target.value = "";
+  addFiles(files);
 };
-
-$("voice-input-button").onclick =
-  startDictation;
-
-$("talk-button").onclick = openTalk;
-
-$("voice-listen").onclick = startTalk;
-$("voice-stop").onclick = () => {
-  stopTalk();
-  $("voice-status").textContent =
-    "Остановлено.";
-};
-
-$("mode").onchange = () => {
-  state.mode = $("mode").value;
-  selectFirstModel();
-};
-
-$("model-trigger").onclick = event => {
-  event.stopPropagation();
-
-  if (
-    $("model-picker").classList.contains("hidden")
-  ) {
-    openModelPicker();
-  } else {
-    closeModelPicker();
+$("input").oninput = fitInput;
+$("input").onkeydown = event => {
+  if (event.key === "Enter" && !event.shiftKey && !event.isComposing &&
+      !matchMedia("(pointer:coarse)").matches) {
+    event.preventDefault(); send();
   }
 };
-
-document.addEventListener("click", event => {
-  if (
-    !event.target.closest("#model-picker") &&
-    !event.target.closest("#model-trigger")
-  ) {
-    closeModelPicker();
+$("send").onclick = send;
+$("dictate").onclick = startDictation;
+$("talk").onclick = () => {
+  if (guarded()) return;
+  stopDictation(); stopVoice("Нажми «Начать».");
+  voice.history = [];
+  $("voice-dialog").showModal();
+};
+$("voice-start").onclick = startVoice;
+$("voice-stop").onclick = () => stopVoice();
+$("voice-dialog").addEventListener("close",() => { stopVoice(); voice.history = []; });
+$("voice-dialog").addEventListener("cancel",() => stopVoice());
+$("profile-button").onclick = openProfiles;
+$("profile-form").onsubmit = event => {
+  event.preventDefault();
+  const name = $("profile-name").value.trim();
+  if (!name) return;
+  const p = newProfile(name);
+  state.profiles.push(p);
+  state.activeProfile = p.id;
+  state.files = [];
+  $("profile-name").value = "";
+  save(); render(); $("profiles-dialog").close();
+};
+document.querySelectorAll("[data-close]").forEach(button => {
+  button.onclick = () => $(button.dataset.close).close();
+});
+document.addEventListener("visibilitychange",() => {
+  if (document.hidden) {
+    stopDictation();
+    if (voice.active) stopVoice("Разговор приостановлен: вкладка скрыта.");
   }
 });
 
-$("menu-button").onclick = () => {
-  $("sidebar").classList.toggle("closed");
-};
+/* Загрузка сохранённых данных. */
+(async function init() {
+  let saved = null;
+  try {
+    db = await openDB();
+    saved = await dbRead();
 
-$("settings-button").onclick = () => {
-  $("worker-url").value = state.worker;
-  $("app-password").value = state.password;
-  $("system-prompt").value = state.system;
-  $("settings-dialog").showModal();
-};
-
-$("connect-button").onclick = connect;
-$("profile-button").onclick = openProfiles;
-
-$("profile-form").onsubmit = event => {
-  event.preventDefault();
-
-  const name =
-    $("profile-name").value.trim();
-
-  if (!name) return;
-
-  const profile = {
-    id: uid("profile"),
-    name,
-    chats: [{
-      id: uid("chat"),
-      title: "Новый диалог",
-      pinned: false,
-      messages: []
-    }],
-    currentChat: null
-  };
-
-  profile.currentChat =
-    profile.chats[0].id;
-
-  state.profiles.push(profile);
-  state.activeProfile = profile.id;
-
-  $("profile-name").value = "";
-
-  save();
-  render();
-  $("profiles-dialog").close();
-};
-
-document.querySelectorAll("[data-close]").forEach(
-  button => {
-    button.onclick = () => {
-      if (button.dataset.close === "voice-dialog") {
-        stopTalk();
+    if (!saved) {
+      const oldKeys = [
+        "nexus_clean_v1","nexus_claude_final_v1",
+        "nexus_minimal_v3","nexus_claude_style_v1",
+        "nexus_final_clean_v1"
+      ];
+      for (const key of oldKeys) {
+        try {
+          const old = JSON.parse(localStorage.getItem(key) || "null");
+          if (old?.profiles?.length) { saved = old; break; }
+        } catch {}
       }
-
-      $(button.dataset.close).close();
-    };
+    }
+  } catch {
+    note("Хранилище недоступно. История будет храниться только в этой вкладке.");
   }
-);
 
-load();
-
-$("worker-url").value = state.worker;
-$("system-prompt").value = state.system;
-
-render();
-
-setTimeout(() => {
-  if (!state.password) {
-    $("settings-dialog").showModal();
+  if (saved) {
+    state.worker = saved.worker || DEFAULT_WORKER;
+    state.system = saved.system || state.system;
+    if (MODES[saved.mode]) state.mode = saved.mode;
+    state.selections = {...state.selections,...saved.selections};
+    state.profiles = Array.isArray(saved.profiles)
+      ? saved.profiles.filter(p => p?.id && Array.isArray(p.chats))
+      : [];
+    state.activeProfile = saved.activeProfile || "";
   }
-}, 300);
+
+  if (!state.profiles.length) state.profiles = [newProfile("Мой профиль")];
+
+  for (const p of state.profiles) {
+    p.chats = p.chats.filter(c => c?.id && Array.isArray(c.messages));
+    if (!p.chats.length) p.chats = [newChatObject()];
+    if (!p.chats.some(c => c.id === p.currentChat)) p.currentChat = p.chats[0].id;
+
+    for (const c of p.chats) {
+      for (const m of c.messages) {
+        if (m.pending) {
+          m.pending = false;
+          m.error = true;
+          m.text = m.job
+            ? "Ожидание прервано. Можно проверить готовность."
+            : "Запрос прерван при закрытии страницы.";
+        }
+      }
+    }
+  }
+
+  if (!state.profiles.some(p => p.id === state.activeProfile)) {
+    state.activeProfile = state.profiles[0].id;
+  }
+
+  sidebar(!matchMedia("(max-width:720px)").matches);
+  render(); save();
+  $("worker").value = state.worker;
+  $("system").value = state.system;
+  $("settings-dialog").showModal();
+})();
 </script>
 </body>
 </html>
