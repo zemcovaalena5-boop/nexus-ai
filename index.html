@@ -2477,6 +2477,821 @@ setTimeout(() => {
     $("settings-dialog").showModal();
   }
 }, 300);
+</script> 
+  <style>
+:root {
+  --bg: #f8f7f4;
+  --surface: #fff;
+  --surface-2: #eeede9;
+  --border: #e2e0da;
+  --text: #30302e;
+  --muted: #777770;
+  --accent: #363633;
+  --accent-dark: #20201e;
+  --shadow: none;
+}
+
+.sidebar {
+  background: #f0efeb;
+  border-right: 0;
+}
+
+.brand {
+  letter-spacing: -.7px;
+}
+
+.brand-mark,
+.welcome-symbol {
+  display: none;
+}
+
+.new-chat {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.new-chat:hover {
+  background: #e7e6e1;
+}
+
+.topbar {
+  gap: 10px;
+  min-height: 65px;
+}
+
+#model-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: min(330px, 48vw);
+  min-height: 36px;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: 15px Georgia, serif;
+}
+
+#model-trigger::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  margin-left: 4px;
+  border-right: 1.4px solid currentColor;
+  border-bottom: 1.4px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+#model-trigger:hover {
+  background: var(--surface-2);
+}
+
+.page-title {
+  text-align: right;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.welcome {
+  margin-top: 15vh;
+}
+
+.welcome h1 {
+  font-size: clamp(36px, 5vw, 54px);
+  letter-spacing: -1.8px;
+  line-height: 1.12;
+}
+
+.welcome p {
+  max-width: 380px;
+  font-size: 14px;
+}
+
+.composer-box {
+  border-radius: 20px;
+  box-shadow: 0 2px 8px #00000004;
+}
+
+.composer-box:focus-within {
+  border-color: #b9b8b1;
+}
+
+#input {
+  min-height: 84px;
+  padding: 19px 19px 10px;
+}
+
+.toolbar {
+  flex-wrap: nowrap;
+  gap: 5px;
+  padding: 4px 11px 11px;
+}
+
+#mode {
+  display: none;
+}
+
+.toolbar-button,
+.send-button,
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  color: var(--text);
+  background: transparent;
+}
+
+.toolbar-button:hover,
+.send-button:hover,
+.icon-button:hover {
+  background: var(--surface-2);
+}
+
+#dictation-button {
+  margin-left: auto;
+}
+
+#send-button {
+  margin-left: 0;
+  background: #eeede9;
+}
+
+#send-button:hover {
+  background: #e1e0da;
+}
+
+#dictation-button[aria-pressed="true"],
+#voice-button[aria-pressed="true"] {
+  background: #dfded8;
+  box-shadow: inset 0 0 0 1px #bebdb6;
+}
+
+.line-icon {
+  display: block;
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.model-picker {
+  border-radius: 14px;
+  box-shadow: 0 10px 35px #00000012;
+}
+
+.model-section-button {
+  cursor: default;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.primary,
+#voice-stop {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: 12px sans-serif;
+}
+
+.primary:hover,
+#voice-stop:hover {
+  background: #e3e2dd;
+}
+
+.voice-state {
+  background: transparent;
+}
+
+.voice-orb {
+  width: 56px;
+  height: 56px;
+  background: #64645e;
+}
+
+@keyframes voice-pulse {
+  50% {
+    transform: scale(.87);
+    box-shadow: 0 0 0 12px #64645e12;
+  }
+}
+
+@media (max-width: 720px) {
+  .page-title,
+  .connection {
+    display: none;
+  }
+
+  #model-trigger {
+    flex: 1;
+    max-width: none;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .welcome {
+    margin-top: 12vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+
+<script>
+(() => {
+  "use strict";
+
+  const el = id => document.getElementById(id);
+  const required = [
+    "model-trigger", "model-picker", "voice-button",
+    "send-button", "voice-dialog", "input"
+  ];
+
+  if (required.some(id => !el(id))) {
+    console.error(
+      "Исправление рассчитано на последнюю версию HTML Nexus."
+    );
+    return;
+  }
+
+  if (el("dictation-button")) return;
+
+  const paths = {
+    mic: `
+      <rect x="9" y="3" width="6" height="12" rx="3"/>
+      <path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3M8 22h8"/>
+    `,
+    waves: `
+      <path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/>
+    `,
+    plus: `<path d="M12 5v14M5 12h14"/>`,
+    arrow: `<path d="M12 19V5M6 11l6-6 6 6"/>`,
+    stop: `<rect x="6" y="6" width="12" height="12" rx="2"/>`,
+    menu: `
+      <rect x="3" y="4" width="18" height="16" rx="3"/>
+      <path d="M9 4v16"/>
+    `,
+    settings: `
+      <path d="M4 7h16M4 17h16"/>
+      <circle cx="9" cy="7" r="3" fill="var(--bg)"/>
+      <circle cx="15" cy="17" r="3" fill="var(--bg)"/>
+    `,
+    edit: `
+      <path d="M14 5l5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z"/>
+    `
+  };
+
+  function icon(name) {
+    return `<svg class="line-icon" viewBox="0 0 24 24"
+      aria-hidden="true">${paths[name]}</svg>`;
+  }
+
+  function setIcon(button, name, label) {
+    button.innerHTML = icon(name);
+    button.title = label;
+    button.setAttribute("aria-label", label);
+    button.type = "button";
+  }
+
+  const trigger = el("model-trigger");
+  const picker = el("model-picker");
+  const topbar = document.querySelector(".topbar");
+  topbar.insertBefore(trigger, el("page-title"));
+
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-controls", "model-picker");
+
+  setIcon(el("attach-button"), "plus", "Прикрепить файл");
+  setIcon(el("voice-button"), "waves", "Разговор с ИИ");
+  setIcon(el("menu-button"), "menu", "Открыть или закрыть историю");
+  setIcon(el("settings-button"), "settings", "Настройки");
+
+  el("new-chat").innerHTML = icon("edit") + "<span>Новый диалог</span>";
+
+  const dictation = document.createElement("button");
+  dictation.id = "dictation-button";
+  dictation.className = "toolbar-button";
+  dictation.setAttribute("aria-pressed", "false");
+  setIcon(dictation, "mic", "Голосовой ввод");
+
+  el("send-button").before(dictation);
+
+  const welcome = document.querySelector(".welcome h1");
+  if (welcome) welcome.textContent = "С чего начнём?";
+
+  const welcomeCopy = document.querySelector(".welcome p");
+  if (welcomeCopy) {
+    welcomeCopy.textContent =
+      "Задай вопрос, прикрепи файл или начни разговор.";
+  }
+
+  if (window.matchMedia("(max-width: 720px)").matches) {
+    el("sidebar").classList.add("closed");
+  }
+
+  function positionPicker() {
+    if (picker.classList.contains("hidden")) return;
+
+    const rect = trigger.getBoundingClientRect();
+    const width = Math.min(350, window.innerWidth - 24);
+
+    picker.style.width = width + "px";
+    picker.style.left = Math.max(
+      12,
+      Math.min(rect.left, window.innerWidth - width - 12)
+    ) + "px";
+    picker.style.top = rect.bottom + 8 + "px";
+    picker.style.bottom = "auto";
+    picker.style.maxHeight =
+      Math.max(100, window.innerHeight - rect.bottom - 24) + "px";
+  }
+
+  function closePicker() {
+    picker.classList.add("hidden");
+    trigger.setAttribute("aria-expanded", "false");
+  }
+
+  trigger.onclick = event => {
+    event.stopPropagation();
+
+    if (!picker.classList.contains("hidden")) {
+      closePicker();
+      return;
+    }
+
+    openModelPicker();
+
+    // Категории — заголовки. Выбор производится кнопками моделей.
+    picker.querySelectorAll(".model-section-button").forEach(button => {
+      button.onclick = null;
+      button.tabIndex = -1;
+    });
+
+    trigger.setAttribute("aria-expanded", "true");
+    positionPicker();
+  };
+
+  picker.addEventListener("click", event => {
+    if (event.target.closest(".model-option")) {
+      closePicker();
+    }
+  });
+
+  document.addEventListener("click", event => {
+    if (!picker.contains(event.target) && !trigger.contains(event.target)) {
+      closePicker();
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closePicker();
+  });
+
+  window.addEventListener("resize", positionPicker);
+
+  // Сохраняем иконку, когда исходный send() меняет текст кнопки.
+  let sendIcon = "";
+
+  function refreshSendIcon() {
+    const name = state.request ? "stop" : "arrow";
+    if (name === sendIcon) return;
+    sendIcon = name;
+
+    setIcon(
+      el("send-button"),
+      name,
+      state.request ? "Остановить ответ" : "Отправить сообщение"
+    );
+  }
+
+  new MutationObserver(refreshSendIcon).observe(
+    el("send-button"),
+    { childList: true }
+  );
+
+  refreshSendIcon();
+
+  // Полностью заменяем предыдущие обработчики голоса.
+  if (state.recognition) {
+    state.recognition.onend = null;
+    state.recognition.onerror = null;
+    state.recognition.onresult = null;
+    try { state.recognition.abort(); } catch {}
+    state.recognition = null;
+  }
+
+  let recognition = null;
+  let voiceRequest = null;
+  let session = 0;
+
+  const dialog = el("voice-dialog");
+  const status = el("voice-status");
+  const orb = el("voice-orb");
+
+  const voiceCopy = dialog.querySelector(".dialog-copy");
+  if (voiceCopy) {
+    voiceCopy.textContent =
+      "Скажи фразу. После распознавания ИИ ответит голосом. " +
+      "Для следующей реплики снова нажми «Слушать».";
+  }
+
+  function showStatus(text, conversation) {
+    if (conversation) status.textContent = text;
+    else note(text);
+  }
+
+  function cleanupVoice() {
+    session++;
+
+    const previous = recognition;
+    recognition = null;
+
+    if (previous) {
+      previous.onresult = null;
+      previous.onerror = null;
+      previous.onend = null;
+      previous.onstart = null;
+      try { previous.abort(); } catch {}
+    }
+
+    if (voiceRequest) {
+      voiceRequest.abort();
+      voiceRequest = null;
+    }
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+
+    dictation.setAttribute("aria-pressed", "false");
+    el("voice-button").setAttribute("aria-pressed", "false");
+    orb.classList.remove("active");
+    el("voice-listen").disabled = false;
+  }
+
+  function recognitionError(error) {
+    const messages = {
+      "not-allowed":
+        "Браузер запретил распознавание речи. Проверь разрешения " +
+        "для этого сайта. Если окно не предлагает разрешить — " +
+        "нужны название браузера и скриншот окна.",
+      "service-not-allowed":
+        "Браузер не разрешает использовать сервис распознавания.",
+      "audio-capture":
+        "Не удалось получить звук с микрофона.",
+      "no-speech":
+        "Речь не распознана. Попробуй сказать фразу ещё раз.",
+      "network":
+        "Не удалось связаться с сервисом распознавания речи."
+    };
+
+    return messages[error] || "Ошибка распознавания: " + error;
+  }
+
+  async function answerByVoice(text, token, chat, model) {
+    if (token !== session) return;
+
+    if (state.request) {
+      status.textContent = "Дождись завершения запроса в чате.";
+      el("voice-listen").disabled = false;
+      return;
+    }
+
+    const controller = new AbortController();
+    voiceRequest = controller;
+
+    try {
+      status.textContent = "Готовлю ответ…";
+
+      if (!chat.messages.length) {
+        chat.title = text.slice(0, 42);
+      }
+
+      chat.messages.push({
+        role: "user",
+        text,
+        files: []
+      });
+
+      // Не используем старый ответ из истории при ошибке запроса.
+      const messages = buildMessages(chat);
+      render();
+
+      try { save(); } catch {
+        note("Историю не удалось сохранить в браузере.");
+      }
+
+      const data = await request("/chat/completions", {
+        method: "POST",
+        signal: controller.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: model.id,
+          messages,
+          stream: false
+        })
+      });
+
+      if (token !== session) return;
+
+      const content = data?.choices?.[0]?.message?.content;
+      const answer = typeof content === "string"
+        ? content
+        : Array.isArray(content)
+          ? content.filter(part => part.type === "text")
+            .map(part => part.text || "").join("\n")
+          : "";
+
+      if (!answer.trim()) {
+        throw new Error("Модель вернула пустой ответ.");
+      }
+
+      chat.messages.push({
+        role: "assistant",
+        text: answer,
+        model: model.name || model.id
+      });
+
+      render();
+      try { save(); } catch {
+        note("Ответ получен, но историю не удалось сохранить.");
+      }
+
+      if (!("speechSynthesis" in window)) {
+        status.textContent = "Ответ готов в чате. Озвучка недоступна.";
+        return;
+      }
+
+      status.textContent = "Отвечаю голосом…";
+      orb.classList.add("active");
+
+      const utterance = new SpeechSynthesisUtterance(answer);
+      utterance.lang = "ru-RU";
+      utterance.rate = 1;
+
+      const russianVoice = window.speechSynthesis.getVoices()
+        .find(voice => /^ru(?:-|_)/i.test(voice.lang));
+
+      if (russianVoice) utterance.voice = russianVoice;
+
+      utterance.onend = () => {
+        if (token !== session) return;
+        orb.classList.remove("active");
+        status.textContent =
+          "Нажми «Слушать», чтобы сказать следующую реплику.";
+      };
+
+      utterance.onerror = () => {
+        if (token !== session) return;
+        orb.classList.remove("active");
+        status.textContent =
+          "Ответ есть в чате, но браузер не смог его озвучить.";
+      };
+
+      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      if (token === session && error.name !== "AbortError") {
+        status.textContent = error.message;
+      }
+    } finally {
+      if (voiceRequest === controller) voiceRequest = null;
+      if (token === session) {
+        el("voice-listen").disabled = false;
+      }
+    }
+  }
+
+  function startRecognition(conversation) {
+    cleanupVoice();
+
+    const Speech =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!Speech) {
+      showStatus(
+        "В этом браузере нет доступного SpeechRecognition.",
+        conversation
+      );
+      return;
+    }
+
+    let chat = null;
+    let model = null;
+
+    if (conversation) {
+      if (!state.password || !state.models.chat.length) {
+        status.textContent =
+          "Подключи Worker и выбери модель из раздела «Чат».";
+        return;
+      }
+
+      if (state.request) {
+        status.textContent = "Сначала дождись ответа в чате.";
+        return;
+      }
+
+      if (state.files.length) {
+        status.textContent =
+          "Сначала отправь или убери вложения из поля ввода.";
+        return;
+      }
+
+      model = state.models.chat.find(
+        item => item.id === state.selectedModel
+      );
+
+      if (!model) {
+        status.textContent =
+          "Выбери текстовую модель в верхнем меню, затем начни разговор.";
+        return;
+      }
+
+      chat = currentChat();
+
+      if (
+        chat.messages.some(message =>
+          (message.files || []).some(file => file.kind === "image")
+        ) &&
+        model.capabilities?.vision !== true
+      ) {
+        status.textContent =
+          "В этом диалоге есть изображения. Начни новый чат " +
+          "или выбери модель с подтверждённой поддержкой изображений.";
+        return;
+      }
+    }
+
+    const token = session;
+    const instance = new Speech();
+    recognition = instance;
+
+    const originalText = el("input").value;
+    let finalText = "";
+    let failed = false;
+
+    instance.lang = "ru-RU";
+    instance.continuous = false;
+    instance.interimResults = true;
+
+    instance.onstart = () => {
+      if (token !== session) return;
+
+      showStatus("Слушаю…", conversation);
+
+      if (conversation) {
+        orb.classList.add("active");
+        el("voice-listen").disabled = true;
+      } else {
+        dictation.setAttribute("aria-pressed", "true");
+      }
+    };
+
+    instance.onresult = event => {
+      if (token !== session) return;
+
+      const completed = [];
+      const pending = [];
+
+      for (const result of event.results) {
+        (result.isFinal ? completed : pending)
+          .push(result[0].transcript);
+      }
+
+      finalText = completed.join(" ").trim();
+      const preview = [...completed, ...pending].join(" ").trim();
+
+      if (conversation) {
+        status.textContent = preview || "Слушаю…";
+      } else {
+        el("input").value =
+          originalText +
+          (originalText && preview ? " " : "") +
+          preview;
+        el("input").dispatchEvent(new Event("input"));
+      }
+    };
+
+    instance.onerror = event => {
+      if (token !== session) return;
+
+      failed = true;
+      orb.classList.remove("active");
+      dictation.setAttribute("aria-pressed", "false");
+      el("voice-listen").disabled = false;
+
+      showStatus(recognitionError(event.error), conversation);
+    };
+
+    instance.onend = () => {
+      if (token !== session) return;
+
+      recognition = null;
+      orb.classList.remove("active");
+      dictation.setAttribute("aria-pressed", "false");
+
+      if (failed) return;
+
+      if (!conversation) {
+        note("Голосовой ввод завершён. Проверь текст перед отправкой.");
+        return;
+      }
+
+      if (!finalText) {
+        status.textContent = "Речь не распознана. Попробуй ещё раз.";
+        el("voice-listen").disabled = false;
+        return;
+      }
+
+      answerByVoice(finalText, token, chat, model);
+    };
+
+    try {
+      instance.start();
+    } catch (error) {
+      cleanupVoice();
+      showStatus(
+        "Распознавание не запустилось: " + error.message,
+        conversation
+      );
+    }
+  }
+
+  dictation.onclick = () => {
+    if (recognition) {
+      try { recognition.stop(); } catch { cleanupVoice(); }
+      return;
+    }
+
+    if (state.request || voiceRequest) {
+      note("Дождись завершения текущего запроса.");
+      return;
+    }
+
+    startRecognition(false);
+  };
+
+  el("voice-button").onclick = () => {
+    cleanupVoice();
+    closePicker();
+
+    status.textContent =
+      "Нажми «Слушать». Речь отправится в выбранную текстовую модель.";
+
+    if (!dialog.open) dialog.showModal();
+  };
+
+  el("voice-listen").onclick = () => startRecognition(true);
+
+  el("voice-stop").onclick = () => {
+    cleanupVoice();
+    status.textContent = "Остановлено.";
+  };
+
+  const closeVoiceButton = dialog.querySelector(
+    '[data-close="voice-dialog"]'
+  );
+
+  if (closeVoiceButton) {
+    closeVoiceButton.onclick = () => {
+      cleanupVoice();
+      dialog.close();
+    };
+  }
+
+  dialog.addEventListener("cancel", cleanupVoice);
+  dialog.addEventListener("close", cleanupVoice);
+
+  el("send-button").addEventListener("click", () => {
+    if (recognition) cleanupVoice();
+  }, true);
+
+  window.addEventListener("pagehide", cleanupVoice);
+})();
 </script>
+
 </body>
 </html>
