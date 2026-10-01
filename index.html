@@ -7,16 +7,14 @@
 
 <style>
 :root {
-  --bg: #f7f6f2;
-  --surface: #fffefa;
-  --surface-2: #efede7;
-  --border: #dedbd2;
-  --text: #292722;
-  --muted: #858078;
-  --accent: #c56f4e;
-  --accent-dark: #a9573d;
-  --danger: #b84d45;
-  --shadow: 0 12px 40px rgba(44, 36, 25, .08);
+  --bg: #f8f7f3;
+  --panel: #fffefa;
+  --soft: #eeece5;
+  --line: #dfddd5;
+  --text: #302e2a;
+  --muted: #85817a;
+  --accent: #c96e4b;
+  --danger: #b64d47;
 }
 
 * {
@@ -34,7 +32,7 @@ body {
   overflow: hidden;
   color: var(--text);
   background: var(--bg);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, serif;
 }
 
 button,
@@ -50,14 +48,13 @@ button {
 }
 
 button:disabled {
+  opacity: .5;
   cursor: wait;
-  opacity: .55;
 }
 
 button:focus-visible,
-input:focus-visible,
 textarea:focus-visible,
-select:focus-visible {
+input:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -72,16 +69,14 @@ select:focus-visible {
   height: 100dvh;
 }
 
-/* Sidebar */
-
 .sidebar {
   display: flex;
-  width: 244px;
-  flex: 0 0 244px;
+  width: 236px;
+  flex: 0 0 236px;
   flex-direction: column;
-  padding: 24px 13px 14px;
-  border-right: 1px solid var(--border);
-  background: var(--bg);
+  padding: 22px 12px 13px;
+  border-right: 1px solid var(--line);
+  background: #f2f1ed;
   transition: .2s ease;
 }
 
@@ -94,38 +89,24 @@ select:focus-visible {
 }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 9px 28px;
+  margin: 4px 10px 28px;
   font-size: 24px;
   letter-spacing: -1px;
 }
 
-.brand-mark {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  color: var(--accent);
-  font-size: 18px;
-}
-
 .new-chat {
-  width: 100%;
-  padding: 11px 13px;
+  align-self: flex-start;
+  padding: 8px 9px;
   border: 0;
-  border-radius: 8px;
-  color: #fff;
-  background: var(--accent);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text);
   font-family: Arial, sans-serif;
   font-size: 12px;
 }
 
 .new-chat:hover {
-  background: var(--accent-dark);
+  background: var(--soft);
 }
 
 .history {
@@ -135,23 +116,24 @@ select:focus-visible {
 }
 
 .history-label {
-  margin: 20px 8px 8px;
+  margin: 19px 8px 8px;
   color: var(--muted);
   font-family: Arial, sans-serif;
   font-size: 10px;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.3px;
   text-transform: uppercase;
 }
 
 .chat-row {
   display: flex;
   align-items: center;
+  gap: 2px;
   margin-bottom: 2px;
   border-radius: 8px;
 }
 
 .chat-row.active {
-  background: var(--surface-2);
+  background: var(--soft);
 }
 
 .chat-title {
@@ -168,25 +150,32 @@ select:focus-visible {
   font-size: 12px;
 }
 
+.chat-pin,
 .chat-delete {
-  padding: 7px 9px;
+  width: 27px;
+  height: 30px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+
+.chat-pin.active {
+  color: var(--accent);
 }
 
 .profile-button {
   width: 100%;
-  padding: 13px 8px 4px;
+  padding: 13px 8px 3px;
   border: 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
   background: transparent;
   text-align: left;
   font-family: Arial, sans-serif;
   font-size: 12px;
 }
-
-/* Main */
 
 .main {
   display: flex;
@@ -198,9 +187,16 @@ select:focus-visible {
 .topbar {
   display: flex;
   align-items: center;
-  gap: 13px;
-  min-height: 64px;
-  padding: 12px 28px;
+  gap: 10px;
+  min-height: 62px;
+  padding: 11px 27px;
+}
+
+.icon-button,
+.model-trigger {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
 }
 
 .icon-button {
@@ -209,79 +205,86 @@ select:focus-visible {
   height: 34px;
   place-items: center;
   padding: 0;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
   color: var(--muted);
   font-family: Arial, sans-serif;
-  font-size: 18px;
+  font-size: 17px;
 }
 
-.icon-button:hover {
-  background: var(--surface-2);
+.icon-button:hover,
+.model-trigger:hover {
+  background: var(--soft);
 }
 
 .page-title {
   min-width: 0;
   flex: 1;
   overflow: hidden;
+  color: var(--muted);
+  text-align: right;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 12px;
+}
+
+.model-trigger {
+  display: flex;
+  max-width: min(310px, 48vw);
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  text-align: left;
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.model-trigger::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
 }
 
 .connection {
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 10px;
+  font: 10px Arial, sans-serif;
 }
 
 .connection.connected {
-  color: #5d8555;
+  color: #5c8554;
 }
 
-.content-scroll {
+.scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 30px 22px 28px;
+  padding: 28px 22px 25px;
 }
 
 .welcome {
   width: min(650px, 100%);
-  margin: 14vh auto 0;
+  margin: 15vh auto 0;
   text-align: center;
 }
 
-.welcome-symbol {
-  display: grid;
-  width: 56px;
-  height: 56px;
-  margin: 0 auto;
-  place-items: center;
-  border: 1px solid var(--accent);
-  border-radius: 50%;
-  color: var(--accent);
-  font-size: 29px;
-}
-
 .welcome h1 {
-  margin: 22px 0 13px;
-  font-size: clamp(39px, 6vw, 66px);
+  margin: 0 0 15px;
+  font-size: clamp(38px, 5vw, 58px);
   font-weight: normal;
-  letter-spacing: -3px;
-  line-height: .98;
+  letter-spacing: -2px;
+  line-height: 1.05;
 }
 
 .welcome p {
-  max-width: 430px;
+  max-width: 410px;
   margin: auto;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 .messages {
   width: min(760px, 100%);
-  margin: 0 auto;
+  margin: auto;
 }
 
 .message {
@@ -295,8 +298,7 @@ select:focus-visible {
 .message-label {
   margin-bottom: 7px;
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 10px;
+  font: 10px Arial, sans-serif;
 }
 
 .message.user .message-label {
@@ -304,7 +306,7 @@ select:focus-visible {
 }
 
 .message-body {
-  line-height: 1.72;
+  line-height: 1.7;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -314,7 +316,7 @@ select:focus-visible {
   max-width: 90%;
   padding: 11px 15px;
   border-radius: 15px;
-  background: var(--surface-2);
+  background: var(--soft);
   text-align: left;
 }
 
@@ -330,36 +332,29 @@ select:focus-visible {
   border-radius: 10px;
 }
 
-.message video {
-  display: block;
-  max-width: 100%;
-  border-radius: 10px;
-}
-
-.message-tools {
-  display: flex;
-  gap: 6px;
-  margin-top: 9px;
-}
-
-.message-tools button {
-  padding: 5px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 10px;
-}
-
 pre {
   overflow: auto;
   margin: 12px 0;
   padding: 13px;
   border-radius: 8px;
-  background: var(--surface-2);
+  background: var(--soft);
   font: 12px/1.6 monospace;
   white-space: pre;
+}
+
+.tools {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tools button {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font: 10px Arial, sans-serif;
 }
 
 .waiting {
@@ -367,10 +362,9 @@ pre {
   align-items: center;
   gap: 8px;
   width: min(760px, 100%);
-  margin: 0 auto 18px;
+  margin: 0 auto 17px;
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 11px;
+  font: 11px Arial, sans-serif;
 }
 
 .waiting-dot {
@@ -387,10 +381,8 @@ pre {
   }
 }
 
-/* Composer */
-
 .composer-area {
-  padding: 8px 22px 21px;
+  padding: 7px 22px 20px;
 }
 
 .composer {
@@ -402,40 +394,37 @@ pre {
   min-height: 20px;
   margin: 0 3px 5px;
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 11px;
   white-space: pre-wrap;
+  font: 11px Arial, sans-serif;
 }
 
 .attachments {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 7px;
+  gap: 5px;
+  margin-bottom: 6px;
 }
 
 .attachment {
-  max-width: 230px;
+  max-width: 220px;
   overflow: hidden;
-  padding: 6px 9px;
-  border: 1px solid var(--border);
+  padding: 6px 8px;
+  border: 1px solid var(--line);
   border-radius: 7px;
-  background: var(--surface);
+  background: var(--panel);
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: Arial, sans-serif;
-  font-size: 10px;
+  font: 10px Arial, sans-serif;
 }
 
 .composer-box {
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
 }
 
 .composer-box:focus-within {
-  border-color: var(--accent);
+  border-color: #b9b6ae;
 }
 
 #input {
@@ -453,124 +442,76 @@ pre {
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 5px 8px 8px;
+  gap: 5px;
+  padding: 5px 9px 9px;
 }
 
 .toolbar-button,
-.mode-button {
-  height: 33px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-}
-
-.toolbar-button {
-  width: 33px;
+.send-button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
   padding: 0;
-  color: var(--muted);
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  font-family: Arial, sans-serif;
   font-size: 17px;
 }
 
 .toolbar-button:hover,
-.mode-button:hover {
-  background: var(--surface-2);
+.send-button:hover {
+  background: var(--soft);
 }
 
-.mode-button {
-  padding: 0 8px;
-  color: var(--muted);
-}
-
-.model-trigger {
-  max-width: 180px;
-  overflow: hidden;
-  padding: 0 9px;
-  color: var(--muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-}
-
-.model-trigger:hover {
-  background: var(--surface-2);
+.voice-input {
+  color: var(--accent);
 }
 
 .send-button {
-  display: grid;
-  width: 34px;
-  height: 33px;
   margin-left: auto;
-  place-items: center;
-  padding: 0;
-  border: 0;
-  border-radius: 8px;
-  color: white;
-  background: var(--accent);
   font-size: 16px;
 }
 
-.send-button:hover {
-  background: var(--accent-dark);
+#mode {
+  display: none;
 }
-
-/* Model picker */
 
 .model-picker {
   position: fixed;
-  z-index: 40;
+  z-index: 30;
   width: min(350px, calc(100vw - 24px));
-  max-height: min(520px, calc(100vh - 24px));
+  max-height: calc(100vh - 24px);
   overflow-y: auto;
   padding: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 13px;
-  background: var(--surface);
-  box-shadow: 0 18px 55px rgba(45, 37, 25, .17);
+  background: var(--panel);
+  box-shadow: 0 16px 45px #0002;
 }
 
-.model-picker-title {
-  padding: 8px 9px 6px;
+.picker-title {
+  padding: 8px;
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 10px;
-  letter-spacing: 1.2px;
+  font: 10px Arial, sans-serif;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .model-section {
-  margin-top: 5px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
 }
 
 .model-section:first-of-type {
   border-top: 0;
 }
 
-.model-section-button {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 8px;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-}
-
-.model-section-button:hover {
-  background: var(--surface-2);
-}
-
-.model-section-list {
-  display: grid;
-  gap: 2px;
-  padding: 0 4px 5px;
+.section-title {
+  padding: 9px 8px 5px;
+  color: var(--muted);
+  font: 11px Arial, sans-serif;
 }
 
 .model-option {
@@ -585,7 +526,7 @@ pre {
 
 .model-option:hover,
 .model-option.active {
-  background: var(--surface-2);
+  background: var(--soft);
 }
 
 .model-option strong,
@@ -602,25 +543,24 @@ pre {
   margin-top: 3px;
   overflow: hidden;
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 9px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font: 9px Arial, sans-serif;
 }
 
-/* Dialog */
-
 dialog {
-  width: min(450px, calc(100% - 24px));
-  padding: 23px;
-  border: 1px solid var(--border);
-  border-radius: 15px;
+  width: min(440px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
   color: var(--text);
-  background: var(--surface);
+  background: var(--panel);
 }
 
 dialog::backdrop {
-  background: rgba(40, 34, 26, .52);
+  background: #24211c88;
   backdrop-filter: blur(3px);
 }
 
@@ -635,151 +575,128 @@ dialog::backdrop {
   font-weight: normal;
 }
 
-.close-button {
+.close {
+  width: 34px;
+  height: 34px;
+  padding: 0;
   border: 0;
+  border-radius: 8px;
   background: transparent;
-  font-size: 21px;
+  font-size: 22px;
 }
 
-.dialog-copy {
-  color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1.55;
+.close:hover {
+  background: var(--soft);
 }
 
-.field-label {
+label {
   display: block;
   margin: 18px 0 6px;
-  font-family: Arial, sans-serif;
-  font-size: 11px;
+  font: 11px Arial, sans-serif;
 }
 
 .field {
   width: 100%;
   padding: 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 8px;
   outline: 0;
-  background: var(--surface);
+  background: var(--panel);
 }
 
-.dialog-status {
+.status {
   min-height: 20px;
   margin-top: 12px;
   color: var(--muted);
-  font-family: Arial, sans-serif;
-  font-size: 11px;
   white-space: pre-wrap;
+  font: 11px Arial, sans-serif;
 }
 
-.dialog-actions {
+.actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 19px;
+  gap: 7px;
+  margin-top: 18px;
 }
 
 .primary {
   padding: 10px 13px;
-  border: 0;
+  border: 1px solid var(--line);
   border-radius: 8px;
-  color: white;
-  background: var(--accent);
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-}
-
-.primary:hover {
-  background: var(--accent-dark);
-}
-
-.profile-list {
-  display: grid;
-  gap: 6px;
-  margin-top: 17px;
-}
-
-.profile-list button {
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: transparent;
-  text-align: left;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-}
-
-.voice-state {
-  margin: 22px 0;
-  padding: 18px;
-  border-radius: 12px;
-  background: var(--surface-2);
-  text-align: center;
-  font-family: Arial, sans-serif;
-  font-size: 13px;
+  background: var(--soft);
+  color: var(--text);
+  font: 12px Arial, sans-serif;
 }
 
 .voice-orb {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 14px;
+  width: 72px;
+  height: 72px;
+  margin: 32px auto 18px;
   border-radius: 50%;
-  background: var(--accent);
-  opacity: .88;
+  background: #77756f;
 }
 
 .voice-orb.active {
   animation: voice-pulse 1.2s infinite;
 }
 
+.voice-status {
+  min-height: 42px;
+  color: var(--muted);
+  text-align: center;
+  font: 13px/1.5 Arial, sans-serif;
+}
+
 @keyframes voice-pulse {
   50% {
-    transform: scale(.78);
-    box-shadow: 0 0 0 18px rgba(197, 111, 78, .14);
+    transform: scale(.82);
+    box-shadow: 0 0 0 18px #77756f18;
   }
 }
 
-/* Mobile */
+.profile-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.profile-list button {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+  font: 12px Arial, sans-serif;
+}
 
 @media (max-width: 720px) {
   .sidebar {
     position: fixed;
     z-index: 20;
     inset: 0 auto 0 0;
-    box-shadow: 20px 0 55px rgba(0, 0, 0, .18);
+    box-shadow: 20px 0 55px #0003;
   }
 
   .topbar {
-    padding: 11px 13px;
+    padding: 10px 12px;
   }
 
-  .connection {
+  .connection,
+  .page-title {
     display: none;
   }
 
-  .content-scroll {
-    padding: 25px 13px 20px;
+  .model-trigger {
+    max-width: none;
+    flex: 1;
+  }
+
+  .scroll {
+    padding: 24px 13px 19px;
   }
 
   .composer-area {
     padding: 7px 12px 14px;
-  }
-
-  .toolbar {
-    flex-wrap: wrap;
-  }
-
-  .mode-button {
-    max-width: 135px;
-  }
-
-  .model-trigger {
-    max-width: 145px;
-  }
-
-  .message.user .message-body {
-    max-width: 95%;
   }
 }
 </style>
@@ -788,13 +705,10 @@ dialog::backdrop {
 <body>
 <div class="app">
   <aside id="sidebar" class="sidebar">
-    <div class="brand">
-      <span class="brand-mark">✦</span>
-      <span>nexus</span>
-    </div>
+    <div class="brand">nexus</div>
 
     <button id="new-chat" class="new-chat">
-      ＋ Новый диалог
+      ＋ Новый
     </button>
 
     <div id="history" class="history"></div>
@@ -807,6 +721,10 @@ dialog::backdrop {
   <main class="main">
     <header class="topbar">
       <button id="menu-button" class="icon-button">☰</button>
+
+      <button id="model-trigger" class="model-trigger">
+        Выбрать модель
+      </button>
 
       <div id="page-title" class="page-title">
         Новый диалог
@@ -821,18 +739,12 @@ dialog::backdrop {
       </button>
     </header>
 
-    <section id="content-scroll" class="content-scroll">
+    <section id="scroll" class="scroll">
       <div id="welcome" class="welcome">
-        <div class="welcome-symbol">✦</div>
-
-        <h1>
-          О чём<br>
-          поговорим?
-        </h1>
-
+        <h1>С чего начнём?</h1>
         <p>
-          Текст, изображения, анализ файлов и голос —
-          в одном спокойном пространстве.
+          Задай вопрос, прикрепи изображение
+          или начни разговор.
         </p>
       </div>
 
@@ -840,7 +752,9 @@ dialog::backdrop {
 
       <div id="waiting" class="waiting hidden">
         <span class="waiting-dot"></span>
-        <span id="waiting-text">Модель готовит ответ…</span>
+        <span id="waiting-text">
+          Модель готовит ответ…
+        </span>
       </div>
     </section>
 
@@ -863,26 +777,32 @@ dialog::backdrop {
             >＋</button>
 
             <button
-              id="voice-button"
+              id="talk-button"
               class="toolbar-button"
-              title="Голосовой разговор"
-            >♩</button>
+              title="Разговор с ИИ"
+            >◌</button>
 
-            <select id="mode" class="mode-button">
+            <select id="mode">
               <option value="chat">Чат</option>
-              <option value="vision">Анализ изображения</option>
-              <option value="image">Создать изображение</option>
+              <option value="vision">
+                Анализ изображения
+              </option>
+              <option value="image">
+                Создать изображение
+              </option>
             </select>
 
             <button
-              id="model-trigger"
-              class="model-trigger"
-              type="button"
-            >Выбрать модель</button>
+              id="voice-input-button"
+              class="toolbar-button voice-input"
+              title="Голосовой ввод"
+            >♩</button>
 
-            <button id="send-button" class="send-button">
-              ↑
-            </button>
+            <button
+              id="send-button"
+              class="send-button"
+              title="Отправить"
+            >↑</button>
           </div>
         </div>
       </div>
@@ -903,27 +823,17 @@ dialog::backdrop {
 <dialog id="settings-dialog">
   <div class="dialog-head">
     <h2>Подключение</h2>
-
-    <button
-      class="close-button"
-      data-close="settings-dialog"
-    >×</button>
+    <button class="close" data-close="settings-dialog">×</button>
   </div>
 
-  <label class="field-label" for="worker-url">
-    Адрес Cloudflare Worker
-  </label>
-
+  <label for="worker-url">Адрес Worker</label>
   <input
     id="worker-url"
     class="field"
     value="https://small-recipe-c9fd.zemcovaalena5.workers.dev"
   >
 
-  <label class="field-label" for="app-password">
-    Пароль APP_PASSWORD
-  </label>
-
+  <label for="app-password">APP_PASSWORD</label>
   <input
     id="app-password"
     class="field"
@@ -931,19 +841,16 @@ dialog::backdrop {
     autocomplete="off"
   >
 
-  <label class="field-label" for="system-prompt">
-    Инструкция модели
-  </label>
-
+  <label for="system-prompt">Инструкция модели</label>
   <textarea
     id="system-prompt"
     class="field"
     rows="3"
   >Отвечай по-русски, ясно и по существу.</textarea>
 
-  <div id="settings-status" class="dialog-status"></div>
+  <div id="settings-status" class="status"></div>
 
-  <div class="dialog-actions">
+  <div class="actions">
     <button id="connect-button" class="primary">
       Подключить
     </button>
@@ -953,26 +860,16 @@ dialog::backdrop {
 <dialog id="voice-dialog">
   <div class="dialog-head">
     <h2>Разговор с ИИ</h2>
-
-    <button
-      class="close-button"
-      data-close="voice-dialog"
-    >×</button>
+    <button class="close" data-close="voice-dialog">×</button>
   </div>
 
-  <div class="voice-state">
-    <div id="voice-orb" class="voice-orb"></div>
-    <div id="voice-status">
-      Нажми «Слушать» и говори.
-    </div>
+  <div class="voice-orb" id="voice-orb"></div>
+
+  <div id="voice-status" class="voice-status">
+    Нажми «Слушать».
   </div>
 
-  <p class="dialog-copy">
-    После распознавания сообщение отправится в выбранную
-    модель, а ответ будет озвучен голосом браузера.
-  </p>
-
-  <div class="dialog-actions">
+  <div class="actions">
     <button id="voice-listen" class="primary">
       Слушать
     </button>
@@ -986,28 +883,16 @@ dialog::backdrop {
 <dialog id="profiles-dialog">
   <div class="dialog-head">
     <h2>Профили</h2>
-
-    <button
-      class="close-button"
-      data-close="profiles-dialog"
-    >×</button>
+    <button class="close" data-close="profiles-dialog">×</button>
   </div>
 
   <div id="profile-list" class="profile-list"></div>
 
   <form id="profile-form">
-    <label class="field-label" for="profile-name">
-      Имя профиля
-    </label>
+    <label for="profile-name">Имя профиля</label>
+    <input id="profile-name" class="field" required maxlength="40">
 
-    <input
-      id="profile-name"
-      class="field"
-      maxlength="40"
-      required
-    >
-
-    <div class="dialog-actions">
+    <div class="actions">
       <button class="primary">
         Создать профиль
       </button>
@@ -1021,7 +906,7 @@ dialog::backdrop {
 const DEFAULT_WORKER =
   "https://small-recipe-c9fd.zemcovaalena5.workers.dev";
 
-const STORE = "nexus_claude_final_v1";
+const STORE = "nexus_clean_v1";
 
 const state = {
   worker: DEFAULT_WORKER,
@@ -1066,6 +951,7 @@ function currentChat() {
     profile.chats.push({
       id: uid("chat"),
       title: "Новый диалог",
+      pinned: false,
       messages: []
     });
   }
@@ -1115,19 +1001,23 @@ function load() {
       chats: [{
         id: uid("chat"),
         title: "Новый диалог",
+        pinned: false,
         messages: []
       }],
       currentChat: null
     };
 
-    profile.currentChat = profile.chats[0].id;
+    profile.currentChat =
+      profile.chats[0].id;
+
     state.profiles.push(profile);
   }
 
   if (!state.profiles.some(
     profile => profile.id === state.activeProfile
   )) {
-    state.activeProfile = state.profiles[0].id;
+    state.activeProfile =
+      state.profiles[0].id;
   }
 
   currentChat();
@@ -1184,44 +1074,45 @@ async function request(path, options = {}) {
   return data;
 }
 
-function modelList() {
+function modelsForMode() {
   if (state.mode === "vision") {
-    if (state.models.vision.length) {
-      return state.models.vision;
-    }
-
-    return state.models.chat.filter(
-      model => model.capabilities?.vision
-    );
+    return state.models.vision.length
+      ? state.models.vision
+      : state.models.chat.filter(
+        model => model.capabilities?.vision
+      );
   }
 
   return state.models[state.mode] || [];
 }
 
-function selectedModelObject() {
-  return modelList().find(
-    model => model.id === state.selectedModel
-  );
-}
-
 function selectFirstModel() {
-  const list = modelList();
+  const list = modelsForMode();
 
   if (!list.some(
     model => model.id === state.selectedModel
   )) {
-    state.selectedModel = list[0]?.id || "";
+    state.selectedModel =
+      list[0]?.id || "";
   }
 
   updateModelButton();
 }
 
+function selectedModel() {
+  return modelsForMode().find(
+    model => model.id === state.selectedModel
+  );
+}
+
 function updateModelButton() {
-  const model = selectedModelObject();
+  const model = selectedModel();
 
   $("model-trigger").textContent =
     model
-      ? model.name || model.display_name || model.id
+      ? model.name ||
+        model.display_name ||
+        model.id
       : "Выбрать модель";
 }
 
@@ -1232,22 +1123,15 @@ function updateConnection() {
       list => list.length
     );
 
-  $("connection").textContent = connected
-    ? "Подключено"
-    : "Не подключено";
+  $("connection").textContent =
+    connected
+      ? "Подключено"
+      : "Не подключено";
 
   $("connection").classList.toggle(
     "connected",
     connected
   );
-}
-
-function modeTitle(mode) {
-  return {
-    chat: "Чат",
-    vision: "Анализ изображений",
-    image: "Создание изображений"
-  }[mode] || mode;
 }
 
 function openModelPicker() {
@@ -1256,18 +1140,26 @@ function openModelPicker() {
 
   picker.innerHTML = "";
 
-  const heading = document.createElement("div");
-  heading.className = "model-picker-title";
-  heading.textContent = "Выбор модели";
-  picker.append(heading);
+  const title = document.createElement("div");
+  title.className = "picker-title";
+  title.textContent = "Модели";
+  picker.append(title);
 
-  const categories = [
+  const sections = [
     ["chat", "Чат"],
     ["vision", "Анализ изображений"],
     ["image", "Создание изображений"]
   ];
 
-  categories.forEach(([mode, title]) => {
+  sections.forEach(([mode, label]) => {
+    const section = document.createElement("section");
+    section.className = "model-section";
+
+    const heading = document.createElement("div");
+    heading.className = "section-title";
+    heading.textContent = label;
+    section.append(heading);
+
     let models;
 
     if (mode === "vision") {
@@ -1280,31 +1172,24 @@ function openModelPicker() {
       models = state.models[mode] || [];
     }
 
-    const section = document.createElement("section");
-    section.className = "model-section";
-
-    const sectionButton = document.createElement("button");
-    sectionButton.className = "model-section-button";
-    sectionButton.innerHTML =
-      "<span>" + title + "</span><span>›</span>";
-
-    const list = document.createElement("div");
-    list.className = "model-section-list";
-
-    sectionButton.onclick = () => {
-      state.mode = mode;
-      $("mode").value = mode;
-      selectFirstModel();
-      closeModelPicker();
-    };
+    if (!models.length) {
+      const empty = document.createElement("div");
+      empty.className = "section-title";
+      empty.textContent =
+        "Модели не найдены.";
+      section.append(empty);
+    }
 
     models.forEach(model => {
       const option = document.createElement("button");
-      option.className = "model-option" +
-        (model.id === state.selectedModel &&
-        state.mode === mode
-          ? " active"
-          : "");
+      option.className =
+        "model-option" +
+        (
+          state.mode === mode &&
+          state.selectedModel === model.id
+            ? " active"
+            : ""
+        );
 
       const name = document.createElement("strong");
       name.textContent =
@@ -1314,10 +1199,7 @@ function openModelPicker() {
 
       const id = document.createElement("small");
       id.textContent =
-        model.display_name &&
-        model.display_name !== model.name
-          ? model.display_name
-          : model.id;
+        model.display_name || model.id;
 
       option.append(name, id);
 
@@ -1330,21 +1212,9 @@ function openModelPicker() {
         closeModelPicker();
       };
 
-      list.append(option);
+      section.append(option);
     });
 
-    if (!models.length) {
-      const empty = document.createElement("small");
-      empty.style.cssText =
-        "display:block;padding:8px;color:var(--muted);font:11px Arial";
-      empty.textContent =
-        mode === "vision"
-          ? "Vision-модель не определена Worker."
-          : "Модели не загружены.";
-      list.append(empty);
-    }
-
-    section.append(sectionButton, list);
     picker.append(section);
   });
 
@@ -1364,8 +1234,7 @@ function openModelPicker() {
       window.innerWidth - width - 12
     )
   ) + "px";
-  picker.style.bottom =
-    window.innerHeight - rect.top + 8 + "px";
+  picker.style.top = rect.bottom + 8 + "px";
 }
 
 function closeModelPicker() {
@@ -1418,15 +1287,15 @@ async function connect() {
 
     status.textContent =
       "Чат: " + state.models.chat.length +
-      "\nАнализ изображений: " +
-      (
-        state.models.vision.length ||
-        state.models.chat.filter(
-          model => model.capabilities?.vision
-        ).length
-      ) +
+      "\nАнализ фото: " +
+      state.models.vision.length +
       "\nИзображения: " +
-      state.models.image.length;
+      state.models.image.length +
+      (
+        catalog.warnings?.length
+          ? "\n\n" + catalog.warnings.join("\n")
+          : ""
+      );
 
     $("settings-dialog").close();
     note("Подключено.");
@@ -1444,6 +1313,7 @@ function createChat() {
   const chat = {
     id: uid("chat"),
     title: "Новый диалог",
+    pinned: false,
     messages: []
   };
 
@@ -1462,14 +1332,17 @@ function renderHistory() {
 
   box.innerHTML = "";
 
-  const heading = document.createElement("div");
-  heading.className = "history-label";
-  heading.textContent = "История";
-  box.append(heading);
+  const label = document.createElement("div");
+  label.className = "history-label";
+  label.textContent = "Диалоги";
+  box.append(label);
 
-  profile.chats.forEach(chat => {
+  const chats = [...profile.chats].sort(
+    (a, b) => Number(b.pinned) - Number(a.pinned)
+  );
+
+  chats.forEach(chat => {
     const row = document.createElement("div");
-
     row.className =
       "chat-row" +
       (chat.id === profile.currentChat
@@ -1488,9 +1361,26 @@ function renderHistory() {
       render();
     };
 
+    const pin = document.createElement("button");
+    pin.className =
+      "chat-pin" +
+      (chat.pinned ? " active" : "");
+    pin.textContent = chat.pinned ? "●" : "○";
+    pin.title = chat.pinned
+      ? "Открепить диалог"
+      : "Закрепить диалог";
+
+    pin.onclick = event => {
+      event.stopPropagation();
+      chat.pinned = !chat.pinned;
+      save();
+      renderHistory();
+    };
+
     const remove = document.createElement("button");
     remove.className = "chat-delete";
     remove.textContent = "×";
+    remove.title = "Удалить диалог";
 
     remove.onclick = event => {
       event.stopPropagation();
@@ -1504,14 +1394,16 @@ function renderHistory() {
         return;
       }
 
-      profile.currentChat =
-        profile.chats[0].id;
+      if (profile.currentChat === chat.id) {
+        profile.currentChat =
+          profile.chats[0].id;
+      }
 
       save();
       render();
     };
 
-    row.append(title, remove);
+    row.append(title, pin, remove);
     box.append(row);
   });
 }
@@ -1542,7 +1434,6 @@ function renderMessages(chat) {
 
   chat.messages.forEach(message => {
     const article = document.createElement("article");
-
     article.className =
       "message " +
       message.role +
@@ -1565,30 +1456,21 @@ function renderMessages(chat) {
         image.alt = file.name;
         body.append(image);
       }
-
-      if (file.kind === "text") {
-        body.append(
-          document.createTextNode(
-            "Файл: " + file.name + "\n"
-          )
-        );
-      }
     });
 
-    (message.images || []).forEach(source => {
+    (message.images || []).forEach(src => {
       const image = document.createElement("img");
-      image.src = source;
+      image.src = src;
       image.alt = "Созданное изображение";
       body.append(image);
     });
 
     renderText(body, message.text || "");
-
     article.append(label, body);
 
     if (message.role === "assistant") {
       const tools = document.createElement("div");
-      tools.className = "message-tools";
+      tools.className = "tools";
 
       const copy = document.createElement("button");
       copy.textContent = "Скопировать";
@@ -1597,7 +1479,7 @@ function renderMessages(chat) {
         await navigator.clipboard.writeText(
           message.text || ""
         );
-        note("Ответ скопирован.");
+        note("Скопировано.");
       };
 
       tools.append(copy);
@@ -1618,19 +1500,8 @@ function renderText(element, text) {
         return;
       }
 
-      const lines = part.split("\n");
-
-      if (
-        lines.length > 1 &&
-        /^[a-zA-Z0-9#+._-]+$/.test(
-          lines[0].trim()
-        )
-      ) {
-        lines.shift();
-      }
-
       const pre = document.createElement("pre");
-      pre.textContent = lines.join("\n");
+      pre.textContent = part;
       element.append(pre);
     }
   );
@@ -1641,23 +1512,23 @@ function renderAttachments() {
   box.innerHTML = "";
 
   state.files.forEach((file, index) => {
-    const button = document.createElement("button");
-    button.className = "attachment";
-    button.textContent = file.name + " ×";
+    const item = document.createElement("button");
+    item.className = "attachment";
+    item.textContent = file.name + " ×";
 
-    button.onclick = () => {
+    item.onclick = () => {
       state.files.splice(index, 1);
       renderAttachments();
     };
 
-    box.append(button);
+    box.append(item);
   });
 }
 
 function scrollBottom() {
   requestAnimationFrame(() => {
-    $("content-scroll").scrollTop =
-      $("content-scroll").scrollHeight;
+    $("scroll").scrollTop =
+      $("scroll").scrollHeight;
   });
 }
 
@@ -1778,31 +1649,24 @@ function delay(ms, signal) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(resolve, ms);
 
-    const abort = () => {
-      clearTimeout(timer);
-      reject(new DOMException(
-        "Запрос остановлен.",
-        "AbortError"
-      ));
-    };
-
     if (signal) {
-      if (signal.aborted) {
-        abort();
-        return;
-      }
-
       signal.addEventListener(
         "abort",
-        abort,
+        () => {
+          clearTimeout(timer);
+          reject(new DOMException(
+            "Остановлено.",
+            "AbortError"
+          ));
+        },
         { once: true }
       );
     }
   });
 }
 
-function extractImageUrls(value) {
-  const urls = [];
+function imageUrls(value) {
+  const result = [];
 
   function scan(item, depth = 0) {
     if (!item || depth > 7) return;
@@ -1812,7 +1676,7 @@ function extractImageUrls(value) {
         item.startsWith("https://") ||
         item.startsWith("data:image/")
       ) {
-        urls.push(item);
+        result.push(item);
       }
 
       return;
@@ -1834,10 +1698,10 @@ function extractImageUrls(value) {
 
   scan(value);
 
-  return [...new Set(urls)].slice(0, 8);
+  return [...new Set(result)].slice(0, 8);
 }
 
-async function downloadImage(url, signal) {
+async function getImage(url, signal) {
   if (url.startsWith("data:image/")) {
     return url;
   }
@@ -1853,18 +1717,14 @@ async function downloadImage(url, signal) {
     !data.data.startsWith("data:image/")
   ) {
     throw new Error(
-      "Worker не вернул данные изображения."
+      "Worker не вернул изображение."
     );
   }
 
   return data.data;
 }
 
-async function generateImage(
-  model,
-  prompt,
-  signal
-) {
+async function generateImage(model, prompt, signal) {
   const data = await request(
     "/images/generations",
     {
@@ -1882,18 +1742,12 @@ async function generateImage(
     }
   );
 
-  const direct = extractImageUrls(data);
+  let urls = imageUrls(data);
 
-  if (direct.length) {
-    const images = [];
-
-    for (const url of direct) {
-      images.push(
-        await downloadImage(url, signal)
-      );
-    }
-
-    return images;
+  if (urls.length) {
+    return Promise.all(
+      urls.map(url => getImage(url, signal))
+    );
   }
 
   const job =
@@ -1917,18 +1771,12 @@ async function generateImage(
       { signal }
     );
 
-    const urls = extractImageUrls(status);
+    urls = imageUrls(status);
 
     if (urls.length) {
-      const images = [];
-
-      for (const url of urls) {
-        images.push(
-          await downloadImage(url, signal)
-        );
-      }
-
-      return images;
+      return Promise.all(
+        urls.map(url => getImage(url, signal))
+      );
     }
 
     const value = String(
@@ -1983,7 +1831,7 @@ async function send() {
 
   if (!state.selectedModel) {
     note(
-      "Для этого режима нет доступной модели."
+      "Для этого режима нет подходящей модели."
     );
     openModelPicker();
     return;
@@ -2025,7 +1873,7 @@ async function send() {
         role: "assistant",
         text: "Создаю изображение…",
         images: [],
-        model: "Nano Banana"
+        model: "Изображение"
       };
 
       chat.messages.push(placeholder);
@@ -2038,8 +1886,7 @@ async function send() {
           controller.signal
         );
 
-      placeholder.text =
-        "Изображение создано.";
+      placeholder.text = "Изображение создано.";
     } else {
       setWaiting(
         true,
@@ -2053,7 +1900,10 @@ async function send() {
         controller.signal
       );
 
-      const model = selectedModelObject();
+      const model =
+        modelsForMode().find(
+          item => item.id === state.selectedModel
+        );
 
       chat.messages.push({
         role: "assistant",
@@ -2086,38 +1936,33 @@ async function send() {
   }
 }
 
-function addFiles(fileList) {
-  Array.from(fileList).forEach(async file => {
-    const isImage =
-      /^image\/(png|jpeg|webp|gif)$/
-        .test(file.type);
+function addFiles(files) {
+  Array.from(files).forEach(async file => {
+    const image =
+      /^image\/(png|jpeg|webp|gif)$/.test(
+        file.type
+      );
 
-    const isText =
+    const text =
       /\.(txt|md|js|ts|py|json|html|css|csv)$/i
         .test(file.name);
 
-    if (!isImage && !isText) {
+    if (!image && !text) {
       note("Этот тип файла не поддерживается.");
       return;
     }
 
-    if (
-      isImage &&
-      file.size > 3 * 1024 * 1024
-    ) {
-      note("Изображение не должно быть больше 3 МБ.");
+    if (image && file.size > 3 * 1024 * 1024) {
+      note("Изображение больше 3 МБ.");
       return;
     }
 
-    if (
-      isText &&
-      file.size > 300 * 1024
-    ) {
-      note("Текстовый файл не должен быть больше 300 КБ.");
+    if (text && file.size > 300 * 1024) {
+      note("Текстовый файл больше 300 КБ.");
       return;
     }
 
-    if (isImage) {
+    if (image) {
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -2148,58 +1993,26 @@ function addFiles(fileList) {
   });
 }
 
-/* Voice */
+/* Голосовой ввод в поле */
 
-function openVoice() {
-  $("voice-dialog").showModal();
-  $("voice-status").textContent =
-    "Нажми «Слушать» и говори.";
-}
-
-function stopVoice() {
-  if (state.recognition) {
-    try {
-      state.recognition.stop();
-    } catch {}
-
-    state.recognition = null;
-  }
-
-  $("voice-orb").classList.remove("active");
-
-  if ("speechSynthesis" in window) {
-    speechSynthesis.cancel();
-  }
-}
-
-function startVoice() {
+function startDictation() {
   const Speech =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
   if (!Speech) {
-    $("voice-status").textContent =
-      "Этот браузер не поддерживает голосовой ввод. " +
-      "Попробуй Chrome или Edge.";
+    note(
+      "В этом браузере голосовой ввод недоступен."
+    );
     return;
   }
 
-  if (!state.password) {
-    $("voice-status").textContent =
-      "Сначала подключи Worker через ⚙.";
+  if (state.recognition) {
+    try {
+      state.recognition.stop();
+    } catch {}
     return;
   }
-
-  selectFirstModel();
-
-  if (!state.selectedModel) {
-    $("voice-status").textContent =
-      "Сначала выбери текстовую модель.";
-    openModelPicker();
-    return;
-  }
-
-  stopVoice();
 
   const recognition = new Speech();
   state.recognition = recognition;
@@ -2208,121 +2021,215 @@ function startVoice() {
   recognition.continuous = false;
   recognition.interimResults = true;
 
+  let text = "";
+
+  recognition.onresult = event => {
+    text = Array.from(event.results)
+      .map(result => result[0].transcript)
+      .join(" ");
+
+    $("input").value = text;
+    $("input").dispatchEvent(new Event("input"));
+  };
+
+  recognition.onerror = event => {
+    note(
+      event.error === "not-allowed"
+        ? "Браузер запретил голосовой ввод."
+        : "Ошибка: " + event.error
+    );
+
+    state.recognition = null;
+  };
+
+  recognition.onend = () => {
+    state.recognition = null;
+  };
+
+  try {
+    recognition.start();
+    note("Слушаю…");
+  } catch {
+    state.recognition = null;
+    note("Не удалось запустить микрофон.");
+  }
+}
+
+/* Голосовой разговор без сообщений в обычном чате */
+
+let talkRecognition = null;
+let talkActive = false;
+
+function openTalk() {
+  $("voice-dialog").showModal();
+  $("voice-status").textContent =
+    "Нажми «Слушать».";
+}
+
+function stopTalk() {
+  talkActive = false;
+
+  if (talkRecognition) {
+    try {
+      talkRecognition.stop();
+    } catch {}
+
+    talkRecognition = null;
+  }
+
+  speechSynthesis?.cancel();
+  $("voice-orb").classList.remove("active");
+}
+
+function startTalk() {
+  const Speech =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!Speech) {
+    $("voice-status").textContent =
+      "Голосовой разговор недоступен.";
+    return;
+  }
+
+  const model =
+    state.models.chat.find(
+      item => item.id === state.selectedModel
+    );
+
+  if (!state.password || !model) {
+    $("voice-status").textContent =
+      "Выбери модель в разделе «Чат».";
+    return;
+  }
+
+  stopTalk();
+  talkActive = true;
+
+  const recognition = new Speech();
+  talkRecognition = recognition;
+
+  recognition.lang = "ru-RU";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  let text = "";
+
   recognition.onstart = () => {
     $("voice-orb").classList.add("active");
     $("voice-status").textContent =
-      "Слушаю… говори.";
+      "Слушаю…";
   };
 
   recognition.onresult = event => {
-    let text = "";
-
-    for (const result of event.results) {
-      text += result[0].transcript;
-    }
-
-    $("input").value = text.trim();
-    $("input").dispatchEvent(new Event("input"));
-
-    $("voice-status").textContent =
-      text.trim() || "Слушаю…";
+    text = Array.from(event.results)
+      .map(result => result[0].transcript)
+      .join(" ")
+      .trim();
   };
 
   recognition.onerror = event => {
     $("voice-orb").classList.remove("active");
-
-    if (event.error === "not-allowed") {
-      $("voice-status").textContent =
-        "Браузер запретил SpeechRecognition. " +
-        "Попробуй Chrome или Edge и разреши " +
-        "микрофон именно для GitHub Pages.";
-    } else {
-      $("voice-status").textContent =
-        "Ошибка голосового ввода: " +
-        event.error;
-    }
-
-    state.recognition = null;
+    talkActive = false;
+    $("voice-status").textContent =
+      event.error === "not-allowed"
+        ? "Браузер запретил распознавание речи."
+        : "Ошибка: " + event.error;
   };
 
   recognition.onend = async () => {
     $("voice-orb").classList.remove("active");
 
-    if (state.recognition !== recognition) {
-      return;
-    }
-
-    state.recognition = null;
-
-    const text = $("input").value.trim();
-
-    if (!text) {
+    if (!talkActive || !text) {
       $("voice-status").textContent =
         "Речь не распознана.";
       return;
     }
 
     $("voice-status").textContent =
-      "ИИ готовит ответ…";
+      "Думаю…";
 
-    await send();
-
-    const answer =
-      currentChat().messages
-        .filter(message =>
-          message.role === "assistant" &&
-          !message.error &&
-          message.text
-        )
-        .at(-1);
-
-    if (!answer?.text) {
-      $("voice-status").textContent =
-        "Ответ не получен.";
-      return;
-    }
-
-    if (!("speechSynthesis" in window)) {
-      $("voice-status").textContent =
-        "Ответ готов в чате.";
-      return;
-    }
-
-    $("voice-status").textContent =
-      "ИИ отвечает голосом…";
-
-    const utterance =
-      new SpeechSynthesisUtterance(
-        answer.text
+    try {
+      const response = await request(
+        "/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: model.id,
+            messages: [
+              {
+                role: "system",
+                content:
+                  state.system +
+                  "\nОтвечай кратко, естественно и без Markdown. " +
+                  "Ответ будет озвучен голосом."
+              },
+              {
+                role: "user",
+                content: text
+              }
+            ],
+            stream: false
+          })
+        }
       );
 
-    utterance.lang = "ru-RU";
-    utterance.rate = .97;
+      const content =
+        response?.choices?.[0]?.message?.content;
 
-    utterance.onend = () => {
+      const answer =
+        typeof content === "string"
+          ? content
+          : Array.isArray(content)
+            ? content
+              .filter(part => part.type === "text")
+              .map(part => part.text || "")
+              .join("\n")
+            : "";
+
+      if (!answer.trim()) {
+        throw new Error("Пустой ответ модели.");
+      }
+
       $("voice-status").textContent =
-        "Ответ готов. Нажми «Слушать» снова.";
-    };
+        "Говорю…";
 
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utterance);
+      const utterance =
+        new SpeechSynthesisUtterance(answer);
+
+      utterance.lang = "ru-RU";
+      utterance.rate = .98;
+
+      utterance.onend = () => {
+        if (talkActive) {
+          $("voice-status").textContent =
+            "Нажми «Слушать» для следующей реплики.";
+        }
+      };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    } catch (error) {
+      $("voice-status").textContent =
+        error.message;
+    }
   };
 
   try {
     recognition.start();
   } catch {
-    state.recognition = null;
-    $("voice-orb").classList.remove("active");
+    talkActive = false;
     $("voice-status").textContent =
-      "Не удалось запустить распознавание.";
+      "Не удалось начать слушание.";
   }
 }
 
-/* Profiles */
-
 function openProfiles() {
-  const box = $("profile-list");
-  box.innerHTML = "";
+  const list = $("profile-list");
+  list.innerHTML = "";
 
   state.profiles.forEach(profile => {
     const button = document.createElement("button");
@@ -2338,12 +2245,11 @@ function openProfiles() {
       state.activeProfile = profile.id;
       state.files = [];
       save();
-      renderAttachments();
       render();
       $("profiles-dialog").close();
     };
 
-    box.append(button);
+    list.append(button);
   });
 
   $("profiles-dialog").showModal();
@@ -2368,22 +2274,35 @@ $("input").onkeydown = event => {
 $("input").oninput = () => {
   $("input").style.height = "auto";
   $("input").style.height =
-    Math.min($("input").scrollHeight, 210) + "px";
+    Math.min(
+      $("input").scrollHeight,
+      210
+    ) + "px";
 };
 
-$("attach-button").onclick = () => {
+$("attach-button").onclick = () =>
   $("file-input").click();
-};
 
 $("file-input").onchange = event => {
   addFiles(event.target.files);
   event.target.value = "";
 };
 
+$("voice-input-button").onclick =
+  startDictation;
+
+$("talk-button").onclick = openTalk;
+
+$("voice-listen").onclick = startTalk;
+$("voice-stop").onclick = () => {
+  stopTalk();
+  $("voice-status").textContent =
+    "Остановлено.";
+};
+
 $("mode").onchange = () => {
   state.mode = $("mode").value;
   selectFirstModel();
-  closeModelPicker();
 };
 
 $("model-trigger").onclick = event => {
@@ -2419,17 +2338,13 @@ $("settings-button").onclick = () => {
 };
 
 $("connect-button").onclick = connect;
-
-$("voice-button").onclick = openVoice;
-$("voice-listen").onclick = startVoice;
-$("voice-stop").onclick = stopVoice;
-
 $("profile-button").onclick = openProfiles;
 
 $("profile-form").onsubmit = event => {
   event.preventDefault();
 
-  const name = $("profile-name").value.trim();
+  const name =
+    $("profile-name").value.trim();
 
   if (!name) return;
 
@@ -2439,16 +2354,20 @@ $("profile-form").onsubmit = event => {
     chats: [{
       id: uid("chat"),
       title: "Новый диалог",
+      pinned: false,
       messages: []
     }],
     currentChat: null
   };
 
-  profile.currentChat = profile.chats[0].id;
+  profile.currentChat =
+    profile.chats[0].id;
+
   state.profiles.push(profile);
   state.activeProfile = profile.id;
 
   $("profile-name").value = "";
+
   save();
   render();
   $("profiles-dialog").close();
@@ -2457,13 +2376,14 @@ $("profile-form").onsubmit = event => {
 document.querySelectorAll("[data-close]").forEach(
   button => {
     button.onclick = () => {
-      stopVoice();
+      if (button.dataset.close === "voice-dialog") {
+        stopTalk();
+      }
+
       $(button.dataset.close).close();
     };
   }
 );
-
-/* Start */
 
 load();
 
@@ -2477,1444 +2397,6 @@ setTimeout(() => {
     $("settings-dialog").showModal();
   }
 }, 300);
-</script> 
-  <style>
-:root {
-  --bg: #f8f7f4;
-  --surface: #fff;
-  --surface-2: #eeede9;
-  --border: #e2e0da;
-  --text: #30302e;
-  --muted: #777770;
-  --accent: #363633;
-  --accent-dark: #20201e;
-  --shadow: none;
-}
-
-.sidebar {
-  background: #f0efeb;
-  border-right: 0;
-}
-
-.brand {
-  letter-spacing: -.7px;
-}
-
-.brand-mark,
-.welcome-symbol {
-  display: none;
-}
-
-.new-chat {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--text);
-  background: transparent;
-  border: 1px solid var(--border);
-  text-align: left;
-}
-
-.new-chat:hover {
-  background: #e7e6e1;
-}
-
-.topbar {
-  gap: 10px;
-  min-height: 65px;
-}
-
-#model-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  max-width: min(330px, 48vw);
-  min-height: 36px;
-  padding: 6px 9px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text);
-  font: 15px Georgia, serif;
-}
-
-#model-trigger::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  flex-shrink: 0;
-  margin-left: 4px;
-  border-right: 1.4px solid currentColor;
-  border-bottom: 1.4px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-}
-
-#model-trigger:hover {
-  background: var(--surface-2);
-}
-
-.page-title {
-  text-align: right;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.welcome {
-  margin-top: 15vh;
-}
-
-.welcome h1 {
-  font-size: clamp(36px, 5vw, 54px);
-  letter-spacing: -1.8px;
-  line-height: 1.12;
-}
-
-.welcome p {
-  max-width: 380px;
-  font-size: 14px;
-}
-
-.composer-box {
-  border-radius: 20px;
-  box-shadow: 0 2px 8px #00000004;
-}
-
-.composer-box:focus-within {
-  border-color: #b9b8b1;
-}
-
-#input {
-  min-height: 84px;
-  padding: 19px 19px 10px;
-}
-
-.toolbar {
-  flex-wrap: nowrap;
-  gap: 5px;
-  padding: 4px 11px 11px;
-}
-
-#mode {
-  display: none;
-}
-
-.toolbar-button,
-.send-button,
-.icon-button {
-  display: inline-grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 10px;
-  color: var(--text);
-  background: transparent;
-}
-
-.toolbar-button:hover,
-.send-button:hover,
-.icon-button:hover {
-  background: var(--surface-2);
-}
-
-#dictation-button {
-  margin-left: auto;
-}
-
-#send-button {
-  margin-left: 0;
-  background: #eeede9;
-}
-
-#send-button:hover {
-  background: #e1e0da;
-}
-
-#dictation-button[aria-pressed="true"],
-#voice-button[aria-pressed="true"] {
-  background: #dfded8;
-  box-shadow: inset 0 0 0 1px #bebdb6;
-}
-
-.line-icon {
-  display: block;
-  width: 19px;
-  height: 19px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.65;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.model-picker {
-  border-radius: 14px;
-  box-shadow: 0 10px 35px #00000012;
-}
-
-.model-section-button {
-  cursor: default;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.primary,
-#voice-stop {
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface-2);
-  color: var(--text);
-  font: 12px sans-serif;
-}
-
-.primary:hover,
-#voice-stop:hover {
-  background: #e3e2dd;
-}
-
-.voice-state {
-  background: transparent;
-}
-
-.voice-orb {
-  width: 56px;
-  height: 56px;
-  background: #64645e;
-}
-
-@keyframes voice-pulse {
-  50% {
-    transform: scale(.87);
-    box-shadow: 0 0 0 12px #64645e12;
-  }
-}
-
-@media (max-width: 720px) {
-  .page-title,
-  .connection {
-    display: none;
-  }
-
-  #model-trigger {
-    flex: 1;
-    max-width: none;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .welcome {
-    margin-top: 12vh;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-</style>
-
-<script>
-(() => {
-  "use strict";
-
-  const el = id => document.getElementById(id);
-  const required = [
-    "model-trigger", "model-picker", "voice-button",
-    "send-button", "voice-dialog", "input"
-  ];
-
-  if (required.some(id => !el(id))) {
-    console.error(
-      "Исправление рассчитано на последнюю версию HTML Nexus."
-    );
-    return;
-  }
-
-  if (el("dictation-button")) return;
-
-  const paths = {
-    mic: `
-      <rect x="9" y="3" width="6" height="12" rx="3"/>
-      <path d="M5 11v1a7 7 0 0 0 14 0v-1M12 19v3M8 22h8"/>
-    `,
-    waves: `
-      <path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/>
-    `,
-    plus: `<path d="M12 5v14M5 12h14"/>`,
-    arrow: `<path d="M12 19V5M6 11l6-6 6 6"/>`,
-    stop: `<rect x="6" y="6" width="12" height="12" rx="2"/>`,
-    menu: `
-      <rect x="3" y="4" width="18" height="16" rx="3"/>
-      <path d="M9 4v16"/>
-    `,
-    settings: `
-      <path d="M4 7h16M4 17h16"/>
-      <circle cx="9" cy="7" r="3" fill="var(--bg)"/>
-      <circle cx="15" cy="17" r="3" fill="var(--bg)"/>
-    `,
-    edit: `
-      <path d="M14 5l5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z"/>
-    `
-  };
-
-  function icon(name) {
-    return `<svg class="line-icon" viewBox="0 0 24 24"
-      aria-hidden="true">${paths[name]}</svg>`;
-  }
-
-  function setIcon(button, name, label) {
-    button.innerHTML = icon(name);
-    button.title = label;
-    button.setAttribute("aria-label", label);
-    button.type = "button";
-  }
-
-  const trigger = el("model-trigger");
-  const picker = el("model-picker");
-  const topbar = document.querySelector(".topbar");
-  topbar.insertBefore(trigger, el("page-title"));
-
-  trigger.setAttribute("aria-expanded", "false");
-  trigger.setAttribute("aria-controls", "model-picker");
-
-  setIcon(el("attach-button"), "plus", "Прикрепить файл");
-  setIcon(el("voice-button"), "waves", "Разговор с ИИ");
-  setIcon(el("menu-button"), "menu", "Открыть или закрыть историю");
-  setIcon(el("settings-button"), "settings", "Настройки");
-
-  el("new-chat").innerHTML = icon("edit") + "<span>Новый диалог</span>";
-
-  const dictation = document.createElement("button");
-  dictation.id = "dictation-button";
-  dictation.className = "toolbar-button";
-  dictation.setAttribute("aria-pressed", "false");
-  setIcon(dictation, "mic", "Голосовой ввод");
-
-  el("send-button").before(dictation);
-
-  const welcome = document.querySelector(".welcome h1");
-  if (welcome) welcome.textContent = "С чего начнём?";
-
-  const welcomeCopy = document.querySelector(".welcome p");
-  if (welcomeCopy) {
-    welcomeCopy.textContent =
-      "Задай вопрос, прикрепи файл или начни разговор.";
-  }
-
-  if (window.matchMedia("(max-width: 720px)").matches) {
-    el("sidebar").classList.add("closed");
-  }
-
-  function positionPicker() {
-    if (picker.classList.contains("hidden")) return;
-
-    const rect = trigger.getBoundingClientRect();
-    const width = Math.min(350, window.innerWidth - 24);
-
-    picker.style.width = width + "px";
-    picker.style.left = Math.max(
-      12,
-      Math.min(rect.left, window.innerWidth - width - 12)
-    ) + "px";
-    picker.style.top = rect.bottom + 8 + "px";
-    picker.style.bottom = "auto";
-    picker.style.maxHeight =
-      Math.max(100, window.innerHeight - rect.bottom - 24) + "px";
-  }
-
-  function closePicker() {
-    picker.classList.add("hidden");
-    trigger.setAttribute("aria-expanded", "false");
-  }
-
-  trigger.onclick = event => {
-    event.stopPropagation();
-
-    if (!picker.classList.contains("hidden")) {
-      closePicker();
-      return;
-    }
-
-    openModelPicker();
-
-    // Категории — заголовки. Выбор производится кнопками моделей.
-    picker.querySelectorAll(".model-section-button").forEach(button => {
-      button.onclick = null;
-      button.tabIndex = -1;
-    });
-
-    trigger.setAttribute("aria-expanded", "true");
-    positionPicker();
-  };
-
-  picker.addEventListener("click", event => {
-    if (event.target.closest(".model-option")) {
-      closePicker();
-    }
-  });
-
-  document.addEventListener("click", event => {
-    if (!picker.contains(event.target) && !trigger.contains(event.target)) {
-      closePicker();
-    }
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closePicker();
-  });
-
-  window.addEventListener("resize", positionPicker);
-
-  // Сохраняем иконку, когда исходный send() меняет текст кнопки.
-  let sendIcon = "";
-
-  function refreshSendIcon() {
-    const name = state.request ? "stop" : "arrow";
-    if (name === sendIcon) return;
-    sendIcon = name;
-
-    setIcon(
-      el("send-button"),
-      name,
-      state.request ? "Остановить ответ" : "Отправить сообщение"
-    );
-  }
-
-  new MutationObserver(refreshSendIcon).observe(
-    el("send-button"),
-    { childList: true }
-  );
-
-  refreshSendIcon();
-
-  // Полностью заменяем предыдущие обработчики голоса.
-  if (state.recognition) {
-    state.recognition.onend = null;
-    state.recognition.onerror = null;
-    state.recognition.onresult = null;
-    try { state.recognition.abort(); } catch {}
-    state.recognition = null;
-  }
-
-  let recognition = null;
-  let voiceRequest = null;
-  let session = 0;
-
-  const dialog = el("voice-dialog");
-  const status = el("voice-status");
-  const orb = el("voice-orb");
-
-  const voiceCopy = dialog.querySelector(".dialog-copy");
-  if (voiceCopy) {
-    voiceCopy.textContent =
-      "Скажи фразу. После распознавания ИИ ответит голосом. " +
-      "Для следующей реплики снова нажми «Слушать».";
-  }
-
-  function showStatus(text, conversation) {
-    if (conversation) status.textContent = text;
-    else note(text);
-  }
-
-  function cleanupVoice() {
-    session++;
-
-    const previous = recognition;
-    recognition = null;
-
-    if (previous) {
-      previous.onresult = null;
-      previous.onerror = null;
-      previous.onend = null;
-      previous.onstart = null;
-      try { previous.abort(); } catch {}
-    }
-
-    if (voiceRequest) {
-      voiceRequest.abort();
-      voiceRequest = null;
-    }
-
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-
-    dictation.setAttribute("aria-pressed", "false");
-    el("voice-button").setAttribute("aria-pressed", "false");
-    orb.classList.remove("active");
-    el("voice-listen").disabled = false;
-  }
-
-  function recognitionError(error) {
-    const messages = {
-      "not-allowed":
-        "Браузер запретил распознавание речи. Проверь разрешения " +
-        "для этого сайта. Если окно не предлагает разрешить — " +
-        "нужны название браузера и скриншот окна.",
-      "service-not-allowed":
-        "Браузер не разрешает использовать сервис распознавания.",
-      "audio-capture":
-        "Не удалось получить звук с микрофона.",
-      "no-speech":
-        "Речь не распознана. Попробуй сказать фразу ещё раз.",
-      "network":
-        "Не удалось связаться с сервисом распознавания речи."
-    };
-
-    return messages[error] || "Ошибка распознавания: " + error;
-  }
-
-  async function answerByVoice(text, token, chat, model) {
-    if (token !== session) return;
-
-    if (state.request) {
-      status.textContent = "Дождись завершения запроса в чате.";
-      el("voice-listen").disabled = false;
-      return;
-    }
-
-    const controller = new AbortController();
-    voiceRequest = controller;
-
-    try {
-      status.textContent = "Готовлю ответ…";
-
-      if (!chat.messages.length) {
-        chat.title = text.slice(0, 42);
-      }
-
-      chat.messages.push({
-        role: "user",
-        text,
-        files: []
-      });
-
-      // Не используем старый ответ из истории при ошибке запроса.
-      const messages = buildMessages(chat);
-      render();
-
-      try { save(); } catch {
-        note("Историю не удалось сохранить в браузере.");
-      }
-
-      const data = await request("/chat/completions", {
-        method: "POST",
-        signal: controller.signal,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: model.id,
-          messages,
-          stream: false
-        })
-      });
-
-      if (token !== session) return;
-
-      const content = data?.choices?.[0]?.message?.content;
-      const answer = typeof content === "string"
-        ? content
-        : Array.isArray(content)
-          ? content.filter(part => part.type === "text")
-            .map(part => part.text || "").join("\n")
-          : "";
-
-      if (!answer.trim()) {
-        throw new Error("Модель вернула пустой ответ.");
-      }
-
-      chat.messages.push({
-        role: "assistant",
-        text: answer,
-        model: model.name || model.id
-      });
-
-      render();
-      try { save(); } catch {
-        note("Ответ получен, но историю не удалось сохранить.");
-      }
-
-      if (!("speechSynthesis" in window)) {
-        status.textContent = "Ответ готов в чате. Озвучка недоступна.";
-        return;
-      }
-
-      status.textContent = "Отвечаю голосом…";
-      orb.classList.add("active");
-
-      const utterance = new SpeechSynthesisUtterance(answer);
-      utterance.lang = "ru-RU";
-      utterance.rate = 1;
-
-      const russianVoice = window.speechSynthesis.getVoices()
-        .find(voice => /^ru(?:-|_)/i.test(voice.lang));
-
-      if (russianVoice) utterance.voice = russianVoice;
-
-      utterance.onend = () => {
-        if (token !== session) return;
-        orb.classList.remove("active");
-        status.textContent =
-          "Нажми «Слушать», чтобы сказать следующую реплику.";
-      };
-
-      utterance.onerror = () => {
-        if (token !== session) return;
-        orb.classList.remove("active");
-        status.textContent =
-          "Ответ есть в чате, но браузер не смог его озвучить.";
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } catch (error) {
-      if (token === session && error.name !== "AbortError") {
-        status.textContent = error.message;
-      }
-    } finally {
-      if (voiceRequest === controller) voiceRequest = null;
-      if (token === session) {
-        el("voice-listen").disabled = false;
-      }
-    }
-  }
-
-  function startRecognition(conversation) {
-    cleanupVoice();
-
-    const Speech =
-      window.SpeechRecognition ||
-      window.webkitSpeechRecognition;
-
-    if (!Speech) {
-      showStatus(
-        "В этом браузере нет доступного SpeechRecognition.",
-        conversation
-      );
-      return;
-    }
-
-    let chat = null;
-    let model = null;
-
-    if (conversation) {
-      if (!state.password || !state.models.chat.length) {
-        status.textContent =
-          "Подключи Worker и выбери модель из раздела «Чат».";
-        return;
-      }
-
-      if (state.request) {
-        status.textContent = "Сначала дождись ответа в чате.";
-        return;
-      }
-
-      if (state.files.length) {
-        status.textContent =
-          "Сначала отправь или убери вложения из поля ввода.";
-        return;
-      }
-
-      model = state.models.chat.find(
-        item => item.id === state.selectedModel
-      );
-
-      if (!model) {
-        status.textContent =
-          "Выбери текстовую модель в верхнем меню, затем начни разговор.";
-        return;
-      }
-
-      chat = currentChat();
-
-      if (
-        chat.messages.some(message =>
-          (message.files || []).some(file => file.kind === "image")
-        ) &&
-        model.capabilities?.vision !== true
-      ) {
-        status.textContent =
-          "В этом диалоге есть изображения. Начни новый чат " +
-          "или выбери модель с подтверждённой поддержкой изображений.";
-        return;
-      }
-    }
-
-    const token = session;
-    const instance = new Speech();
-    recognition = instance;
-
-    const originalText = el("input").value;
-    let finalText = "";
-    let failed = false;
-
-    instance.lang = "ru-RU";
-    instance.continuous = false;
-    instance.interimResults = true;
-
-    instance.onstart = () => {
-      if (token !== session) return;
-
-      showStatus("Слушаю…", conversation);
-
-      if (conversation) {
-        orb.classList.add("active");
-        el("voice-listen").disabled = true;
-      } else {
-        dictation.setAttribute("aria-pressed", "true");
-      }
-    };
-
-    instance.onresult = event => {
-      if (token !== session) return;
-
-      const completed = [];
-      const pending = [];
-
-      for (const result of event.results) {
-        (result.isFinal ? completed : pending)
-          .push(result[0].transcript);
-      }
-
-      finalText = completed.join(" ").trim();
-      const preview = [...completed, ...pending].join(" ").trim();
-
-      if (conversation) {
-        status.textContent = preview || "Слушаю…";
-      } else {
-        el("input").value =
-          originalText +
-          (originalText && preview ? " " : "") +
-          preview;
-        el("input").dispatchEvent(new Event("input"));
-      }
-    };
-
-    instance.onerror = event => {
-      if (token !== session) return;
-
-      failed = true;
-      orb.classList.remove("active");
-      dictation.setAttribute("aria-pressed", "false");
-      el("voice-listen").disabled = false;
-
-      showStatus(recognitionError(event.error), conversation);
-    };
-
-    instance.onend = () => {
-      if (token !== session) return;
-
-      recognition = null;
-      orb.classList.remove("active");
-      dictation.setAttribute("aria-pressed", "false");
-
-      if (failed) return;
-
-      if (!conversation) {
-        note("Голосовой ввод завершён. Проверь текст перед отправкой.");
-        return;
-      }
-
-      if (!finalText) {
-        status.textContent = "Речь не распознана. Попробуй ещё раз.";
-        el("voice-listen").disabled = false;
-        return;
-      }
-
-      answerByVoice(finalText, token, chat, model);
-    };
-
-    try {
-      instance.start();
-    } catch (error) {
-      cleanupVoice();
-      showStatus(
-        "Распознавание не запустилось: " + error.message,
-        conversation
-      );
-    }
-  }
-
-  dictation.onclick = () => {
-    if (recognition) {
-      try { recognition.stop(); } catch { cleanupVoice(); }
-      return;
-    }
-
-    if (state.request || voiceRequest) {
-      note("Дождись завершения текущего запроса.");
-      return;
-    }
-
-    startRecognition(false);
-  };
-
-  el("voice-button").onclick = () => {
-    cleanupVoice();
-    closePicker();
-
-    status.textContent =
-      "Нажми «Слушать». Речь отправится в выбранную текстовую модель.";
-
-    if (!dialog.open) dialog.showModal();
-  };
-
-  el("voice-listen").onclick = () => startRecognition(true);
-
-  el("voice-stop").onclick = () => {
-    cleanupVoice();
-    status.textContent = "Остановлено.";
-  };
-
-  const closeVoiceButton = dialog.querySelector(
-    '[data-close="voice-dialog"]'
-  );
-
-  if (closeVoiceButton) {
-    closeVoiceButton.onclick = () => {
-      cleanupVoice();
-      dialog.close();
-    };
-  }
-
-  dialog.addEventListener("cancel", cleanupVoice);
-  dialog.addEventListener("close", cleanupVoice);
-
-  el("send-button").addEventListener("click", () => {
-    if (recognition) cleanupVoice();
-  }, true);
-
-  window.addEventListener("pagehide", cleanupVoice);
-})();
 </script>
-<style>
-#nexus-call {
-  width: min(480px, calc(100% - 24px));
-  padding: 24px;
-  border: 1px solid #deddd7;
-  border-radius: 24px;
-  background: #f8f7f4;
-  color: #30302d;
-}
-
-#nexus-call::backdrop {
-  background: #24242065;
-  backdrop-filter: blur(10px);
-}
-
-.call-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.call-header h2 {
-  margin: 0;
-  font: normal 23px Georgia, serif;
-}
-
-.call-icon {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: inherit;
-}
-
-.call-icon:hover {
-  background: #eae9e3;
-}
-
-.call-icon svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.call-stage {
-  display: flex;
-  min-height: 300px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-}
-
-.call-visual {
-  display: flex;
-  height: 90px;
-  align-items: center;
-  gap: 8px;
-}
-
-.call-visual i {
-  display: block;
-  width: 8px;
-  height: 18px;
-  border-radius: 8px;
-  background: #575752;
-}
-
-#nexus-call[data-phase="listening"] .call-visual i,
-#nexus-call[data-phase="speaking"] .call-visual i {
-  animation: call-wave 1.1s ease-in-out infinite;
-}
-
-.call-visual i:nth-child(2) {
-  animation-delay: -.2s !important;
-}
-
-.call-visual i:nth-child(3) {
-  animation-delay: -.4s !important;
-}
-
-.call-visual i:nth-child(4) {
-  animation-delay: -.6s !important;
-}
-
-.call-visual i:nth-child(5) {
-  animation-delay: -.8s !important;
-}
-
-#nexus-call[data-phase="thinking"] .call-visual {
-  animation: call-fade 1.5s ease-in-out infinite;
-}
-
-#nexus-call-status {
-  max-width: 360px;
-  margin: 0;
-  text-align: center;
-  font: 14px/1.6 sans-serif;
-  color: #777770;
-}
-
-.call-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.call-actions button {
-  min-height: 42px;
-  padding: 10px 18px;
-  border: 1px solid #d9d8d1;
-  border-radius: 12px;
-  color: #30302d;
-  background: #eeede7;
-  font: 13px sans-serif;
-}
-
-.call-actions button:hover {
-  background: #e3e2db;
-}
-
-.call-note {
-  margin: 20px 0 0;
-  text-align: center;
-  color: #92928a;
-  font: 11px/1.5 sans-serif;
-}
-
-@keyframes call-wave {
-  50% { height: 65px; }
-}
-
-@keyframes call-fade {
-  50% { opacity: .3; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .call-visual,
-  .call-visual i {
-    animation: none !important;
-  }
-}
-</style>
-
-<dialog id="nexus-call" data-phase="idle">
-  <div class="call-header">
-    <h2>Голосовой разговор</h2>
-
-    <button
-      id="nexus-call-close"
-      class="call-icon"
-      type="button"
-      aria-label="Закрыть разговор"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m6 6 12 12M18 6 6 18"/>
-      </svg>
-    </button>
-  </div>
-
-  <div class="call-stage">
-    <div class="call-visual" aria-hidden="true">
-      <i></i><i></i><i></i><i></i><i></i>
-    </div>
-
-    <p id="nexus-call-status" role="status" aria-live="polite">
-      Нажми «Начать разговор».
-    </p>
-  </div>
-
-  <div class="call-actions">
-    <button id="nexus-call-start" type="button">
-      Начать разговор
-    </button>
-
-    <button id="nexus-call-stop" type="button" disabled>
-      Остановить
-    </button>
-  </div>
-
-  <p class="call-note">
-    Реплики не отображаются в чате.
-    Распознанная речь отправляется выбранной модели.
-  </p>
-</dialog>
-
-<script>
-(() => {
-  "use strict";
-
-  const $call = id => document.getElementById(id);
-
-  const oldButton = $call("voice-button");
-  const dialog = $call("nexus-call");
-
-  if (!oldButton || !dialog) return;
-
-  // Удаляем прежний обработчик разговора вместе со старой кнопкой.
-  const button = oldButton.cloneNode(true);
-  oldButton.replaceWith(button);
-
-  const status = $call("nexus-call-status");
-  const startButton = $call("nexus-call-start");
-  const stopButton = $call("nexus-call-stop");
-
-  const Speech =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  const synth = window.speechSynthesis;
-
-  let active = false;
-  let session = 0;
-  let recognition = null;
-  let controller = null;
-  let utterance = null;
-  let listenTimer = null;
-  let speechTimer = null;
-
-  let conversation = [];
-  let model = null;
-  let connection = null;
-
-  function phase(name, text) {
-    dialog.dataset.phase = name;
-    status.textContent = text;
-  }
-
-  function stop(text = "Разговор остановлен.") {
-    active = false;
-    session++;
-
-    clearTimeout(listenTimer);
-    clearTimeout(speechTimer);
-
-    if (recognition) {
-      const current = recognition;
-      recognition = null;
-
-      current.onstart = null;
-      current.onresult = null;
-      current.onerror = null;
-      current.onend = null;
-
-      try {
-        current.abort();
-      } catch {}
-    }
-
-    if (controller) {
-      controller.abort();
-      controller = null;
-    }
-
-    if (utterance) {
-      utterance.onstart = null;
-      utterance.onend = null;
-      utterance.onerror = null;
-      utterance = null;
-    }
-
-    if (synth) synth.cancel();
-
-    startButton.disabled = false;
-    stopButton.disabled = true;
-    startButton.textContent = "Начать разговор";
-
-    phase("idle", text);
-  }
-
-  function alive(token) {
-    return active && token === session && dialog.open;
-  }
-
-  function scheduleListening(token) {
-    clearTimeout(listenTimer);
-
-    listenTimer = setTimeout(() => {
-      if (alive(token)) listen(token);
-    }, 450);
-  }
-
-  function speak(text, token) {
-    if (!alive(token)) return;
-
-    phase("speaking", "Говорю…");
-
-    const speech = new SpeechSynthesisUtterance(text);
-    utterance = speech;
-
-    speech.lang = "ru-RU";
-    speech.rate = 1;
-
-    const voice = synth.getVoices().find(
-      item => /^ru(?:-|_|$)/i.test(item.lang)
-    );
-
-    if (voice) speech.voice = voice;
-
-    // Не оставляем интерфейс в состоянии «Говорю», если звук не запустился.
-    speechTimer = setTimeout(() => {
-      if (alive(token)) {
-        stop(
-          "Браузер не запустил озвучивание. " +
-          "Проверь звук устройства и начни разговор ещё раз."
-        );
-      }
-    }, 12000);
-
-    speech.onstart = () => {
-      clearTimeout(speechTimer);
-    };
-
-    speech.onend = () => {
-      clearTimeout(speechTimer);
-
-      if (!alive(token)) return;
-
-      utterance = null;
-      scheduleListening(token);
-    };
-
-    speech.onerror = event => {
-      clearTimeout(speechTimer);
-
-      if (!alive(token)) return;
-
-      stop(
-        "Не удалось озвучить ответ: " +
-        event.error +
-        ". Проверь звук и доступность голосов на устройстве."
-      );
-    };
-
-    try {
-      synth.speak(speech);
-    } catch (error) {
-      stop("Озвучивание не запустилось: " + error.message);
-    }
-  }
-
-  async function ask(text, token) {
-    if (!alive(token)) return;
-
-    phase("thinking", "Думаю…");
-
-    const requestController = new AbortController();
-    controller = requestController;
-
-    const timeout = setTimeout(
-      () => requestController.abort(),
-      190000
-    );
-
-    // Отдельная история: не изменяем чат, поле ввода или localStorage.
-    const messages = [
-      {
-        role: "system",
-        content:
-          connection.system +
-          "\nСейчас идёт голосовой разговор. " +
-          "Отвечай естественно и кратко, обычно 1–4 предложениями. " +
-          "Не используй Markdown, таблицы, списки и блоки кода. " +
-          "Твой ответ будет произнесён вслух."
-      },
-      ...conversation.slice(-16),
-      { role: "user", content: text }
-    ];
-
-    try {
-      const response = await fetch(
-        connection.worker + "/chat/completions",
-        {
-          method: "POST",
-          signal: requestController.signal,
-          credentials: "omit",
-          cache: "no-store",
-          headers: {
-            "Content-Type": "application/json",
-            "X-App-Password": connection.password
-          },
-          body: JSON.stringify({
-            model: model.id,
-            messages,
-            stream: false
-          })
-        }
-      );
-
-      const raw = await response.text();
-
-      if (!alive(token)) return;
-
-      let data;
-
-      try {
-        data = JSON.parse(raw);
-      } catch {
-        throw new Error("Worker вернул ответ не в формате JSON.");
-      }
-
-      if (!response.ok) {
-        throw new Error(
-          data?.error?.message ||
-          data?.message ||
-          "Ошибка HTTP " + response.status
-        );
-      }
-
-      const content = data?.choices?.[0]?.message?.content;
-
-      const answer = typeof content === "string"
-        ? content.trim()
-        : Array.isArray(content)
-          ? content
-            .filter(part => part.type === "text")
-            .map(part => part.text || "")
-            .join("\n")
-            .trim()
-          : "";
-
-      if (!answer) {
-        throw new Error("Модель вернула пустой ответ.");
-      }
-
-      conversation.push(
-        { role: "user", content: text },
-        { role: "assistant", content: answer }
-      );
-
-      conversation = conversation.slice(-16);
-
-      speak(answer, token);
-    } catch (error) {
-      if (!alive(token)) return;
-
-      stop(
-        error.name === "AbortError"
-          ? "Время ожидания ответа истекло. Начни разговор ещё раз."
-          : error.message
-      );
-    } finally {
-      clearTimeout(timeout);
-
-      if (controller === requestController) {
-        controller = null;
-      }
-    }
-  }
-
-  function listen(token) {
-    if (!alive(token)) return;
-
-    phase("listening", "Слушаю…");
-
-    const current = new Speech();
-    recognition = current;
-
-    current.lang = "ru-RU";
-    current.continuous = false;
-    current.interimResults = false;
-
-    let text = "";
-    let failed = false;
-
-    current.onresult = event => {
-      if (!alive(token)) return;
-
-      text = Array.from(event.results)
-        .filter(result => result.isFinal)
-        .map(result => result[0].transcript)
-        .join(" ")
-        .trim();
-
-      // Намеренно не записываем распознанный текст в интерфейс.
-    };
-
-    current.onerror = event => {
-      if (!alive(token)) return;
-
-      failed = true;
-
-      const errors = {
-        "not-allowed":
-          "Браузер запретил распознавание речи.",
-        "service-not-allowed":
-          "Сервис распознавания недоступен в этом браузере.",
-        "audio-capture":
-          "Не удалось получить звук с микрофона.",
-        "network":
-          "Нет связи с сервисом распознавания.",
-        "no-speech":
-          "Не услышала речь. Нажми «Начать разговор» и попробуй снова."
-      };
-
-      stop(
-        errors[event.error] ||
-        "Ошибка распознавания: " + event.error
-      );
-    };
-
-    current.onend = () => {
-      if (recognition === current) recognition = null;
-
-      if (!alive(token) || failed) return;
-
-      if (!text) {
-        stop(
-          "Речь не распознана. Нажми «Начать разговор», чтобы повторить."
-        );
-        return;
-      }
-
-      ask(text, token);
-    };
-
-    try {
-      current.start();
-    } catch (error) {
-      stop("Не удалось начать слушание: " + error.message);
-    }
-  }
-
-  function start() {
-    stop();
-
-    if (!Speech) {
-      phase("idle", "В этом браузере нет распознавания речи.");
-      return;
-    }
-
-    if (!synth || !window.SpeechSynthesisUtterance) {
-      phase("idle", "В этом браузере нет озвучивания текста.");
-      return;
-    }
-
-    if (!state.password) {
-      phase("idle", "Сначала подключи Worker в настройках.");
-      return;
-    }
-
-    if (state.request) {
-      phase("idle", "Сначала дождись завершения ответа в чате.");
-      return;
-    }
-
-    model = state.models.chat.find(
-      item => item.id === state.selectedModel
-    );
-
-    if (!model) {
-      phase(
-        "idle",
-        "Закрой окно и выбери модель в разделе «Чат» верхнего меню."
-      );
-      return;
-    }
-
-    connection = {
-      worker: state.worker,
-      password: state.password,
-      system: state.system
-    };
-
-    active = true;
-    const token = session;
-
-    startButton.disabled = true;
-    stopButton.disabled = false;
-
-    // Первая озвучка запускается непосредственно нажатием пользователя.
-    // После неё включается микрофон.
-    speak("Я слушаю.", token);
-  }
-
-  button.onclick = () => {
-    stop();
-
-    conversation = [];
-
-    phase(
-      "idle",
-      "Нажми «Начать разговор». Ответы будут звучать голосом."
-    );
-
-    if (!dialog.open) dialog.showModal();
-  };
-
-  startButton.onclick = start;
-  stopButton.onclick = () => stop();
-
-  $call("nexus-call-close").onclick = () => {
-    stop();
-    conversation = [];
-    dialog.close();
-  };
-
-  dialog.addEventListener("cancel", () => {
-    stop();
-    conversation = [];
-  });
-
-  dialog.addEventListener("close", () => {
-    stop();
-    conversation = [];
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden && active) {
-      stop("Разговор приостановлен: вкладка скрыта.");
-    }
-  });
-
-  window.addEventListener("pagehide", () => stop());
-})();
-</script>
-
 </body>
 </html>
