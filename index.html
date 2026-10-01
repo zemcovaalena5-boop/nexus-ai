@@ -2294,5 +2294,193 @@ setTimeout(() => {
   }
 }, 300);
 </script>
+  <dialog id="voice-check-dialog">
+  <div class="dialog-head">
+    <h2>Разговор с ИИ</h2>
+    <button
+      id="voice-check-close"
+      type="button"
+      class="close-button"
+      aria-label="Закрыть"
+    >×</button>
+  </div>
+
+  <p style="font:14px/1.6 sans-serif">
+    Сначала проверим микрофон и доступные модели.
+    Во время проверки звук не записывается и не отправляется.
+  </p>
+
+  <button
+    id="voice-check-start"
+    type="button"
+    class="primary"
+  >Проверить подключение голоса</button>
+
+  <pre
+    id="voice-check-result"
+    style="white-space:pre-wrap;overflow-wrap:anywhere"
+    aria-live="polite"
+  ></pre>
+</dialog>
+
+<script>
+(() => {
+  const toolbar = document.querySelector(".toolbar");
+  if (!toolbar) return;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = "Разговор";
+  button.title = "Настройка голосового разговора";
+
+  toolbar.insertBefore(
+    button,
+    document.getElementById("send-button")
+  );
+
+  const dialog = document.getElementById("voice-check-dialog");
+  const output = document.getElementById("voice-check-result");
+  const start = document.getElementById("voice-check-start");
+
+  button.onclick = () => dialog.showModal();
+
+  document.getElementById("voice-check-close").onclick = () => {
+    dialog.close();
+  };
+
+  async function getCandidates() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 45000);
+
+    const candidates = new Map();
+    const visited = new Set();
+    let cursor = "";
+
+    try {
+      for (let page = 0; page < 30; page++) {
+        const path = "/models" + (
+          cursor
+            ? "?after_id=" + encodeURIComponent(cursor)
+            : ""
+        );
+
+        const data = await request(path, {
+          signal: controller.signal
+        });
+
+        if (!Array.isArray(data.data)) {
+          throw new Error("Каталог не содержит массив data.");
+        }
+
+        for (const model of data.data) {
+          const text = [
+            model.id,
+            model.name,
+            model.display_name,
+            model.description
+          ].filter(Boolean).join(" ");
+
+          if (
+            typeof model.id === "string" &&
+            /whisper|transcrib|transcri|speech|audio|stt|asr/i.test(text)
+          ) {
+            candidates.set(model.id, model.id);
+          }
+        }
+
+        if (!data.has_more) {
+          return {
+            ids: [...candidates.values()],
+            complete: true
+          };
+        }
+
+        const next =
+          data.last_id ||
+          data.data[data.data.length - 1]?.id;
+
+        if (!next || visited.has(next)) {
+          throw new Error("Ошибка пагинации каталога.");
+        }
+
+        visited.add(next);
+        cursor = next;
+      }
+
+      return {
+        ids: [...candidates.values()],
+        complete: false
+      };
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  start.onclick = async () => {
+    start.disabled = true;
+    output.textContent = "Проверяю доступ к микрофону…";
+
+    try {
+      if (!window.isSecureContext) {
+        throw new Error("Страница открыта не в безопасном контексте.");
+      }
+
+      if (!navigator.mediaDevices?.getUserMedia) {
+        throw new Error(
+          "Браузер не предоставляет API доступа к микрофону."
+        );
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+      });
+
+      stream.getTracks().forEach(track => track.stop());
+
+      output.textContent =
+        "Микрофон: доступ получен.\n" +
+        "Проверка не использовала SpeechRecognition.\n\n";
+    } catch (error) {
+      output.textContent =
+        "Микрофон: " + error.name + "\n" +
+        error.message + "\n\n";
+    }
+
+    try {
+      if (!state.password) {
+        output.textContent +=
+          "Сначала подключи Worker через настройки сайта.";
+        return;
+      }
+
+      output.textContent += "Проверяю каталог моделей…\n";
+
+      const result = await getCandidates();
+
+      output.textContent += result.ids.length
+        ? "\nВозможные аудиомодели:\n" + result.ids.join("\n")
+        : "\nПо названиям аудиомодели не найдены.";
+
+      output.textContent +=
+        "\n\nЭто поиск кандидатов, а не подтверждение " +
+        "поддержки /audio/transcriptions.";
+
+      if (!result.complete) {
+        output.textContent +=
+          "\nДостигнут лимит страниц: проверен не весь каталог.";
+      }
+    } catch (error) {
+      output.textContent +=
+        "\nОшибка каталога: " +
+        (error.name === "AbortError"
+          ? "Истекло время ожидания."
+          : error.message);
+    } finally {
+      start.disabled = false;
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
