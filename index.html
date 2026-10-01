@@ -694,50 +694,50 @@ label {
 <div class="app">
   <aside id="sidebar" class="sidebar">
     <div class="brand">
-      <span class="brand-mark">?</span>
+      <span class="brand-mark">✦</span>
       <span>nexus</span>
     </div>
 
     <button id="new-chat" class="new-chat">
-      + Íîâûé äèàëîã
+      ＋ Новый диалог
     </button>
 
     <div id="history" class="history"></div>
 
     <button id="profile-button" class="profile-button">
-      0 Ìîé ïðîôèëü
+      ○ Мой профиль
     </button>
   </aside>
 
   <main class="main">
     <header class="topbar">
-      <button id="menu-button" class="icon-button">?</button>
+      <button id="menu-button" class="icon-button">☰</button>
 
       <div id="page-title" class="page-title">
-        Íîâûé äèàëîã
+        Новый диалог
       </div>
 
       <div id="connection" class="connection">
-        Íå ïîäêëþ÷åíî
+        Не подключено
       </div>
 
       <button id="settings-button" class="icon-button">
-        ?
+        ⚙
       </button>
     </header>
 
     <section id="scroll" class="scroll">
       <div id="welcome" class="welcome">
-        <div class="welcome-mark">?</div>
+        <div class="welcome-mark">✦</div>
 
         <h1>
-          Î ÷¸ì<br>
-          ïîãîâîðèì?
+          О чём<br>
+          поговорим?
         </h1>
 
         <p>
-          Òåêñò, àíàëèç èçîáðàæåíèé è ãåíåðàöèÿ êàðòèíîê
-          â îäíîì ñïîêîéíîì ïðîñòðàíñòâå.
+          Текст, анализ изображений и генерация картинок
+          в одном спокойном пространстве.
         </p>
       </div>
 
@@ -746,7 +746,7 @@ label {
       <div id="waiting" class="waiting hidden">
         <span class="waiting-dot"></span>
         <span id="waiting-text">
-          Ìîäåëü ãîòîâèò îòâåò
+          Модель готовит ответ…
         </span>
       </div>
     </section>
@@ -759,34 +759,34 @@ label {
         <div class="composer-box">
           <textarea
             id="input"
-            placeholder="Íàïèøè ñîîáùåíèå"
+            placeholder="Напиши сообщение…"
           ></textarea>
 
           <div class="toolbar">
             <button
               id="attach-button"
-              title="Ïðèêðåïèòü ôàéë"
+              title="Прикрепить файл"
             >
-              +
+              ＋
             </button>
 
             <button
               id="dictate-button"
-              title="Ãîëîñîâîé ââîä"
+              title="Голосовой ввод"
             >
-              ??
+              🎙
             </button>
 
             <select id="mode" class="mode">
-              <option value="chat">×àò</option>
+              <option value="chat">Чат</option>
               <option value="vision">
-                Àíàëèç èçîáðàæåíèÿ
+                Анализ изображения
               </option>
               <option value="image">
-                Ñîçäàòü èçîáðàæåíèå
+                Создать изображение
               </option>
               <option value="video" disabled>
-                Âèäåî ïîêà íåäîñòóïíî
+                Видео пока недоступно
               </option>
             </select>
 
@@ -794,14 +794,14 @@ label {
               id="model-button"
               class="model-button"
             >
-              Âûáðàòü ìîäåëü
+              Выбрать модель
             </button>
 
             <button
               id="send-button"
               class="send-button"
             >
-              ^
+              ↑
             </button>
           </div>
         </div>
@@ -822,18 +822,18 @@ label {
 
 <dialog id="settings-dialog">
   <div class="dialog-head">
-    <h2>Ïîäêëþ÷åíèå</h2>
+    <h2>Подключение</h2>
 
     <button
       class="close-button"
       data-close="settings-dialog"
     >
-      ?
+      ×
     </button>
   </div>
 
   <label for="worker-url">
-    Àäðåñ Cloudflare Worker
+    Адрес Cloudflare Worker
   </label>
 
   <input
@@ -843,7 +843,7 @@ label {
   >
 
   <label for="app-password">
-    Ïàðîëü APP_PASSWORD
+    Пароль APP_PASSWORD
   </label>
 
   <input
@@ -854,33 +854,33 @@ label {
   >
 
   <label for="system-prompt">
-    Èíñòðóêöèÿ ìîäåëè
+    Инструкция модели
   </label>
 
   <textarea
     id="system-prompt"
     class="field"
     rows="3"
-  >Îòâå÷àé ïî-ðóññêè, ÿñíî è ïî ñóùåñòâó.</textarea>
+  >Отвечай по-русски, ясно и по существу.</textarea>
 
   <div id="settings-status" class="dialog-status"></div>
 
   <div class="dialog-actions">
     <button id="connect-button" class="primary">
-      Ïîäêëþ÷èòü
+      Подключить
     </button>
   </div>
 </dialog>
 
 <dialog id="profiles-dialog">
   <div class="dialog-head">
-    <h2>Ïðîôèëè</h2>
+    <h2>Профили</h2>
 
     <button
       class="close-button"
       data-close="profiles-dialog"
     >
-      ?
+      ×
     </button>
   </div>
 
@@ -888,7 +888,7 @@ label {
 
   <form id="profile-form">
     <label for="profile-name">
-      Èìÿ ïðîôèëÿ
+      Имя профиля
     </label>
 
     <input
@@ -900,7 +900,7 @@ label {
 
     <div class="dialog-actions">
       <button class="primary">
-        Ñîçäàòü ïðîôèëü
+        Создать профиль
       </button>
     </div>
   </form>
@@ -917,7 +917,7 @@ const STORE = "nexus_minimal_v3";
 const state = {
   worker: DEFAULT_WORKER,
   password: "",
-  system: "Îòâå÷àé ïî-ðóññêè, ÿñíî è ïî ñóùåñòâó.",
+  system: "Отвечай по-русски, ясно и по существу.",
   profiles: [],
   activeProfile: "",
   models: {
@@ -956,7 +956,7 @@ function currentChat() {
   if (!profile.chats.length) {
     profile.chats.push({
       id: uid("chat"),
-      title: "Íîâûé äèàëîã",
+      title: "Новый диалог",
       messages: []
     });
   }
@@ -1011,10 +1011,10 @@ function load() {
   if (!state.profiles.length) {
     const profile = {
       id: uid("profile"),
-      name: "Ìîé ïðîôèëü",
+      name: "Мой профиль",
       chats: [{
         id: uid("chat"),
-        title: "Íîâûé äèàëîã",
+        title: "Новый диалог",
         messages: []
       }],
       currentChat: null
@@ -1046,7 +1046,7 @@ function normalizeWorker(value) {
     url.hash
   ) {
     throw new Error(
-      "Óêàæè òîëüêî HTTPS-àäðåñ Worker."
+      "Укажи только HTTPS-адрес Worker."
     );
   }
 
@@ -1074,7 +1074,7 @@ async function request(path, options = {}) {
     data = JSON.parse(raw);
   } catch {
     throw new Error(
-      "Worker âåðíóë íå JSON."
+      "Worker вернул не JSON."
     );
   }
 
@@ -1082,7 +1082,7 @@ async function request(path, options = {}) {
     throw new Error(
       data?.error?.message ||
       data?.message ||
-      "Îøèáêà HTTP " + response.status
+      "Ошибка HTTP " + response.status
     );
   }
 
@@ -1095,7 +1095,7 @@ async function connect() {
 
   button.disabled = true;
   status.textContent =
-    "Çàãðóæàþ ìîäåëè";
+    "Загружаю модели…";
 
   try {
     state.worker = normalizeWorker(
@@ -1107,11 +1107,11 @@ async function connect() {
 
     state.system =
       $("system-prompt").value.trim() ||
-      "Îòâå÷àé ïî-ðóññêè, ÿñíî è ïî ñóùåñòâó.";
+      "Отвечай по-русски, ясно и по существу.";
 
     if (!state.password) {
       throw new Error(
-        "Ââåäè ïàðîëü APP_PASSWORD."
+        "Введи пароль APP_PASSWORD."
       );
     }
 
@@ -1147,14 +1147,14 @@ async function connect() {
         : [];
 
     status.textContent =
-      "×àò: " + state.models.chat.length +
-      "\nÈçîáðàæåíèÿ: " +
+      "Чат: " + state.models.chat.length +
+      "\nИзображения: " +
       state.models.image.length +
       (warnings.length
         ? "\n\n" + warnings.join("\n")
         : "");
 
-    note("Worker ïîäêëþ÷¸í.");
+    note("Worker подключён.");
     $("settings-dialog").close();
 
     render();
@@ -1174,8 +1174,8 @@ function updateConnection() {
 
   $("connection").textContent =
     connected
-      ? "Ïîäêëþ÷åíî"
-      : "Íå ïîäêëþ÷åíî";
+      ? "Подключено"
+      : "Не подключено";
 
   $("connection").classList.toggle(
     "connected",
@@ -1214,7 +1214,7 @@ function updateModelButton() {
       ? model.name ||
         model.display_name ||
         model.id
-      : "Ìîäåëü íå âûáðàíà";
+      : "Модель не выбрана";
 }
 
 function openModelMenu() {
@@ -1228,12 +1228,12 @@ function openModelMenu() {
   title.className = "model-menu-title";
   title.textContent =
     state.mode === "chat"
-      ? "Òåêñò"
+      ? "Текст"
       : state.mode === "vision"
-        ? "Àíàëèç èçîáðàæåíèé"
+        ? "Анализ изображений"
         : state.mode === "image"
-          ? "Ãåíåðàöèÿ èçîáðàæåíèé"
-          : "Âèäåî";
+          ? "Генерация изображений"
+          : "Видео";
 
   menu.append(title);
 
@@ -1241,7 +1241,7 @@ function openModelMenu() {
     const empty = document.createElement("div");
     empty.className = "model-menu-title";
     empty.textContent =
-      "Ïîäõîäÿùèõ ìîäåëåé íåò.";
+      "Подходящих моделей нет.";
     menu.append(empty);
   }
 
@@ -1304,7 +1304,7 @@ function createChat() {
 
   const chat = {
     id: uid("chat"),
-    title: "Íîâûé äèàëîã",
+    title: "Новый диалог",
     messages: []
   };
 
@@ -1325,7 +1325,7 @@ function renderHistory() {
 
   const label = document.createElement("div");
   label.className = "history-label";
-  label.textContent = "Èñòîðèÿ";
+  label.textContent = "История";
   box.append(label);
 
   profile.chats.forEach(chat => {
@@ -1350,7 +1350,7 @@ function renderHistory() {
 
     const remove = document.createElement("button");
     remove.className = "chat-delete";
-    remove.textContent = "?";
+    remove.textContent = "×";
 
     remove.onclick = event => {
       event.stopPropagation();
@@ -1384,7 +1384,7 @@ function render() {
     chat.title;
 
   $("profile-button").textContent =
-    "0 " + profile.name;
+    "○ " + profile.name;
 
   $("welcome").classList.toggle(
     "hidden",
@@ -1414,8 +1414,8 @@ function renderMessages(chat) {
     label.className = "message-label";
     label.textContent =
       message.role === "user"
-        ? "Òû"
-        : message.model || "Àññèñòåíò";
+        ? "Ты"
+        : message.model || "Ассистент";
 
     const content = document.createElement("div");
     content.className = "message-content";
@@ -1431,7 +1431,7 @@ function renderMessages(chat) {
       if (file.kind === "text") {
         content.append(
           document.createTextNode(
-            "Ôàéë: " + file.name + "\n"
+            "Файл: " + file.name + "\n"
           )
         );
       }
@@ -1440,7 +1440,7 @@ function renderMessages(chat) {
     (message.images || []).forEach(source => {
       const image = document.createElement("img");
       image.src = source;
-      image.alt = "Ñîçäàííîå èçîáðàæåíèå";
+      image.alt = "Созданное изображение";
       content.append(image);
     });
 
@@ -1453,14 +1453,14 @@ function renderMessages(chat) {
       tools.className = "message-tools";
 
       const copy = document.createElement("button");
-      copy.textContent = "Ñêîïèðîâàòü";
+      copy.textContent = "Скопировать";
 
       copy.onclick = async () => {
         await navigator.clipboard.writeText(
           message.text || ""
         );
 
-        note("Îòâåò ñêîïèðîâàí.");
+        note("Ответ скопирован.");
       };
 
       tools.append(copy);
@@ -1516,7 +1516,7 @@ function renderAttachments() {
     const button = document.createElement("button");
     button.className = "attachment";
     button.textContent =
-      file.name + " ?";
+      file.name + " ×";
 
     button.onclick = () => {
       state.files.splice(index, 1);
@@ -1534,10 +1534,10 @@ function setWaiting(active, text) {
   );
 
   $("waiting-text").textContent =
-    text || "Ìîäåëü ãîòîâèò îòâåò";
+    text || "Модель готовит ответ…";
 
   $("send-button").textContent =
-    active ? "¦" : "^";
+    active ? "■" : "↑";
 }
 
 function buildMessages(chat) {
@@ -1581,7 +1581,7 @@ function buildMessages(chat) {
         parts.push({
           type: "text",
           text:
-            "Ôàéë " + file.name + ":\n" +
+            "Файл " + file.name + ":\n" +
             file.text
         });
       }
@@ -1634,7 +1634,7 @@ async function sendChat(model, signal) {
 
   if (!answer.trim()) {
     throw new Error(
-      "Ìîäåëü âåðíóëà ïóñòîé îòâåò."
+      "Модель вернула пустой ответ."
     );
   }
 
@@ -1657,7 +1657,7 @@ function delay(milliseconds, signal) {
       clearTimeout(timer);
 
       reject(new DOMException(
-        "Çàïðîñ îñòàíîâëåí.",
+        "Запрос остановлен.",
         "AbortError"
       ));
     };
@@ -1735,7 +1735,7 @@ async function downloadImage(url, signal) {
     !data.data.startsWith("data:image/")
   ) {
     throw new Error(
-      "Worker íå âåðíóë ãîòîâûå äàííûå èçîáðàæåíèÿ."
+      "Worker не вернул готовые данные изображения."
     );
   }
 
@@ -1808,7 +1808,7 @@ async function generateImage(
 
   if (!job) {
     throw new Error(
-      "Ñåðâèñ íå âåðíóë èçîáðàæåíèå èëè job_id."
+      "Сервис не вернул изображение или job_id."
     );
   }
 
@@ -1845,13 +1845,13 @@ async function generateImage(
       throw new Error(
         status?.error?.message ||
         status?.message ||
-        "Ãåíåðàöèÿ èçîáðàæåíèÿ çàâåðøèëàñü îøèáêîé."
+        "Генерация изображения завершилась ошибкой."
       );
     }
   }
 
   throw new Error(
-    "Èçîáðàæåíèå íå ãîòîâî çà äâå ìèíóòû."
+    "Изображение не готово за две минуты."
   );
 }
 
@@ -1877,13 +1877,13 @@ async function send() {
   if (!state.password) {
     $("settings-dialog").showModal();
     $("settings-status").textContent =
-      "Ñíà÷àëà ïîäêëþ÷è Worker.";
+      "Сначала подключи Worker.";
     return;
   }
 
   if (!state.selectedModel) {
     note(
-      "Äëÿ âûáðàííîãî ðåæèìà íåò äîñòóïíîé ìîäåëè."
+      "Для выбранного режима нет доступной модели."
     );
 
     openModelMenu();
@@ -1898,7 +1898,7 @@ async function send() {
       (
         text ||
         files[0]?.name ||
-        "Íîâûé äèàëîã"
+        "Новый диалог"
       ).slice(0, 42);
   }
 
@@ -1925,12 +1925,12 @@ async function send() {
     if (state.mode === "image") {
       setWaiting(
         true,
-        "Ñîçäàþ èçîáðàæåíèå"
+        "Создаю изображение…"
       );
 
       const placeholder = {
         role: "assistant",
-        text: "Ñîçäàþ èçîáðàæåíèå",
+        text: "Создаю изображение…",
         images: [],
         model: "Nano Banana"
       };
@@ -1946,17 +1946,17 @@ async function send() {
         );
 
       placeholder.text =
-        "Èçîáðàæåíèå ñîçäàíî.";
+        "Изображение создано.";
     } else if (state.mode === "video") {
       throw new Error(
-        "Ãåíåðàöèÿ âèäåî ïîêà îòêëþ÷åíà."
+        "Генерация видео пока отключена."
       );
     } else {
       setWaiting(
         true,
         state.mode === "vision"
-          ? "Àíàëèçèðóþ èçîáðàæåíèå"
-          : "Ìîäåëü ãîòîâèò îòâåò"
+          ? "Анализирую изображение…"
+          : "Модель готовит ответ…"
       );
 
       const answer =
@@ -2011,7 +2011,7 @@ function addFiles(fileList) {
 
     if (!isImage && !isText) {
       note(
-        "Ýòîò òèï ôàéëà íå ïîääåðæèâàåòñÿ."
+        "Этот тип файла не поддерживается."
       );
       return;
     }
@@ -2021,7 +2021,7 @@ function addFiles(fileList) {
       file.size > 3 * 1024 * 1024
     ) {
       note(
-        "Èçîáðàæåíèå íå äîëæíî áûòü áîëüøå 3 ÌÁ."
+        "Изображение не должно быть больше 3 МБ."
       );
       return;
     }
@@ -2031,7 +2031,7 @@ function addFiles(fileList) {
       file.size > 300 * 1024
     ) {
       note(
-        "Òåêñòîâûé ôàéë íå äîëæåí áûòü áîëüøå 300 ÊÁ."
+        "Текстовый файл не должен быть больше 300 КБ."
       );
       return;
     }
@@ -2058,7 +2058,7 @@ function addFiles(fileList) {
 
       reader.onerror = () => {
         note(
-          "Íå óäàëîñü ïðî÷èòàòü èçîáðàæåíèå."
+          "Не удалось прочитать изображение."
         );
       };
 
@@ -2076,7 +2076,7 @@ function addFiles(fileList) {
       renderAttachments();
     } catch {
       note(
-        "Íå óäàëîñü ïðî÷èòàòü òåêñòîâûé ôàéë."
+        "Не удалось прочитать текстовый файл."
       );
     }
   });
@@ -2092,7 +2092,7 @@ function openProfiles() {
     button.textContent =
       (
         profile.id === state.activeProfile
-          ? "? "
+          ? "✓ "
           : ""
       ) + profile.name;
 
@@ -2197,7 +2197,7 @@ $("dictate-button").onclick = () => {
 
   if (!Speech) {
     note(
-      "Ãîëîñîâîé ââîä íå ïîääåðæèâàåòñÿ ýòèì áðàóçåðîì."
+      "Голосовой ввод не поддерживается этим браузером."
     );
     return;
   }
@@ -2223,17 +2223,17 @@ $("dictate-button").onclick = () => {
 
   recognition.onerror = event => {
     note(
-      "Îøèáêà ãîëîñîâîãî ââîäà: " +
+      "Ошибка голосового ввода: " +
       event.error
     );
   };
 
   try {
     recognition.start();
-    note("Ãîâîðè");
+    note("Говори…");
   } catch {
     note(
-      "Íå óäàëîñü âêëþ÷èòü ìèêðîôîí."
+      "Не удалось включить микрофон."
     );
   }
 };
@@ -2251,7 +2251,7 @@ $("profile-form").onsubmit = event => {
     name,
     chats: [{
       id: uid("chat"),
-      title: "Íîâûé äèàëîã",
+      title: "Новый диалог",
       messages: []
     }],
     currentChat: null
